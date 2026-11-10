@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Alert from "../../components/ui/Alert.jsx";
 import Input from "../../components/ui/Input.jsx";
-import { getHomeRoute, useAuth } from "../../context/useAuth.js";
+import { useAuth } from "../../context/useAuth.js";
+import { roleHome } from "../../utils/roleHome.js";
 import "./Auth.css";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -63,7 +64,7 @@ function Register() {
   }
 
   if (user) {
-    return <Navigate to={getHomeRoute(user.role)} replace />;
+    return <Navigate to={roleHome(user.role)} replace />;
   }
 
   const updateField = (field) => (e) => {
@@ -98,7 +99,7 @@ function Register() {
       }
 
       const registeredUser = await register(payload);
-      navigate(getHomeRoute(registeredUser.role), { replace: true });
+      navigate(roleHome(registeredUser.role), { replace: true });
     } catch (err) {
       setServerError(err.message || "Unable to create account");
     } finally {

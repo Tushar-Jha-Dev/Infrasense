@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Alert from "../../components/ui/Alert.jsx";
 import Input from "../../components/ui/Input.jsx";
-import { getHomeRoute, useAuth } from "../../context/useAuth.js";
+import { useAuth } from "../../context/useAuth.js";
+import { roleHome } from "../../utils/roleHome.js";
 import "./Auth.css";
 
 function Login() {
@@ -28,7 +29,7 @@ function Login() {
   }
 
   if (user) {
-    return <Navigate to={getHomeRoute(user.role)} replace />;
+    return <Navigate to={roleHome(user.role)} replace />;
   }
 
   const handleSubmit = async (e) => {
@@ -53,7 +54,7 @@ function Login() {
 
     try {
       const loggedInUser = await login(email.trim(), password);
-      navigate(getHomeRoute(loggedInUser.role), { replace: true });
+      navigate(roleHome(loggedInUser.role), { replace: true });
     } catch (err) {
       setServerError(err.message || "Unable to sign in");
     } finally {

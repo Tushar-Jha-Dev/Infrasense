@@ -1,64 +1,11 @@
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import { useAuth } from "./context/useAuth.js";
+import { Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AppLayout from "./components/layout/AppLayout.jsx";
 import Landing from "./pages/public/Landing.jsx";
 import Login from "./pages/public/Login.jsx";
 import Register from "./pages/public/Register.jsx";
+import ComingSoon from "./pages/shared/ComingSoon.jsx";
 import NotFound from "./pages/shared/NotFound.jsx";
-
-// TEMPORARY role-home placeholder for /dashboard, /admin, and /technician — to be replaced in the next step
-function TempRoleHome() {
-  const { user, loading, logout } = useAuth();
-  const navigate = useNavigate();
-
-  if (loading) {
-    return (
-      <main
-        className="container"
-        style={{ paddingTop: "var(--space-7)", paddingBottom: "var(--space-7)" }}
-      >
-        <p>Loading...</p>
-      </main>
-    );
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login", { replace: true });
-  };
-
-  return (
-    <main
-      className="container"
-      style={{ paddingTop: "var(--space-7)", paddingBottom: "var(--space-7)" }}
-    >
-      <div
-        style={{
-          maxWidth: "480px",
-          margin: "0 auto",
-          padding: "var(--space-6)",
-          backgroundColor: "var(--surface)",
-          border: "1px solid var(--border)",
-          borderRadius: "var(--radius)",
-          boxShadow: "var(--shadow)",
-        }}
-      >
-        <h1 style={{ fontSize: "24px", marginBottom: "var(--space-3)" }}>
-          Logged in as {user.name} ({user.role})
-        </h1>
-        <p style={{ color: "var(--text-muted)", marginBottom: "var(--space-5)" }}>
-          Temporary dashboard placeholder until role layouts are added.
-        </p>
-        <button type="button" className="btn btn-secondary" onClick={handleLogout}>
-          Logout
-        </button>
-      </div>
-    </main>
-  );
-}
 
 function App() {
   return (
@@ -66,10 +13,57 @@ function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      {/* TEMPORARY role-home routes — replace with ProtectedRoute + real pages */}
-      <Route path="/dashboard" element={<TempRoleHome />} />
-      <Route path="/admin" element={<TempRoleHome />} />
-      <Route path="/technician" element={<TempRoleHome />} />
+
+      {/* User routes */}
+      <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
+        <Route element={<AppLayout />}>
+          <Route path="/dashboard" element={<ComingSoon title="Dashboard" />} />
+          <Route
+            path="/complaints/new"
+            element={<ComingSoon title="New Complaint" />}
+          />
+          <Route path="/assets" element={<ComingSoon title="Assets" />} />
+        </Route>
+      </Route>
+
+      {/* Admin routes */}
+      <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+        <Route element={<AppLayout />}>
+          <Route path="/admin" element={<ComingSoon title="Admin Dashboard" />} />
+          <Route
+            path="/admin/complaints"
+            element={<ComingSoon title="Complaints" />}
+          />
+          <Route path="/admin/assets" element={<ComingSoon title="Assets" />} />
+          <Route
+            path="/admin/users"
+            element={<ComingSoon title="Users and Technicians" />}
+          />
+          <Route
+            path="/admin/analytics"
+            element={<ComingSoon title="Analytics" />}
+          />
+        </Route>
+      </Route>
+
+      {/* Technician routes */}
+      <Route element={<ProtectedRoute allowedRoles={["technician"]} />}>
+        <Route element={<AppLayout />}>
+          <Route path="/technician" element={<ComingSoon title="My Tasks" />} />
+        </Route>
+      </Route>
+
+      {/* Shared logged-in routes */}
+      <Route
+        element={
+          <ProtectedRoute allowedRoles={["user", "admin", "technician"]} />
+        }
+      >
+        <Route element={<AppLayout />}>
+          <Route path="/profile" element={<ComingSoon title="Profile" />} />
+        </Route>
+      </Route>
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
