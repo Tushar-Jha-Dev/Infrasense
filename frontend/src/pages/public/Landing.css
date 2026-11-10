@@ -1,0 +1,131 @@
+.landing-page {
+  min-height: 100vh;
+}
+
+.landing-header {
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.landing-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  gap: var(--space-4);
+}
+
+.landing-brand {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.landing-brand:hover {
+  text-decoration: none;
+}
+
+.landing-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.landing-nav-link {
+  color: var(--text);
+  font-weight: 500;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.landing-nav-link:hover {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.landing-main {
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-7);
+}
+
+.landing-hero {
+  max-width: 680px;
+  margin-bottom: var(--space-7);
+}
+
+.landing-hero-title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--space-4);
+}
+
+.landing-hero-subtitle {
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: var(--space-5);
+}
+
+.landing-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.landing-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.landing-step-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-5);
+}
+
+.landing-step-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background-color: var(--primary-soft);
+  color: var(--primary);
+  margin-bottom: var(--space-3);
+}
+
+.landing-step-title {
+  font-size: 18px;
+  margin-bottom: var(--space-2);
+}
+
+.landing-step-desc {
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .landing-main {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-6);
+  }
+
+  .landing-hero {
+    margin-bottom: var(--space-6);
+  }
+
+  .landing-hero-title {
+    font-size: 26px;
+  }
+
+  .landing-steps-grid {
+    grid-template-columns: 1fr;
+  }
+}
