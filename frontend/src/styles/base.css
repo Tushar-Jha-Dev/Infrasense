@@ -116,8 +116,8 @@ a:hover {
 }
 
 .btn-danger:hover:not(:disabled) {
-  background-color: #911B12;
-  border-color: #911B12;
+  background-color: var(--danger-hover);
+  border-color: var(--danger-hover);
 }
 
 .btn-sm {
