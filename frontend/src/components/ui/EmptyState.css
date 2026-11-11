@@ -1,0 +1,37 @@
+.ui-empty-state {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-6) var(--space-5);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ui-empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  background-color: var(--surface-2);
+  color: var(--text-muted);
+  margin-bottom: var(--space-1);
+}
+
+.ui-empty-title {
+  font-size: 18px;
+}
+
+.ui-empty-desc {
+  color: var(--text-muted);
+  max-width: 420px;
+}
+
+.ui-empty-action {
+  margin-top: var(--space-3);
+}

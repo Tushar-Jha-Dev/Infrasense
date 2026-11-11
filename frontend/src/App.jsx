@@ -4,6 +4,9 @@ import AppLayout from "./components/layout/AppLayout.jsx";
 import Landing from "./pages/public/Landing.jsx";
 import Login from "./pages/public/Login.jsx";
 import Register from "./pages/public/Register.jsx";
+import AssetDetails from "./pages/shared/assets/AssetDetails.jsx";
+import AssetForm from "./pages/shared/assets/AssetForm.jsx";
+import AssetList from "./pages/shared/assets/AssetList.jsx";
 import ComingSoon from "./pages/shared/ComingSoon.jsx";
 import NotFound from "./pages/shared/NotFound.jsx";
 
@@ -22,7 +25,14 @@ function App() {
             path="/complaints/new"
             element={<ComingSoon title="New Complaint" />}
           />
-          <Route path="/assets" element={<ComingSoon title="Assets" />} />
+          <Route
+            path="/assets"
+            element={<AssetList canManage={false} basePath="/assets" />}
+          />
+          <Route
+            path="/assets/:id"
+            element={<AssetDetails canManage={false} basePath="/assets" />}
+          />
         </Route>
       </Route>
 
@@ -34,7 +44,22 @@ function App() {
             path="/admin/complaints"
             element={<ComingSoon title="Complaints" />}
           />
-          <Route path="/admin/assets" element={<ComingSoon title="Assets" />} />
+          <Route
+            path="/admin/assets"
+            element={<AssetList canManage={true} basePath="/admin/assets" />}
+          />
+          <Route
+            path="/admin/assets/new"
+            element={<AssetForm key="create" basePath="/admin/assets" />}
+          />
+          <Route
+            path="/admin/assets/:id"
+            element={<AssetDetails canManage={true} basePath="/admin/assets" />}
+          />
+          <Route
+            path="/admin/assets/:id/edit"
+            element={<AssetForm key="edit" basePath="/admin/assets" />}
+          />
           <Route
             path="/admin/users"
             element={<ComingSoon title="Users and Technicians" />}
