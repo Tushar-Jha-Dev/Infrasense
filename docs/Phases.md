@@ -7,8 +7,8 @@ Only the developer marks a phase DONE, after testing it. Do not mark anything DO
 | # | Phase | Status | Target |
 |---|---|---|---|
 | 1 | Foundation: Git, Express backend, Vite React frontend, proxy, MongoDB Atlas connection | DONE | 10 Nov |
-| 2 | Authentication and roles | PARTIAL (User model + register API done) | 10 Nov |
-| 3 | Asset management | TODO | 10 Nov |
+| 2 | Authentication and roles | DONE | 10 Nov |
+| 3 | Asset management | DONE | 10 Nov |
 | 4 | Complaint submission and tracking | TODO | 10–11 Nov |
 | 5 | AI analysis (category, severity, causes, rules fallback) | TODO | 11 Nov |
 | 6 | Admin: review, assign, users and technicians | TODO | 11 Nov |
@@ -72,3 +72,5 @@ set CORS origins, test login and the full workflow on the live site.
 (Append one short line per tested phase: date, phase, what was verified, known issues.)
 - 10 Nov 2026 – Phase 1 verified: backend health route, frontend proxy, Atlas connection.
 - 10 Nov 2026 – Phase 2 (partial): User model and register API; hashed password verified in Atlas.
+- 10 Nov 2026 – Phase 2 done: register, login (JWT), protect/authorize, /auth/me, admin seed, login/register pages, protected routes and layout.
+- 10 Nov 2026 – Phase 3 done: Asset model and API (admin writes, all roles read), asset list/details/form pages.
