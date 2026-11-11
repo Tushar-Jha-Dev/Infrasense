@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import assetRoutes from "./routes/assetRoutes.js";
+import complaintRoutes from "./routes/complaintRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/assets", assetRoutes);
+app.use("/api/complaints", complaintRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "InfraSense backend is running" });
