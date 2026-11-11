@@ -33,3 +33,39 @@
   border-color: var(--danger);
   background-color: color-mix(in srgb, var(--danger) 10%, var(--surface));
 }
+
+.ui-badge-st-submitted {
+  color: var(--st-submitted);
+  border-color: var(--st-submitted);
+  background-color: color-mix(in srgb, var(--st-submitted) 10%, var(--surface));
+}
+
+.ui-badge-st-review {
+  color: var(--st-review);
+  border-color: var(--st-review);
+  background-color: color-mix(in srgb, var(--st-review) 10%, var(--surface));
+}
+
+.ui-badge-st-assigned {
+  color: var(--st-assigned);
+  border-color: var(--st-assigned);
+  background-color: color-mix(in srgb, var(--st-assigned) 10%, var(--surface));
+}
+
+.ui-badge-st-progress {
+  color: var(--st-progress);
+  border-color: var(--st-progress);
+  background-color: color-mix(in srgb, var(--st-progress) 10%, var(--surface));
+}
+
+.ui-badge-st-resolved {
+  color: var(--st-resolved);
+  border-color: var(--st-resolved);
+  background-color: color-mix(in srgb, var(--st-resolved) 10%, var(--surface));
+}
+
+.ui-badge-st-closed {
+  color: var(--st-closed);
+  border-color: var(--st-closed);
+  background-color: color-mix(in srgb, var(--st-closed) 10%, var(--surface));
+}

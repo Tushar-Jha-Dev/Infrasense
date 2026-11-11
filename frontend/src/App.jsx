@@ -7,6 +7,9 @@ import Register from "./pages/public/Register.jsx";
 import AssetDetails from "./pages/shared/assets/AssetDetails.jsx";
 import AssetForm from "./pages/shared/assets/AssetForm.jsx";
 import AssetList from "./pages/shared/assets/AssetList.jsx";
+import ComplaintDetails from "./pages/user/ComplaintDetails.jsx";
+import NewComplaint from "./pages/user/NewComplaint.jsx";
+import UserDashboard from "./pages/user/UserDashboard.jsx";
 import ComingSoon from "./pages/shared/ComingSoon.jsx";
 import NotFound from "./pages/shared/NotFound.jsx";
 
@@ -20,11 +23,9 @@ function App() {
       {/* User routes */}
       <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
         <Route element={<AppLayout />}>
-          <Route path="/dashboard" element={<ComingSoon title="Dashboard" />} />
-          <Route
-            path="/complaints/new"
-            element={<ComingSoon title="New Complaint" />}
-          />
+          <Route path="/dashboard" element={<UserDashboard />} />
+          <Route path="/complaints/new" element={<NewComplaint />} />
+          <Route path="/complaints/:id" element={<ComplaintDetails />} />
           <Route
             path="/assets"
             element={<AssetList canManage={false} basePath="/assets" />}
