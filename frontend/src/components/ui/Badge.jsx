@@ -21,6 +21,13 @@ const COMPLAINT_STATUS_VARIANT = {
   Closed: "st-closed",
 };
 
+const SEVERITY_VARIANT = {
+  Low: "sev-low",
+  Medium: "sev-medium",
+  High: "sev-high",
+  Critical: "sev-critical",
+};
+
 function Badge({ variant = "neutral", children, className = "" }) {
   return (
     <span className={`ui-badge ui-badge-${variant} ${className}`.trim()}>
@@ -42,6 +49,11 @@ export function AssetConditionBadge({ condition }) {
 export function StatusBadge({ status }) {
   const variant = COMPLAINT_STATUS_VARIANT[status] || "neutral";
   return <Badge variant={variant}>{status}</Badge>;
+}
+
+export function SeverityBadge({ severity }) {
+  const variant = SEVERITY_VARIANT[severity] || "neutral";
+  return <Badge variant={variant}>{severity}</Badge>;
 }
 
 export default Badge;

@@ -69,3 +69,27 @@
   border-color: var(--st-closed);
   background-color: color-mix(in srgb, var(--st-closed) 10%, var(--surface));
 }
+
+.ui-badge-sev-low {
+  color: var(--sev-low);
+  border-color: var(--sev-low);
+  background-color: color-mix(in srgb, var(--sev-low) 10%, var(--surface));
+}
+
+.ui-badge-sev-medium {
+  color: var(--sev-medium);
+  border-color: var(--sev-medium);
+  background-color: color-mix(in srgb, var(--sev-medium) 10%, var(--surface));
+}
+
+.ui-badge-sev-high {
+  color: var(--sev-high);
+  border-color: var(--sev-high);
+  background-color: color-mix(in srgb, var(--sev-high) 10%, var(--surface));
+}
+
+.ui-badge-sev-critical {
+  color: var(--sev-critical);
+  border-color: var(--sev-critical);
+  background-color: color-mix(in srgb, var(--sev-critical) 10%, var(--surface));
+}

@@ -1,0 +1,39 @@
+.ui-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background-color: color-mix(in srgb, var(--text) 45%, transparent);
+}
+
+.ui-dialog {
+  width: 100%;
+  max-width: 440px;
+  padding: var(--space-5);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.ui-dialog-title {
+  margin: 0 0 var(--space-2);
+  font-size: 20px;
+  color: var(--text);
+}
+
+.ui-dialog-message {
+  margin: 0 0 var(--space-5);
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.ui-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
