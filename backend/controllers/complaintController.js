@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Asset from "../models/Asset.js";
 import Complaint from "../models/Complaint.js";
 import { COMPLAINT_STATUSES } from "../constants/complaints.js";
+import { analyzeComplaint } from "../services/aiAnalysis.js";
 import { getNextSequence } from "../utils/sequence.js";
 
 export const createComplaint = async (req, res) => {
@@ -44,6 +45,7 @@ export const createComplaint = async (req, res) => {
     }
 
     let cleanAssetId = null;
+    let assetCategory;
     if (asset !== undefined && asset !== null && asset !== "") {
       if (
         typeof asset !== "string" ||
@@ -57,6 +59,7 @@ export const createComplaint = async (req, res) => {
         return res.status(404).json({ message: "Asset not found" });
       }
       cleanAssetId = existingAsset._id;
+      assetCategory = existingAsset.category;
     }
 
     if (!cleanAssetId && !cleanLocation) {
@@ -86,6 +89,26 @@ export const createComplaint = async (req, res) => {
 
     if (cleanAssetId) {
       complaintData.asset = cleanAssetId;
+    }
+
+    try {
+      const analysis = await analyzeComplaint({
+        title: cleanTitle,
+        description: cleanDescription,
+        assetCategory,
+      });
+      if (analysis && typeof analysis === "object") {
+        complaintData.aiAnalysis = {
+          category: analysis.category,
+          severity: analysis.severity,
+          possibleCauses: analysis.possibleCauses,
+          source: analysis.source,
+          needsReview: Boolean(analysis.needsReview),
+          analyzedAt: new Date(),
+        };
+      }
+    } catch (analysisError) {
+      console.error("Complaint analysis failed:", analysisError);
     }
 
     const complaint = await Complaint.create(complaintData);

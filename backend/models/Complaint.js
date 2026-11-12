@@ -71,6 +71,7 @@ const complaintSchema = new mongoose.Schema(
       severity: { type: String, enum: SEVERITIES },
       possibleCauses: [{ type: String, trim: true }],
       source: { type: String, enum: ["llm", "rules"] },
+      needsReview: { type: Boolean, default: false },
       analyzedAt: { type: Date },
     },
     confirmedCategory: {
