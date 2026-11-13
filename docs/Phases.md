@@ -79,3 +79,4 @@ set CORS origins, test login and the full workflow on the live site.
 - 13 Nov 2026 – Phase 6 (admin) done: users API, admin complaint API and pages.
 - 13 Nov 2026 – Phase 7 (API only) done: technician workflow API and maintenance records, curl-tested; technician pages pending.
 - 13 Nov 2026 – Phase 7 done: technician pages (My Tasks, Task Details, start, resolve form), browser-tested.
+- 13 Nov 2026 – Hardening done: helmet, login/register rate limits, CORS allowlist, assignmentNotes hidden from owner, central error handler; curl and browser tested
