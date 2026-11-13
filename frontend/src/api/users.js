@@ -10,3 +10,16 @@ export const listUsers = (params = {}) => {
   const query = searchParams.toString();
   return apiRequest(`/users${query ? `?${query}` : ""}`);
 };
+
+export const createUser = (data) =>
+  apiRequest("/users", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+export const updateUser = (id, data) =>
+  apiRequest(`/users/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+

@@ -14,9 +14,10 @@ import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import AdminComplaints from "./pages/admin/AdminComplaints.jsx";
 import AdminComplaintReview from "./pages/admin/AdminComplaintReview.jsx";
 import Analytics from "./pages/admin/Analytics.jsx";
+import UsersManagement from "./pages/admin/UsersManagement.jsx";
 import MyTasks from "./pages/technician/MyTasks.jsx";
 import TaskDetails from "./pages/technician/TaskDetails.jsx";
-import ComingSoon from "./pages/shared/ComingSoon.jsx";
+import Profile from "./pages/shared/Profile.jsx";
 import NotFound from "./pages/shared/NotFound.jsx";
 
 function App() {
@@ -70,7 +71,7 @@ function App() {
           />
           <Route
             path="/admin/users"
-            element={<ComingSoon title="Users and Technicians" />}
+            element={<UsersManagement />}
           />
           <Route
             path="/admin/analytics"
@@ -94,7 +95,7 @@ function App() {
         }
       >
         <Route element={<AppLayout />}>
-          <Route path="/profile" element={<ComingSoon title="Profile" />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Route>
 
