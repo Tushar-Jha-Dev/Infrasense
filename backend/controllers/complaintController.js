@@ -7,6 +7,7 @@ import { CATEGORIES } from "../constants/categories.js";
 import { COMPLAINT_STATUSES, SEVERITIES } from "../constants/complaints.js";
 import { analyzeComplaint } from "../services/aiAnalysis.js";
 import { getNextSequence } from "../utils/sequence.js";
+import { sanitizeComplaint } from "../utils/sanitizeComplaint.js";
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -129,7 +130,7 @@ export const createComplaint = async (req, res) => {
     const complaint = await Complaint.create(complaintData);
     await complaint.populate("asset", "assetId name");
 
-    res.status(201).json(complaint);
+    res.status(201).json(sanitizeComplaint(complaint, req.user));
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -155,7 +156,7 @@ export const getMyComplaints = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate("asset", "assetId name");
 
-    res.json(complaints);
+    res.json(sanitizeComplaint(complaints, req.user));
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -186,7 +187,7 @@ export const getComplaint = async (req, res) => {
       return res.status(404).json({ message: "Complaint not found" });
     }
 
-    res.json(complaint);
+    res.json(sanitizeComplaint(complaint, req.user));
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
