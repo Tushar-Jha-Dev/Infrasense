@@ -1,0 +1,328 @@
+.analytics-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.analytics-loading-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-7);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* a. Top 4 StatCards */
+.analytics-top-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+/* b. 6 Charts Grid */
+.analytics-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.analytics-chart-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+}
+
+.analytics-chart-header {
+  margin-bottom: var(--space-3);
+}
+
+.analytics-chart-title {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 var(--space-1) 0;
+}
+
+.analytics-chart-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.analytics-chart-container {
+  width: 100%;
+  margin-top: auto;
+}
+
+.analytics-empty-note {
+  font-size: 14px;
+  color: var(--text-muted);
+  padding: var(--space-6) 0;
+  text-align: center;
+  margin: 0;
+}
+
+/* Generic Section Container */
+.analytics-section {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.analytics-section-header {
+  margin-bottom: var(--space-4);
+}
+
+.analytics-section-title {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 var(--space-1) 0;
+}
+
+.analytics-section-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* c. Ranked Assets Table */
+.analytics-ranked-assets-wrap {
+  overflow-x: auto;
+}
+
+.analytics-ranked-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.analytics-ranked-table th {
+  background-color: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.analytics-ranked-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.analytics-ranked-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.analytics-ranked-table tbody tr:hover {
+  background-color: var(--bg);
+}
+
+.analytics-th-rank,
+.analytics-td-rank {
+  width: 40px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.analytics-asset-id-link {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.analytics-asset-id-link:hover {
+  text-decoration: underline;
+}
+
+.analytics-asset-name-link {
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.analytics-asset-name-link:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.analytics-th-bar,
+.analytics-td-bar {
+  width: 35%;
+  min-width: 120px;
+}
+
+.analytics-bar-track {
+  width: 100%;
+  height: 8px;
+  background-color: var(--surface-2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.analytics-bar-fill {
+  height: 100%;
+  background-color: var(--primary);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.analytics-th-count,
+.analytics-td-count {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.analytics-count-mono {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* d. Technician Performance Grid */
+.analytics-tech-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.analytics-tech-card {
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.analytics-tech-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.analytics-tech-name-box {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.analytics-tech-icon {
+  color: var(--primary);
+}
+
+.analytics-tech-name {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.analytics-tech-status-badges {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.tech-badge-inactive {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  background-color: #FEE4E2;
+  color: var(--danger);
+  border: 1px solid #FECDCA;
+  border-radius: var(--radius-sm);
+}
+
+.tech-badge-active-tasks {
+  display: inline-block;
+  padding: 1px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+}
+
+.tech-badge-has-tasks {
+  background-color: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.tech-badge-no-tasks {
+  background-color: var(--surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.analytics-tech-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.analytics-tech-metric {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.analytics-tech-metric-label {
+  color: var(--text-muted);
+}
+
+.analytics-tech-metric-val {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Responsiveness */
+@media (max-width: 992px) {
+  .analytics-top-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .analytics-charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-tech-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .analytics-top-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-tech-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-th-bar,
+  .analytics-td-bar {
+    display: none;
+  }
+}

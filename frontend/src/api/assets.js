@@ -12,6 +12,8 @@ export const listAssets = (params = {}) => {
 
 export const getAsset = (id) => apiRequest(`/assets/${id}`);
 
+export const getAssetHistory = (id) => apiRequest(`/assets/${id}/history`);
+
 export const createAsset = (data) =>
   apiRequest("/assets", {
     method: "POST",

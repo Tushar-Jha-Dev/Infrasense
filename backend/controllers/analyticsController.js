@@ -1,10 +1,12 @@
 import Asset from "../models/Asset.js";
 import Complaint from "../models/Complaint.js";
 import MaintenanceRecord from "../models/MaintenanceRecord.js";
+import User from "../models/User.js";
 import { CATEGORIES } from "../constants/categories.js";
 import { COMPLAINT_STATUSES, SEVERITIES } from "../constants/complaints.js";
 
 const round2 = (val) => Math.round((Number(val) + Number.EPSILON) * 100) / 100;
+const round1 = (val) => Math.round((Number(val) + Number.EPSILON) * 10) / 10;
 
 export const getAnalyticsSummary = async (req, res) => {
   try {
@@ -210,6 +212,172 @@ export const getAnalyticsSummary = async (req, res) => {
     // 7. Total count of assets
     const totalAssetsPromise = Asset.countDocuments();
 
+    // 8. Monthly metrics (6 months zero-filled, ending with current month in Asia/Kolkata)
+    const now = new Date();
+    const kolkataFormatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Kolkata",
+      year: "numeric",
+      month: "2-digit",
+    });
+    const parts = kolkataFormatter.formatToParts(now);
+    const currentYear = parseInt(parts.find((p) => p.type === "year").value, 10);
+    const currentMonth = parseInt(parts.find((p) => p.type === "month").value, 10);
+
+    const targetMonths = [];
+    for (let i = 5; i >= 0; i--) {
+      let y = currentYear;
+      let m = currentMonth - i;
+      while (m <= 0) {
+        m += 12;
+        y -= 1;
+      }
+      targetMonths.push(`${y}-${String(m).padStart(2, "0")}`);
+    }
+
+    const reportedMonthlyPromise = Complaint.aggregate([
+      {
+        $project: {
+          month: {
+            $dateToString: {
+              date: "$createdAt",
+              timezone: "Asia/Kolkata",
+              format: "%Y-%m",
+            },
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const resolvedMonthlyPromise = Complaint.aggregate([
+      {
+        $project: {
+          resolvedEntries: {
+            $filter: {
+              input: "$statusHistory",
+              as: "item",
+              cond: { $eq: ["$$item.status", "Resolved"] },
+            },
+          },
+        },
+      },
+      {
+        $match: {
+          "resolvedEntries.0": { $exists: true },
+        },
+      },
+      {
+        $project: {
+          firstResolvedAt: { $arrayElemAt: ["$resolvedEntries.changedAt", 0] },
+        },
+      },
+      {
+        $project: {
+          month: {
+            $dateToString: {
+              date: "$firstResolvedAt",
+              timezone: "Asia/Kolkata",
+              format: "%Y-%m",
+            },
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const costMonthlyPromise = MaintenanceRecord.aggregate([
+      {
+        $project: {
+          cost: 1,
+          month: {
+            $dateToString: {
+              date: "$completedAt",
+              timezone: "Asia/Kolkata",
+              format: "%Y-%m",
+            },
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          totalCost: { $sum: "$cost" },
+        },
+      },
+    ]);
+
+    // 9. Resolution statistics
+    const resolutionPromise = Complaint.aggregate([
+      {
+        $project: {
+          createdAt: 1,
+          resolvedEntries: {
+            $filter: {
+              input: "$statusHistory",
+              as: "item",
+              cond: { $eq: ["$$item.status", "Resolved"] },
+            },
+          },
+        },
+      },
+      {
+        $match: {
+          "resolvedEntries.0": { $exists: true },
+        },
+      },
+      {
+        $project: {
+          createdAt: 1,
+          firstResolvedAt: { $arrayElemAt: ["$resolvedEntries.changedAt", 0] },
+        },
+      },
+      {
+        $project: {
+          diffHours: {
+            $divide: [
+              { $subtract: ["$firstResolvedAt", "$createdAt"] },
+              1000 * 60 * 60,
+            ],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          resolvedCount: { $sum: 1 },
+          avgHours: { $avg: "$diffHours" },
+        },
+      },
+    ]);
+
+    // 10. By Location queries
+    const complaintsForLocationPromise = Complaint.find()
+      .select("location asset createdAt")
+      .populate("asset", "building")
+      .sort({ createdAt: 1 })
+      .lean();
+
+    // 11. Technicians queries
+    const techniciansListPromise = User.find({ role: "technician" })
+      .select("_id name isActive")
+      .lean();
+
+    const techComplaintsPromise = Complaint.find({
+      assignedTo: { $ne: null },
+    })
+      .select("assignedTo status assignedAt statusHistory")
+      .lean();
+
     const [
       statusAgg,
       categoryAgg,
@@ -218,6 +386,13 @@ export const getAnalyticsSummary = async (req, res) => {
       costByCategoryAgg,
       frequentAssets,
       totalAssets,
+      reportedMonthly,
+      resolvedMonthly,
+      costMonthly,
+      resolutionAgg,
+      complaintsForLocation,
+      techniciansList,
+      techComplaints,
     ] = await Promise.all([
       statusAggPromise,
       categoryAggPromise,
@@ -226,6 +401,13 @@ export const getAnalyticsSummary = async (req, res) => {
       costByCategoryPromise,
       frequentAssetsPromise,
       totalAssetsPromise,
+      reportedMonthlyPromise,
+      resolvedMonthlyPromise,
+      costMonthlyPromise,
+      resolutionPromise,
+      complaintsForLocationPromise,
+      techniciansListPromise,
+      techComplaintsPromise,
     ]);
 
     // Build byStatus: all six statuses in lifecycle order with zeros included
@@ -302,6 +484,118 @@ export const getAnalyticsSummary = async (req, res) => {
       totalCost: round2(item.totalCost || 0),
     }));
 
+    // Build monthly: exactly 6 months
+    const reportedMap = new Map(reportedMonthly.map((r) => [r._id, r.count]));
+    const resolvedMap = new Map(resolvedMonthly.map((r) => [r._id, r.count]));
+    const costMonthMap = new Map(costMonthly.map((r) => [r._id, r.totalCost]));
+
+    const monthly = targetMonths.map((m) => ({
+      month: m,
+      reported: reportedMap.get(m) || 0,
+      resolved: resolvedMap.get(m) || 0,
+      cost: round2(costMonthMap.get(m) || 0),
+    }));
+
+    // Build resolution: { resolvedCount, averageResolutionHours }
+    const resCount = resolutionAgg[0]?.resolvedCount || 0;
+    const avgResHours =
+      resCount > 0 ? round1(resolutionAgg[0].avgHours) : null;
+    const resolution = {
+      resolvedCount: resCount,
+      averageResolutionHours: avgResHours,
+    };
+
+    // Build byLocation: top 7 + Others
+    const locationMap = new Map();
+    for (const c of complaintsForLocation) {
+      let loc = "";
+      if (
+        c.asset &&
+        typeof c.asset.building === "string" &&
+        c.asset.building.trim()
+      ) {
+        loc = c.asset.building.trim();
+      } else if (typeof c.location === "string" && c.location.trim()) {
+        loc = c.location.trim();
+      } else {
+        loc = "Unspecified";
+      }
+
+      const key = loc.toLowerCase();
+      if (!locationMap.has(key)) {
+        locationMap.set(key, { location: loc, count: 0 });
+      }
+      locationMap.get(key).count += 1;
+    }
+
+    const sortedLocations = Array.from(locationMap.values()).sort(
+      (a, b) => b.count - a.count
+    );
+
+    let byLocation = [];
+    if (sortedLocations.length <= 7) {
+      byLocation = sortedLocations;
+    } else {
+      const top7 = sortedLocations.slice(0, 7);
+      const othersCount = sortedLocations
+        .slice(7)
+        .reduce((sum, item) => sum + item.count, 0);
+      byLocation = [...top7, { location: "Others", count: othersCount }];
+    }
+
+    // Build technicians: all users with role "technician"
+    const technicians = techniciansList.map((tech) => {
+      const myComplaints = techComplaints.filter(
+        (c) => c.assignedTo?.toString() === tech._id.toString()
+      );
+
+      const resolvedCount = myComplaints.filter((c) =>
+        ["Resolved", "Closed"].includes(c.status)
+      ).length;
+
+      const activeTasks = myComplaints.filter((c) =>
+        ["Assigned", "In Progress"].includes(c.status)
+      ).length;
+
+      const diffs = [];
+      for (const c of myComplaints) {
+        if (c.assignedAt) {
+          const firstResolved = (c.statusHistory || []).find(
+            (h) => h.status === "Resolved"
+          );
+          if (firstResolved && firstResolved.changedAt) {
+            const diffMs =
+              new Date(firstResolved.changedAt).getTime() -
+              new Date(c.assignedAt).getTime();
+            if (diffMs >= 0) {
+              diffs.push(diffMs / (1000 * 60 * 60));
+            }
+          }
+        }
+      }
+
+      const averageResolutionHours =
+        diffs.length > 0
+          ? round1(diffs.reduce((sum, d) => sum + d, 0) / diffs.length)
+          : null;
+
+      return {
+        _id: tech._id,
+        name: tech.name,
+        isActive: tech.isActive,
+        resolvedCount,
+        averageResolutionHours,
+        activeTasks,
+      };
+    });
+
+    technicians.sort((a, b) => {
+      if (b.resolvedCount !== a.resolvedCount) {
+        return b.resolvedCount - a.resolvedCount;
+      }
+      return a.name.localeCompare(b.name);
+    });
+
     res.json({
       totals,
       byStatus,
@@ -310,6 +604,10 @@ export const getAnalyticsSummary = async (req, res) => {
       cost,
       costByCategory,
       frequentAssets,
+      monthly,
+      resolution,
+      byLocation,
+      technicians,
     });
   } catch (error) {
     console.error(error);

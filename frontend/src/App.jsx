@@ -10,8 +10,10 @@ import AssetList from "./pages/shared/assets/AssetList.jsx";
 import ComplaintDetails from "./pages/user/ComplaintDetails.jsx";
 import NewComplaint from "./pages/user/NewComplaint.jsx";
 import UserDashboard from "./pages/user/UserDashboard.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import AdminComplaints from "./pages/admin/AdminComplaints.jsx";
 import AdminComplaintReview from "./pages/admin/AdminComplaintReview.jsx";
+import Analytics from "./pages/admin/Analytics.jsx";
 import MyTasks from "./pages/technician/MyTasks.jsx";
 import TaskDetails from "./pages/technician/TaskDetails.jsx";
 import ComingSoon from "./pages/shared/ComingSoon.jsx";
@@ -44,7 +46,7 @@ function App() {
       {/* Admin routes */}
       <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
         <Route element={<AppLayout />}>
-          <Route path="/admin" element={<ComingSoon title="Admin Dashboard" />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/complaints" element={<AdminComplaints />} />
           <Route
             path="/admin/complaints/:id"
@@ -72,7 +74,7 @@ function App() {
           />
           <Route
             path="/admin/analytics"
-            element={<ComingSoon title="Analytics" />}
+            element={<Analytics />}
           />
         </Route>
       </Route>

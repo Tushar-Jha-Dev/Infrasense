@@ -25,6 +25,16 @@
   --st-resolved: #2F7D5B;
   --st-closed: #6B6B6B;
 
+  /* Categorical Chart Palette */
+  --chart-1: #0F5E5C; /* teal */
+  --chart-2: #B7791F; /* ochre */
+  --chart-3: #2B6A8F; /* blue */
+  --chart-4: #8A5A44; /* clay */
+  --chart-5: #6B7F3A; /* olive */
+  --chart-6: #7A5C8E; /* plum */
+  --chart-7: #B4533C; /* terracotta */
+  --chart-8: #6B6B6B; /* grey */
+
   --danger: #B42318;
   --danger-hover: #911B12;
   --focus: #0F5E5C;

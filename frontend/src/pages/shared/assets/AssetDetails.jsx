@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, Pencil } from "lucide-react";
-import { getAsset, updateAssetStatus } from "../../../api/assets.js";
+import {
+  getAsset,
+  getAssetHistory,
+  updateAssetStatus,
+} from "../../../api/assets.js";
 import { ASSET_STATUSES, CONDITIONS } from "../../../constants/categories.js";
+import { formatCurrency } from "../../../utils/formatCurrency.js";
 import Alert from "../../../components/ui/Alert.jsx";
 import {
   AssetConditionBadge,
   AssetStatusBadge,
 } from "../../../components/ui/Badge.jsx";
+import MaintenanceRecordView from "../../../components/ui/MaintenanceRecordView.jsx";
 import PageHeader from "../../../components/ui/PageHeader.jsx";
 import Select from "../../../components/ui/Select.jsx";
 import Spinner from "../../../components/ui/Spinner.jsx";
@@ -33,6 +39,10 @@ function AssetDetails({ canManage = false, basePath = "/assets" }) {
   const [statusMessage, setStatusMessage] = useState("");
   const [statusError, setStatusError] = useState("");
 
+  const [historyData, setHistoryData] = useState(null);
+  const [historyLoading, setHistoryLoading] = useState(canManage);
+  const [historyError, setHistoryError] = useState("");
+
   useEffect(() => {
     let active = true;
 
@@ -56,10 +66,30 @@ function AssetDetails({ canManage = false, basePath = "/assets" }) {
         }
       });
 
+    if (canManage) {
+      getAssetHistory(id)
+        .then((data) => {
+          if (active) {
+            setHistoryData(data);
+            setHistoryError("");
+          }
+        })
+        .catch((err) => {
+          if (active) {
+            setHistoryError(err.message || "Failed to load maintenance history");
+          }
+        })
+        .finally(() => {
+          if (active) {
+            setHistoryLoading(false);
+          }
+        });
+    }
+
     return () => {
       active = false;
     };
-  }, [id]);
+  }, [id, canManage]);
 
   const handleStatusSave = async (e) => {
     e.preventDefault();
@@ -166,12 +196,83 @@ function AssetDetails({ canManage = false, basePath = "/assets" }) {
           </section>
 
           <section className="asset-panel" aria-labelledby="asset-history-heading">
-            <h2 id="asset-history-heading" className="asset-panel-title">
-              Maintenance history
-            </h2>
-            <p className="asset-muted-text">
-              Maintenance records will appear here once complaints are resolved.
-            </p>
+            <div className="asset-history-header">
+              <h2 id="asset-history-heading" className="asset-panel-title">
+                Maintenance history
+              </h2>
+              {canManage && historyData?.summary ? (
+                <div className="asset-history-summary">
+                  <span className="asset-history-count">
+                    {historyData.summary.recordCount}{" "}
+                    {historyData.summary.recordCount === 1
+                      ? "record"
+                      : "records"}
+                  </span>
+                  <span className="asset-history-divider" aria-hidden="true">
+                    •
+                  </span>
+                  <span className="asset-history-cost">
+                    Total cost:{" "}
+                    <span className="asset-cost-mono">
+                      {formatCurrency(historyData.summary.totalCost)}
+                    </span>
+                  </span>
+                </div>
+              ) : null}
+            </div>
+
+            {!canManage ? (
+              <p className="asset-muted-text">
+                Maintenance records will appear here once complaints are resolved.
+              </p>
+            ) : historyLoading ? (
+              <div className="asset-history-loading">
+                <Spinner label="Loading maintenance records..." />
+              </div>
+            ) : historyError ? (
+              <Alert variant="error">{historyError}</Alert>
+            ) : !historyData || historyData.records?.length === 0 ? (
+              <p className="asset-muted-text">No maintenance records yet.</p>
+            ) : (
+              <div className="asset-records-list">
+                {historyData.records.map((record) => (
+                  <div key={record._id} className="asset-record-card">
+                    <div className="asset-record-header">
+                      <div className="asset-record-meta-item">
+                        <span className="asset-record-meta-label">
+                          Completed:
+                        </span>
+                        <span className="asset-record-meta-value">
+                          {formatDate(record.completedAt)}
+                        </span>
+                      </div>
+                      {record.complaint ? (
+                        <div className="asset-record-meta-item">
+                          <span className="asset-record-meta-label">
+                            Complaint:
+                          </span>
+                          <Link
+                            to={`/admin/complaints/${record.complaint._id}`}
+                            className="asset-id-mono asset-record-complaint-link"
+                          >
+                            {record.complaint.complaintId}
+                          </Link>
+                        </div>
+                      ) : null}
+                      <div className="asset-record-meta-item">
+                        <span className="asset-record-meta-label">
+                          Technician:
+                        </span>
+                        <span className="asset-record-meta-value">
+                          {record.technician?.name || "—"}
+                        </span>
+                      </div>
+                    </div>
+                    <MaintenanceRecordView record={record} />
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
         </div>
 
