@@ -12,6 +12,8 @@ import NewComplaint from "./pages/user/NewComplaint.jsx";
 import UserDashboard from "./pages/user/UserDashboard.jsx";
 import AdminComplaints from "./pages/admin/AdminComplaints.jsx";
 import AdminComplaintReview from "./pages/admin/AdminComplaintReview.jsx";
+import MyTasks from "./pages/technician/MyTasks.jsx";
+import TaskDetails from "./pages/technician/TaskDetails.jsx";
 import ComingSoon from "./pages/shared/ComingSoon.jsx";
 import NotFound from "./pages/shared/NotFound.jsx";
 
@@ -78,7 +80,8 @@ function App() {
       {/* Technician routes */}
       <Route element={<ProtectedRoute allowedRoles={["technician"]} />}>
         <Route element={<AppLayout />}>
-          <Route path="/technician" element={<ComingSoon title="My Tasks" />} />
+          <Route path="/technician" element={<MyTasks />} />
+          <Route path="/technician/tasks/:id" element={<TaskDetails />} />
         </Route>
       </Route>
 

@@ -45,3 +45,26 @@ export const closeComplaint = (id, data = {}) =>
     method: "PATCH",
     body: JSON.stringify(data),
   });
+
+export const getAssignedComplaints = (status) => {
+  const searchParams = new URLSearchParams();
+  if (status) {
+    searchParams.set("status", status);
+  }
+  const query = searchParams.toString();
+  return apiRequest(`/complaints/assigned${query ? `?${query}` : ""}`);
+};
+
+export const startComplaint = (id) =>
+  apiRequest(`/complaints/${id}/start`, {
+    method: "PATCH",
+  });
+
+export const resolveComplaint = (id, data) =>
+  apiRequest(`/complaints/${id}/resolve`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+export const getComplaintMaintenance = (id) =>
+  apiRequest(`/complaints/${id}/maintenance`);
