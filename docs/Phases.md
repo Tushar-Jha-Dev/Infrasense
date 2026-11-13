@@ -81,3 +81,6 @@ set CORS origins, test login and the full workflow on the live site.
 - 13 Nov 2026 – Phase 7 done: technician pages (My Tasks, Task Details, start, resolve form), browser-tested.
 - 13 Nov 2026 – Hardening done: helmet, login/register rate limits, CORS allowlist, assignmentNotes hidden from owner, central error handler; curl and browser tested
 - 13 Nov 2026 – Phase 8 (API only): asset history and analytics summary endpoints, scripted API check 38/38 passed; pages pending.
+- 14 Nov 2026 – Phase 8 done: asset history and analytics API (scripted checks), dashboard, analytics and asset history pages browser-tested.
+- 14 Nov 2026 – Phase 7 done: record appears in the asset's history.
+- 14 Nov 2026 – Admin user management done: Users and Technicians page, primary admin rules, permanent delete (blocked for accounts with records), promote/demote admin, profile with photo, forced temporary-password change; scripted API checks and browser tested.
