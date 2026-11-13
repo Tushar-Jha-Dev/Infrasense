@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Asset from "../models/Asset.js";
 import Complaint from "../models/Complaint.js";
+import MaintenanceRecord from "../models/MaintenanceRecord.js";
 import User from "../models/User.js";
 import { CATEGORIES } from "../constants/categories.js";
 import { COMPLAINT_STATUSES, SEVERITIES } from "../constants/complaints.js";
@@ -504,6 +505,54 @@ export const closeComplaint = async (req, res) => {
     await complaint.save();
     const populated = await populateComplaintQuery(Complaint.findById(id));
     res.json(populated);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getComplaintMaintenance = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid complaint ID" });
+    }
+
+    const complaint = await Complaint.findById(id);
+    if (!complaint) {
+      return res.status(404).json({ message: "Complaint not found" });
+    }
+
+    const currentUserId = req.user._id.toString();
+    const isOwner = complaint.submittedBy?.toString() === currentUserId;
+    const isAdmin = req.user.role === "admin";
+    const isAssignedTech =
+      req.user.role === "technician" &&
+      complaint.assignedTo?.toString() === currentUserId;
+
+    if (!isOwner && !isAdmin && !isAssignedTech) {
+      return res.status(404).json({ message: "Complaint not found" });
+    }
+
+    const maintenance = await MaintenanceRecord.findOne({
+      complaint: complaint._id,
+    }).populate("technician", "name");
+
+    if (!maintenance) {
+      return res.json(null);
+    }
+
+    if (isAdmin || isAssignedTech) {
+      return res.json(maintenance);
+    }
+
+    return res.json({
+      resolutionDetails: maintenance.resolutionDetails,
+      completedAt: maintenance.completedAt,
+      technician: maintenance.technician
+        ? { name: maintenance.technician.name }
+        : null,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
