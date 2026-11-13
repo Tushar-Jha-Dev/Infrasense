@@ -74,3 +74,7 @@ set CORS origins, test login and the full workflow on the live site.
 - 10 Nov 2026 – Phase 2 (partial): User model and register API; hashed password verified in Atlas.
 - 10 Nov 2026 – Phase 2 done: register, login (JWT), protect/authorize, /auth/me, admin seed, login/register pages, protected routes and layout.
 - 10 Nov 2026 – Phase 3 done: Asset model and API (admin writes, all roles read), asset list/details/form pages.
+- 12 Nov 2026 – Phase 4 done: complaint model/API, user complaint pages, status history.
+- 12 Nov 2026 – Phase 5 (rules only): rule-based AI analysis, 24/26 on own test set; LLM layer pending.
+- 13 Nov 2026 – Phase 6 (admin) done: users API, admin complaint API and pages.
+- 13 Nov 2026 – Phase 7 (API only) done: technician workflow API and maintenance records, curl-tested; technician pages pending.

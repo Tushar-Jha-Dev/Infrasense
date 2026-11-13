@@ -88,6 +88,7 @@ a separate Assignment collection, to keep the minor project simple. It can be sp
 | PATCH | /complaints/:id/assign | admin | assign technician, status Assigned |
 | PATCH | /complaints/:id/start | assigned technician | status In Progress |
 | POST | /complaints/:id/resolve | assigned technician | creates MaintenanceRecord, status Resolved |
+| GET | /complaints/:id/maintenance | owner / admin / assigned technician | maintenance record of the complaint; the owner sees only resolutionDetails, completedAt and technician name; returns null until resolved |
 | PATCH | /complaints/:id/close | admin | status Closed |
 | GET | /analytics/summary | admin | totals and group counts |
 
