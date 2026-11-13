@@ -209,6 +209,12 @@
   align-items: start;
 }
 
+.complaint-details-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
 .complaint-panel {
   background-color: var(--surface);
   border: 1px solid var(--border);

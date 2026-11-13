@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, FileSearch } from "lucide-react";
-import { getComplaint } from "../../api/complaints.js";
+import {
+  getComplaint,
+  getComplaintMaintenance,
+} from "../../api/complaints.js";
+import { useAuth } from "../../context/useAuth.js";
 import { formatDateTime } from "../../utils/formatDate.js";
 import Alert from "../../components/ui/Alert.jsx";
 import { StatusBadge } from "../../components/ui/Badge.jsx";
@@ -13,8 +17,10 @@ import "./UserComplaints.css";
 
 function ComplaintDetails() {
   const { id } = useParams();
+  const { user } = useAuth();
 
   const [complaint, setComplaint] = useState(null);
+  const [resolution, setResolution] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState("");
@@ -24,20 +30,37 @@ function ComplaintDetails() {
 
     getComplaint(id)
       .then((data) => {
-        if (active) {
-          setComplaint(data);
-          setNotFound(false);
-          setError("");
+        if (!active) return;
+        setComplaint(data);
+        setNotFound(false);
+        setError("");
+
+        if (
+          (data.status === "Resolved" || data.status === "Closed") &&
+          user?.role === "user"
+        ) {
+          getComplaintMaintenance(id)
+            .then((maint) => {
+              if (active) {
+                setResolution(maint || null);
+              }
+            })
+            .catch(() => {
+              if (active) {
+                setResolution(null);
+              }
+            });
+        } else {
+          setResolution(null);
         }
       })
       .catch((err) => {
-        if (active) {
-          if (err.status === 404) {
-            setNotFound(true);
-            setError("");
-          } else {
-            setError(err.message || "Failed to load complaint");
-          }
+        if (!active) return;
+        if (err.status === 404) {
+          setNotFound(true);
+          setError("");
+        } else {
+          setError(err.message || "Failed to load complaint");
         }
       })
       .finally(() => {
@@ -49,7 +72,7 @@ function ComplaintDetails() {
     return () => {
       active = false;
     };
-  }, [id]);
+  }, [id, user]);
 
   if (loading) {
     return (
@@ -111,35 +134,66 @@ function ComplaintDetails() {
       />
 
       <div className="complaint-details-grid">
-        <section
-          className="complaint-panel"
-          aria-labelledby="complaint-details-heading"
-        >
-          <h2 id="complaint-details-heading" className="complaint-panel-title">
-            Details
-          </h2>
+        <div className="complaint-details-col">
+          <section
+            className="complaint-panel"
+            aria-labelledby="complaint-details-heading"
+          >
+            <h2 id="complaint-details-heading" className="complaint-panel-title">
+              Details
+            </h2>
 
-          <p className="complaint-description">{complaint.description}</p>
+            <p className="complaint-description">{complaint.description}</p>
 
-          <dl className="complaint-dl">
-            <div className="complaint-dl-item">
-              <dt>Asset</dt>
-              <dd>
-                {complaint.asset
-                  ? `${complaint.asset.assetId} – ${complaint.asset.name}`
-                  : "—"}
-              </dd>
-            </div>
-            <div className="complaint-dl-item">
-              <dt>Location</dt>
-              <dd>{complaint.location || "—"}</dd>
-            </div>
-            <div className="complaint-dl-item complaint-dl-full">
-              <dt>Submitted</dt>
-              <dd>{formatDateTime(complaint.createdAt)}</dd>
-            </div>
-          </dl>
-        </section>
+            <dl className="complaint-dl">
+              <div className="complaint-dl-item">
+                <dt>Asset</dt>
+                <dd>
+                  {complaint.asset
+                    ? `${complaint.asset.assetId} – ${complaint.asset.name}`
+                    : "—"}
+                </dd>
+              </div>
+              <div className="complaint-dl-item">
+                <dt>Location</dt>
+                <dd>{complaint.location || "—"}</dd>
+              </div>
+              <div className="complaint-dl-item complaint-dl-full">
+                <dt>Submitted</dt>
+                <dd>{formatDateTime(complaint.createdAt)}</dd>
+              </div>
+            </dl>
+          </section>
+
+          {resolution && (
+            <section
+              className="complaint-panel"
+              aria-labelledby="complaint-resolution-heading"
+            >
+              <h2
+                id="complaint-resolution-heading"
+                className="complaint-panel-title"
+              >
+                Resolution
+              </h2>
+
+              <p className="complaint-description">
+                {resolution.resolutionDetails}
+              </p>
+
+              <dl className="complaint-dl">
+                <div className="complaint-dl-item">
+                  <dt>Completed</dt>
+                  <dd>{formatDateTime(resolution.completedAt)}</dd>
+                </div>
+                <div className="complaint-dl-item">
+                  <dt>Technician</dt>
+                  <dd>{resolution.technician?.name || "—"}</dd>
+                </div>
+              </dl>
+            </section>
+          )}
+        </div>
 
         <section
           className="complaint-panel"
