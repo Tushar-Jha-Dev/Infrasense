@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
     phone: { type: String, trim: true },
+    avatar: { type: String, default: "", select: false },
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true }

@@ -56,7 +56,21 @@
   background-color: var(--surface-2);
 }
 
-/* Table styles (desktop) */
+.role-badge-primary-admin {
+  color: var(--primary);
+  border-color: var(--primary);
+  background-color: color-mix(in srgb, var(--primary) 12%, var(--surface));
+  font-weight: 600;
+}
+
+.users-role-badges-wrap {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* Table styles (desktop) - standard table cells to avoid row border misalignment */
 .users-table-wrap {
   background-color: var(--surface);
   border: 1px solid var(--border);
@@ -95,6 +109,7 @@
   background-color: var(--surface-2);
 }
 
+/* Inner wrapper for name cell */
 .users-name-cell {
   display: flex;
   align-items: center;
@@ -127,11 +142,18 @@
   white-space: nowrap;
 }
 
+/* Inner wrapper for actions cell */
 .users-actions-cell {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   white-space: nowrap;
+}
+
+.users-restricted-hint {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
 }
 
 .users-deactivate-btn:not(:disabled):hover {
@@ -142,6 +164,19 @@
 .users-activate-btn:not(:disabled):hover {
   color: var(--sev-low);
   border-color: var(--sev-low);
+}
+
+.users-delete-btn {
+  padding: 6px 10px;
+}
+
+.users-primary-only-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: calc(-1 * var(--space-1));
 }
 
 /* Mobile Stacked Cards */
@@ -224,6 +259,7 @@
 .users-card-actions {
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
   gap: var(--space-2);
 }
 

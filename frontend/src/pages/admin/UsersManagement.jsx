@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
-import { Plus, Search, UserCheck, UserX, Pencil, X } from "lucide-react";
-import { createUser, listUsers, updateUser } from "../../api/users.js";
+import { Plus, Search, UserCheck, UserX, Pencil, Trash2, X, ShieldAlert } from "lucide-react";
+import { createUser, deleteUser, listUsers, updateUser } from "../../api/users.js";
 import { useAuth } from "../../context/useAuth.js";
 import { formatDate } from "../../utils/formatDate.js";
 import Alert from "../../components/ui/Alert.jsx";
@@ -45,12 +45,14 @@ function ActiveBadge({ isActive }) {
 
 function UsersManagement() {
   const { user: currentUser } = useAuth();
+  const isViewerPrimary = Boolean(currentUser?.isPrimaryAdmin);
 
   const [roleFilter, setRoleFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [actionError, setActionError] = useState("");
 
   // Add User Modal state
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -78,6 +80,11 @@ function UsersManagement() {
   // Status toggle confirm dialog
   const [statusUser, setStatusUser] = useState(null);
   const [statusLoading, setStatusLoading] = useState(false);
+
+  // Delete confirm dialog
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const addModalTitleId = useId();
@@ -205,6 +212,10 @@ function UsersManagement() {
       errors.role = "Role must be technician or admin";
     }
 
+    if (role === "admin" && !isViewerPrimary) {
+      errors.role = "Only the primary admin can create admins";
+    }
+
     if (Object.keys(errors).length > 0) {
       setAddErrors(errors);
       return;
@@ -285,6 +296,7 @@ function UsersManagement() {
   const handleConfirmStatusToggle = async () => {
     if (!statusUser) return;
     setStatusLoading(true);
+    setActionError("");
     try {
       await updateUser(statusUser._id, {
         isActive: !statusUser.isActive,
@@ -292,10 +304,27 @@ function UsersManagement() {
       setStatusUser(null);
       reloadUsers();
     } catch (err) {
-      alert(err.message || "Failed to update status");
+      setActionError(err.message || "Failed to update status");
       setStatusUser(null);
     } finally {
       setStatusLoading(false);
+    }
+  };
+
+  // Confirm Delete
+  const handleConfirmDelete = async () => {
+    if (!deleteTarget) return;
+    setDeleteLoading(true);
+    setActionError("");
+    try {
+      await deleteUser(deleteTarget._id);
+      setDeleteTarget(null);
+      reloadUsers();
+    } catch (err) {
+      setActionError(err.message || "Failed to delete user");
+      setDeleteTarget(null);
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -315,6 +344,23 @@ function UsersManagement() {
           </button>
         }
       />
+
+      {actionError && (
+        <div className="users-alert-wrap">
+          <Alert variant="danger">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+              <span>{actionError}</span>
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                onClick={() => setActionError("")}
+              >
+                Dismiss
+              </button>
+            </div>
+          </Alert>
+        </div>
+      )}
 
       <section className="users-filters-bar" aria-label="Filters">
         <div className="users-search-box">
@@ -427,17 +473,30 @@ function UsersManagement() {
               <tbody>
                 {filteredUsers.map((item) => {
                   const isSelf = currentUser?._id === item._id;
+                  const isTargetPrimary = Boolean(item.isPrimaryAdmin);
+                  const isTargetAdmin = item.role === "admin";
+                  const canManageThisAdmin = isViewerPrimary || !isTargetAdmin;
+
                   return (
                     <tr key={item._id}>
-                      <td className="users-name-cell">
-                        <span className="users-user-name">{item.name}</span>
-                        {isSelf && (
-                          <span className="users-self-badge">(You)</span>
-                        )}
+                      <td>
+                        <div className="users-name-cell">
+                          <span className="users-user-name">{item.name}</span>
+                          {isSelf && (
+                            <span className="users-self-badge">(You)</span>
+                          )}
+                        </div>
                       </td>
                       <td className="users-email-cell">{item.email}</td>
                       <td>
-                        <RoleBadge role={item.role} />
+                        <div className="users-role-badges-wrap">
+                          <RoleBadge role={item.role} />
+                          {isTargetPrimary && (
+                            <span className="ui-badge role-badge-primary-admin">
+                              Primary admin
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="users-phone-cell">
                         {item.phone || "—"}
@@ -450,41 +509,71 @@ function UsersManagement() {
                       </td>
                       <td>
                         <div className="users-actions-cell">
-                          <button
-                            type="button"
-                            className="btn btn-secondary btn-sm"
-                            onClick={() => handleOpenEdit(item)}
-                            title="Edit user details"
-                          >
-                            <Pencil size={14} aria-hidden="true" />
-                            <span>Edit</span>
-                          </button>
-
-                          {item.isActive ? (
-                            <button
-                              type="button"
-                              className="btn btn-secondary btn-sm users-deactivate-btn"
-                              disabled={isSelf}
-                              title={
-                                isSelf
-                                  ? "You cannot deactivate your own account"
-                                  : "Deactivate user"
-                              }
-                              onClick={() => setStatusUser(item)}
+                          {isTargetAdmin && !canManageThisAdmin ? (
+                            <span
+                              className="users-restricted-hint"
+                              title="Only the primary admin can manage other admins"
                             >
-                              <UserX size={14} aria-hidden="true" />
-                              <span>Deactivate</span>
-                            </button>
+                              Managed by primary admin
+                            </span>
                           ) : (
-                            <button
-                              type="button"
-                              className="btn btn-secondary btn-sm users-activate-btn"
-                              title="Activate user"
-                              onClick={() => setStatusUser(item)}
-                            >
-                              <UserCheck size={14} aria-hidden="true" />
-                              <span>Activate</span>
-                            </button>
+                            <>
+                              <button
+                                type="button"
+                                className="btn btn-secondary btn-sm"
+                                onClick={() => handleOpenEdit(item)}
+                                title="Edit user details"
+                              >
+                                <Pencil size={14} aria-hidden="true" />
+                                <span>Edit</span>
+                              </button>
+
+                              {!isTargetPrimary && (
+                                <>
+                                  {item.isActive ? (
+                                    <button
+                                      type="button"
+                                      className="btn btn-secondary btn-sm users-deactivate-btn"
+                                      disabled={isSelf}
+                                      title={
+                                        isSelf
+                                          ? "You cannot deactivate your own account"
+                                          : "Deactivate user"
+                                      }
+                                      onClick={() => setStatusUser(item)}
+                                    >
+                                      <UserX size={14} aria-hidden="true" />
+                                      <span>Deactivate</span>
+                                    </button>
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      className="btn btn-secondary btn-sm users-activate-btn"
+                                      title="Activate user"
+                                      onClick={() => setStatusUser(item)}
+                                    >
+                                      <UserCheck size={14} aria-hidden="true" />
+                                      <span>Activate</span>
+                                    </button>
+                                  )}
+
+                                  <button
+                                    type="button"
+                                    className="btn btn-danger btn-sm users-delete-btn"
+                                    disabled={isSelf}
+                                    title={
+                                      isSelf
+                                        ? "You cannot delete your own account"
+                                        : "Delete user permanently"
+                                    }
+                                    onClick={() => setDeleteTarget(item)}
+                                  >
+                                    <Trash2 size={14} aria-hidden="true" />
+                                    <span>Delete</span>
+                                  </button>
+                                </>
+                              )}
+                            </>
                           )}
                         </div>
                       </td>
@@ -499,6 +588,10 @@ function UsersManagement() {
           <div className="users-cards-list">
             {filteredUsers.map((item) => {
               const isSelf = currentUser?._id === item._id;
+              const isTargetPrimary = Boolean(item.isPrimaryAdmin);
+              const isTargetAdmin = item.role === "admin";
+              const canManageThisAdmin = isViewerPrimary || !isTargetAdmin;
+
               return (
                 <div key={item._id} className="users-card">
                   <div className="users-card-header">
@@ -513,6 +606,11 @@ function UsersManagement() {
                     </div>
                     <div className="users-card-badges">
                       <RoleBadge role={item.role} />
+                      {isTargetPrimary && (
+                        <span className="ui-badge role-badge-primary-admin">
+                          Primary admin
+                        </span>
+                      )}
                       <ActiveBadge isActive={item.isActive} />
                     </div>
                   </div>
@@ -531,39 +629,69 @@ function UsersManagement() {
                   </div>
 
                   <div className="users-card-actions">
-                    <button
-                      type="button"
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => handleOpenEdit(item)}
-                    >
-                      <Pencil size={14} aria-hidden="true" />
-                      <span>Edit</span>
-                    </button>
-
-                    {item.isActive ? (
-                      <button
-                        type="button"
-                        className="btn btn-secondary btn-sm users-deactivate-btn"
-                        disabled={isSelf}
-                        title={
-                          isSelf
-                            ? "You cannot deactivate your own account"
-                            : "Deactivate user"
-                        }
-                        onClick={() => setStatusUser(item)}
+                    {isTargetAdmin && !canManageThisAdmin ? (
+                      <span
+                        className="users-restricted-hint"
+                        title="Only the primary admin can manage other admins"
                       >
-                        <UserX size={14} aria-hidden="true" />
-                        <span>Deactivate</span>
-                      </button>
+                        Managed by primary admin
+                      </span>
                     ) : (
-                      <button
-                        type="button"
-                        className="btn btn-secondary btn-sm users-activate-btn"
-                        onClick={() => setStatusUser(item)}
-                      >
-                        <UserCheck size={14} aria-hidden="true" />
-                        <span>Activate</span>
-                      </button>
+                      <>
+                        <button
+                          type="button"
+                          className="btn btn-secondary btn-sm"
+                          onClick={() => handleOpenEdit(item)}
+                        >
+                          <Pencil size={14} aria-hidden="true" />
+                          <span>Edit</span>
+                        </button>
+
+                        {!isTargetPrimary && (
+                          <>
+                            {item.isActive ? (
+                              <button
+                                type="button"
+                                className="btn btn-secondary btn-sm users-deactivate-btn"
+                                disabled={isSelf}
+                                title={
+                                  isSelf
+                                    ? "You cannot deactivate your own account"
+                                    : "Deactivate user"
+                                }
+                                onClick={() => setStatusUser(item)}
+                              >
+                                <UserX size={14} aria-hidden="true" />
+                                <span>Deactivate</span>
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                className="btn btn-secondary btn-sm users-activate-btn"
+                                onClick={() => setStatusUser(item)}
+                              >
+                                <UserCheck size={14} aria-hidden="true" />
+                                <span>Activate</span>
+                              </button>
+                            )}
+
+                            <button
+                              type="button"
+                              className="btn btn-danger btn-sm users-delete-btn"
+                              disabled={isSelf}
+                              title={
+                                isSelf
+                                  ? "You cannot delete your own account"
+                                  : "Delete user permanently"
+                              }
+                              onClick={() => setDeleteTarget(item)}
+                            >
+                              <Trash2 size={14} aria-hidden="true" />
+                              <span>Delete</span>
+                            </button>
+                          </>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
@@ -666,8 +794,15 @@ function UsersManagement() {
                 }
               >
                 <option value="technician">Technician</option>
-                <option value="admin">Admin</option>
+                {isViewerPrimary && <option value="admin">Admin</option>}
               </Select>
+
+              {!isViewerPrimary && (
+                <p className="users-primary-only-note">
+                  <ShieldAlert size={14} aria-hidden="true" />
+                  <span>Only the primary admin can create other admin accounts.</span>
+                </p>
+              )}
 
               <div className="users-modal-actions">
                 <button
@@ -797,6 +932,18 @@ function UsersManagement() {
         loading={statusLoading}
         onConfirm={handleConfirmStatusToggle}
         onCancel={() => !statusLoading && setStatusUser(null)}
+      />
+
+      {/* Delete User Confirmation Dialog */}
+      <ConfirmDialog
+        open={Boolean(deleteTarget)}
+        title={`Delete ${deleteTarget?.name}?`}
+        message={`Are you sure you want to permanently delete ${deleteTarget?.name} (${deleteTarget?.email})? This cannot be undone.`}
+        confirmLabel="Delete"
+        confirmVariant="danger"
+        loading={deleteLoading}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => !deleteLoading && setDeleteTarget(null)}
       />
     </div>
   );

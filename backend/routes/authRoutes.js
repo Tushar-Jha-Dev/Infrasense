@@ -4,6 +4,7 @@ import {
   registerUser,
   loginUser,
   getMe,
+  updateMe,
 } from "../controllers/authController.js";
 import { protect } from "../middleware/auth.js";
 
@@ -34,5 +35,6 @@ const registerLimiter = rateLimit({
 router.post("/register", registerLimiter, registerUser);
 router.post("/login", loginLimiter, loginUser);
 router.get("/me", protect, getMe);
+router.patch("/me", protect, updateMe);
 
 export default router;

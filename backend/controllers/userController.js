@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import User from "../models/User.js";
+import Complaint from "../models/Complaint.js";
+import MaintenanceRecord from "../models/MaintenanceRecord.js";
+import { getPrimaryAdminId } from "../utils/primaryAdmin.js";
 
 const ALLOWED_ROLES = ["user", "admin", "technician"];
 const CREATABLE_ROLES = ["technician", "admin"];
@@ -42,7 +45,20 @@ export const listUsers = async (req, res) => {
       .select("_id name email role phone isActive createdAt")
       .sort({ createdAt: -1 });
 
-    res.json(users);
+    const primaryId = await getPrimaryAdminId();
+
+    const result = users.map((u) => ({
+      _id: u._id,
+      name: u.name,
+      email: u.email,
+      role: u.role,
+      phone: u.phone,
+      isActive: u.isActive,
+      createdAt: u.createdAt,
+      isPrimaryAdmin: u.role === "admin" && primaryId === u._id.toString(),
+    }));
+
+    res.json(result);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -87,6 +103,17 @@ export const createUser = async (req, res) => {
       });
     }
 
+    const primaryId = await getPrimaryAdminId();
+    const callerIsPrimary =
+      req.user?.role === "admin" && primaryId === req.user._id.toString();
+
+    // Rule: only the primary admin may create admins
+    if (role === "admin" && !callerIsPrimary) {
+      return res.status(403).json({
+        message: "Only the primary admin can create admins",
+      });
+    }
+
     const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
       return res.status(409).json({ message: "Email already exists" });
@@ -100,7 +127,13 @@ export const createUser = async (req, res) => {
     };
 
     if (phone !== undefined) {
-      userData.phone = phone.trim();
+      const trimmedPhone = phone.trim();
+      if (trimmedPhone.length > 30) {
+        return res
+          .status(400)
+          .json({ message: "Phone number cannot exceed 30 characters" });
+      }
+      userData.phone = trimmedPhone;
     }
 
     const user = await User.create(userData);
@@ -112,6 +145,8 @@ export const createUser = async (req, res) => {
       role: user.role,
       phone: user.phone,
       isActive: user.isActive,
+      createdAt: user.createdAt,
+      isPrimaryAdmin: user.role === "admin" && primaryId === user._id.toString(),
     });
   } catch (error) {
     if (error?.code === 11000) {
@@ -133,6 +168,27 @@ export const updateUser = async (req, res) => {
       return res.status(400).json({ message: "Request body must be a JSON object" });
     }
 
+    const targetUser = await User.findById(req.params.id);
+    if (!targetUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const primaryId = await getPrimaryAdminId();
+    const isTargetPrimary =
+      targetUser.role === "admin" && primaryId === targetUser._id.toString();
+    const callerIsPrimary =
+      req.user?.role === "admin" && primaryId === req.user._id.toString();
+
+    // If target is an admin
+    if (targetUser.role === "admin") {
+      // Only the primary admin may act on admins, and only on other admins
+      if (!callerIsPrimary) {
+        return res.status(403).json({
+          message: "Only the primary admin can manage other admins",
+        });
+      }
+    }
+
     const updates = {};
 
     if (body.name !== undefined) {
@@ -148,7 +204,13 @@ export const updateUser = async (req, res) => {
       if (typeof body.phone !== "string") {
         return res.status(400).json({ message: "Phone must be a string" });
       }
-      updates.phone = body.phone.trim();
+      const trimmedPhone = body.phone.trim();
+      if (trimmedPhone.length > 30) {
+        return res
+          .status(400)
+          .json({ message: "Phone number cannot exceed 30 characters" });
+      }
+      updates.phone = trimmedPhone;
     }
 
     if (body.isActive !== undefined) {
@@ -158,12 +220,42 @@ export const updateUser = async (req, res) => {
       updates.isActive = body.isActive;
     }
 
+    if (body.role !== undefined) {
+      if (typeof body.role !== "string" || !ALLOWED_ROLES.includes(body.role)) {
+        return res.status(400).json({
+          message: `Invalid role. Allowed: ${ALLOWED_ROLES.join(", ")}`,
+        });
+      }
+      if (body.role !== targetUser.role) {
+        // Changing to or from "admin" requires primary admin
+        if (targetUser.role === "admin" || body.role === "admin") {
+          if (!callerIsPrimary) {
+            return res.status(403).json({
+              message: "Only the primary admin can manage other admins",
+            });
+          }
+        }
+        updates.role = body.role;
+      }
+    }
+
     if (Object.keys(updates).length === 0) {
       return res.status(400).json({
-        message: "Provide at least one valid field to update: name, phone, isActive",
+        message: "Provide at least one valid field to update: name, phone, isActive, role",
       });
     }
 
+    // Protection rule for primary admin:
+    // Nobody (including primary admin) may deactivate, demote or delete the primary admin
+    if (isTargetPrimary) {
+      if (updates.isActive === false || (updates.role && updates.role !== "admin")) {
+        return res.status(403).json({
+          message: "The primary admin cannot be removed",
+        });
+      }
+    }
+
+    // A user cannot deactivate their own account
     if (
       updates.isActive === false &&
       req.user?._id?.toString() === req.params.id
@@ -173,16 +265,91 @@ export const updateUser = async (req, res) => {
         .json({ message: "You cannot deactivate your own account" });
     }
 
-    const user = await User.findByIdAndUpdate(req.params.id, updates, {
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, updates, {
       new: true,
       runValidators: true,
     }).select("_id name email role phone isActive createdAt");
 
-    if (!user) {
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      role: updatedUser.role,
+      phone: updatedUser.phone,
+      isActive: updatedUser.isActive,
+      createdAt: updatedUser.createdAt,
+      isPrimaryAdmin:
+        updatedUser.role === "admin" && primaryId === updatedUser._id.toString(),
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid user id" });
+    }
+
+    // Cannot delete yourself
+    if (req.user?._id?.toString() === req.params.id) {
+      return res
+        .status(403)
+        .json({ message: "You cannot delete your own account" });
+    }
+
+    const targetUser = await User.findById(req.params.id);
+    if (!targetUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.json(user);
+    const primaryId = await getPrimaryAdminId();
+    const isTargetPrimary =
+      targetUser.role === "admin" && primaryId === targetUser._id.toString();
+    const callerIsPrimary =
+      req.user?.role === "admin" && primaryId === req.user._id.toString();
+
+    // The primary admin cannot be deleted
+    if (isTargetPrimary) {
+      return res.status(403).json({
+        message: "The primary admin cannot be removed",
+      });
+    }
+
+    // If target is an admin, only primary admin can delete them
+    if (targetUser.role === "admin" && !callerIsPrimary) {
+      return res.status(403).json({
+        message: "Only the primary admin can manage other admins",
+      });
+    }
+
+    // Check linked complaints or maintenance records
+    const hasComplaint = await Complaint.exists({
+      $or: [
+        { submittedBy: req.params.id },
+        { assignedTo: req.params.id },
+        { assignedBy: req.params.id },
+        { reviewedBy: req.params.id },
+        { "statusHistory.changedBy": req.params.id },
+      ],
+    });
+
+    const hasRecord = await MaintenanceRecord.exists({
+      technician: req.params.id,
+    });
+
+    if (hasComplaint || hasRecord) {
+      return res.status(409).json({
+        message:
+          "This account has linked complaints or records and cannot be deleted. Deactivate it instead.",
+      });
+    }
+
+    await User.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({ message: "User deleted" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

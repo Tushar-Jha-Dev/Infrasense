@@ -1,9 +1,12 @@
 import User from "../models/User.js";
 import generateToken from "../utils/generateToken.js";
+import { getPrimaryAdminId } from "../utils/primaryAdmin.js";
+
+const AVATAR_REGEX = /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/;
 
 export const registerUser = async (req, res) => {
   try {
-        const { name, email, password, phone } = req.body;
+    const { name, email, password, phone } = req.body;
 
     if (
       typeof name !== "string" ||
@@ -62,7 +65,7 @@ export const loginUser = async (req, res) => {
     // password is hidden by default, so we ask for it explicitly here
     const user = await User.findOne({
       email: email.toLowerCase().trim(),
-    }).select("+password");
+    }).select("+password +avatar");
 
     if (!user || !(await user.matchPassword(password))) {
       return res.status(401).json({ message: "Invalid email or password" });
@@ -72,6 +75,8 @@ export const loginUser = async (req, res) => {
       return res.status(403).json({ message: "Account is deactivated" });
     }
 
+    const primaryId = await getPrimaryAdminId();
+
     res.json({
       token: generateToken(user),
       user: {
@@ -79,6 +84,10 @@ export const loginUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        phone: user.phone || "",
+        createdAt: user.createdAt,
+        avatar: user.avatar || "",
+        isPrimaryAdmin: user.role === "admin" && primaryId === user._id.toString(),
       },
     });
   } catch (error) {
@@ -87,11 +96,106 @@ export const loginUser = async (req, res) => {
   }
 };
 
-
 export const getMe = async (req, res) => {
   try {
-    const { _id, name, email, role, phone } = req.user;
-    res.json({ _id, name, email, role, phone });
+    const user = await User.findById(req.user._id).select("+avatar");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const primaryId = await getPrimaryAdminId();
+
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      phone: user.phone || "",
+      createdAt: user.createdAt,
+      avatar: user.avatar || "",
+      isPrimaryAdmin: user.role === "admin" && primaryId === user._id.toString(),
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const updateMe = async (req, res) => {
+  try {
+    const body = req.body;
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return res.status(400).json({ message: "Request body must be a JSON object" });
+    }
+
+    const updates = {};
+
+    if (body.name !== undefined) {
+      if (typeof body.name !== "string" || !body.name.trim()) {
+        return res.status(400).json({ message: "Name is required" });
+      }
+      updates.name = body.name.trim();
+    }
+
+    if (body.phone !== undefined) {
+      if (typeof body.phone !== "string") {
+        return res.status(400).json({ message: "Phone must be a string" });
+      }
+      const trimmedPhone = body.phone.trim();
+      if (trimmedPhone.length > 30) {
+        return res.status(400).json({ message: "Phone number cannot exceed 30 characters" });
+      }
+      updates.phone = trimmedPhone;
+    }
+
+    if (body.avatar !== undefined) {
+      if (typeof body.avatar !== "string") {
+        return res.status(400).json({ message: "Avatar must be a string" });
+      }
+      const trimmedAvatar = body.avatar.trim();
+      if (trimmedAvatar === "") {
+        updates.avatar = "";
+      } else {
+        if (trimmedAvatar.length > 70000) {
+          return res.status(400).json({ message: "Avatar image is too large" });
+        }
+        if (!AVATAR_REGEX.test(trimmedAvatar)) {
+          return res.status(400).json({
+            message: "Avatar must be a valid JPEG, PNG, or WebP base64 data URL",
+          });
+        }
+        updates.avatar = trimmedAvatar;
+      }
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({
+        message: "Provide at least one valid field to update: name, phone, avatar",
+      });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(req.user._id, updates, {
+      new: true,
+      runValidators: true,
+    }).select("+avatar");
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const primaryId = await getPrimaryAdminId();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      role: updatedUser.role,
+      phone: updatedUser.phone || "",
+      createdAt: updatedUser.createdAt,
+      avatar: updatedUser.avatar || "",
+      isPrimaryAdmin:
+        updatedUser.role === "admin" && primaryId === updatedUser._id.toString(),
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

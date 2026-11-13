@@ -13,3 +13,9 @@ export const register = (data) =>
   });
 
 export const getMe = () => apiRequest("/auth/me");
+
+export const updateMe = (data) =>
+  apiRequest("/auth/me", {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });

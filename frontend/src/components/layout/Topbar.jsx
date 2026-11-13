@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { LogOut, Menu } from "lucide-react";
 import { useAuth } from "../../context/useAuth.js";
+import { getInitials, getAvatarColor } from "../../utils/imageCrop.js";
 import "./Topbar.css";
 
 function Topbar({ isSidebarOpen, onOpenSidebar, menuButtonRef }) {
@@ -30,6 +31,21 @@ function Topbar({ isSidebarOpen, onOpenSidebar, menuButtonRef }) {
 
       <div className="topbar-right">
         <div className="topbar-user">
+          {user?.avatar ? (
+            <img
+              src={user.avatar}
+              alt={`Profile photo of ${user?.name || "user"}`}
+              className="topbar-avatar"
+            />
+          ) : (
+            <span
+              className="topbar-avatar-initials"
+              style={{ backgroundColor: getAvatarColor(user?.name) }}
+              aria-hidden="true"
+            >
+              {getInitials(user?.name)}
+            </span>
+          )}
           <span className="topbar-user-name">{user?.name}</span>
           <span className="topbar-role-badge">{user?.role}</span>
         </div>

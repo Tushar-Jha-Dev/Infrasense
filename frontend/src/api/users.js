@@ -23,3 +23,7 @@ export const updateUser = (id, data) =>
     body: JSON.stringify(data),
   });
 
+export const deleteUser = (id) =>
+  apiRequest(`/users/${id}`, {
+    method: "DELETE",
+  });

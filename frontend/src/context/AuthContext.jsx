@@ -21,6 +21,16 @@ export function AuthProvider({ children }) {
     setUser(null);
   }, []);
 
+  const refreshUser = useCallback(async () => {
+    try {
+      const me = await getMe();
+      setUser(me);
+      return me;
+    } catch {
+      return null;
+    }
+  }, []);
+
   useEffect(() => {
     setUnauthorizedHandler(() => {
       clearToken();
@@ -79,7 +89,9 @@ export function AuthProvider({ children }) {
   );
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ user, setUser, refreshUser, loading, login, register, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
