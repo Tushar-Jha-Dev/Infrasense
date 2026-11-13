@@ -5,6 +5,7 @@ import {
   assignComplaint,
   closeComplaint,
   getComplaint,
+  getComplaintMaintenance,
   reviewComplaint,
 } from "../../api/complaints.js";
 import { listUsers } from "../../api/users.js";
@@ -18,6 +19,7 @@ import Badge, {
 } from "../../components/ui/Badge.jsx";
 import ConfirmDialog from "../../components/ui/ConfirmDialog.jsx";
 import EmptyState from "../../components/ui/EmptyState.jsx";
+import MaintenanceRecordView from "../../components/ui/MaintenanceRecordView.jsx";
 import PageHeader from "../../components/ui/PageHeader.jsx";
 import Select from "../../components/ui/Select.jsx";
 import Spinner from "../../components/ui/Spinner.jsx";
@@ -29,6 +31,9 @@ function AdminComplaintReview() {
   const { id } = useParams();
 
   const [complaint, setComplaint] = useState(null);
+  const [maintenance, setMaintenance] = useState(null);
+  const [maintenanceLoading, setMaintenanceLoading] = useState(false);
+  const [maintenanceError, setMaintenanceError] = useState("");
   const [technicians, setTechnicians] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -64,6 +69,25 @@ function AdminComplaintReview() {
     setNotFound(false);
     setError("");
     syncFormState(data);
+
+    if (data.status === "Resolved" || data.status === "Closed") {
+      setMaintenanceLoading(true);
+      try {
+        const maint = await getComplaintMaintenance(id);
+        setMaintenance(maint);
+        setMaintenanceError("");
+      } catch (maintErr) {
+        setMaintenanceError(
+          maintErr.message || "Failed to load maintenance record"
+        );
+      } finally {
+        setMaintenanceLoading(false);
+      }
+    } else {
+      setMaintenance(null);
+      setMaintenanceError("");
+    }
+
     return data;
   }, [id, syncFormState]);
 
@@ -81,6 +105,35 @@ function AdminComplaintReview() {
         setError("");
         syncFormState(complaintData);
         setTechnicians(Array.isArray(techData) ? techData : []);
+
+        if (
+          complaintData.status === "Resolved" ||
+          complaintData.status === "Closed"
+        ) {
+          setMaintenanceLoading(true);
+          getComplaintMaintenance(id)
+            .then((maint) => {
+              if (active) {
+                setMaintenance(maint);
+                setMaintenanceError("");
+              }
+            })
+            .catch((maintErr) => {
+              if (active) {
+                setMaintenanceError(
+                  maintErr.message || "Failed to load maintenance record"
+                );
+              }
+            })
+            .finally(() => {
+              if (active) {
+                setMaintenanceLoading(false);
+              }
+            });
+        } else {
+          setMaintenance(null);
+          setMaintenanceError("");
+        }
       })
       .catch((err) => {
         if (!active) return;
@@ -461,9 +514,21 @@ function AdminComplaintReview() {
 
         <section className="admin-review-card">
           <h2 className="admin-review-card-title">Maintenance record</h2>
-          <p className="admin-review-muted">
-            Appears here once a technician resolves the complaint.
-          </p>
+          {maintenanceLoading ? (
+            <div className="admin-review-loading-record">
+              <Spinner label="Loading maintenance record..." />
+            </div>
+          ) : maintenanceError ? (
+            <Alert variant="error">{maintenanceError}</Alert>
+          ) : (complaint.status === "Resolved" ||
+              complaint.status === "Closed") &&
+            maintenance ? (
+            <MaintenanceRecordView record={maintenance} />
+          ) : (
+            <p className="admin-review-muted">
+              Appears here once a technician resolves the complaint.
+            </p>
+          )}
         </section>
       </div>
 

@@ -16,6 +16,7 @@ import Badge, {
 import ConfirmDialog from "../../components/ui/ConfirmDialog.jsx";
 import EmptyState from "../../components/ui/EmptyState.jsx";
 import Input from "../../components/ui/Input.jsx";
+import MaintenanceRecordView from "../../components/ui/MaintenanceRecordView.jsx";
 import PageHeader from "../../components/ui/PageHeader.jsx";
 import Spinner from "../../components/ui/Spinner.jsx";
 import Textarea from "../../components/ui/Textarea.jsx";
@@ -556,49 +557,7 @@ function TaskDetails() {
             <section className="task-details-card">
               <h2 className="task-card-title">Maintenance record</h2>
               {maintenance ? (
-                <dl className="task-maintenance-dl">
-                  <div>
-                    <dt>Resolved on</dt>
-                    <dd>{formatDateTime(maintenance.completedAt)}</dd>
-                  </div>
-                  <div>
-                    <dt>Technician</dt>
-                    <dd>{maintenance.technician?.name || "—"}</dd>
-                  </div>
-                  <div>
-                    <dt>Diagnosis</dt>
-                    <dd className="task-text-block">{maintenance.diagnosis}</dd>
-                  </div>
-                  <div>
-                    <dt>Action taken</dt>
-                    <dd className="task-text-block">
-                      {maintenance.actionTaken}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Resolution details</dt>
-                    <dd className="task-text-block">
-                      {maintenance.resolutionDetails}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Parts used</dt>
-                    <dd>{maintenance.partsUsed || "None"}</dd>
-                  </div>
-                  <div>
-                    <dt>Cost</dt>
-                    <dd className="task-cost-mono">
-                      {maintenance.cost !== undefined &&
-                      maintenance.cost !== null
-                        ? `₹${maintenance.cost}`
-                        : "—"}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Notes</dt>
-                    <dd>{maintenance.notes || "None"}</dd>
-                  </div>
-                </dl>
+                <MaintenanceRecordView record={maintenance} />
               ) : (
                 <p className="task-muted">
                   Maintenance record is not yet available.

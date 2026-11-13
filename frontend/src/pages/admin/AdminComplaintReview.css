@@ -144,6 +144,12 @@
   margin-top: var(--space-1);
 }
 
+.admin-review-loading-record {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-4) 0;
+}
+
 .admin-review-muted {
   margin: 0;
   color: var(--text-muted);
