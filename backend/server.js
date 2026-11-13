@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes.js";
 import assetRoutes from "./routes/assetRoutes.js";
 import complaintRoutes from "./routes/complaintRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import analyticsRoutes from "./routes/analyticsRoutes.js";
 import { notFoundHandler, errorHandler } from "./middleware/errorHandler.js";
 
 dotenv.config();
@@ -39,6 +40,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/assets", assetRoutes);
 app.use("/api/complaints", complaintRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "InfraSense backend is running" });

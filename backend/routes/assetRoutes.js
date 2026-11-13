@@ -2,6 +2,7 @@ import express from "express";
 import {
   listAssets,
   getAsset,
+  getAssetHistory,
   createAsset,
   updateAsset,
   updateAssetStatus,
@@ -11,6 +12,7 @@ import { protect, authorize } from "../middleware/auth.js";
 const router = express.Router();
 
 router.get("/", protect, listAssets);
+router.get("/:id/history", protect, authorize("admin"), getAssetHistory);
 router.get("/:id", protect, getAsset);
 router.post("/", protect, authorize("admin"), createAsset);
 router.put("/:id", protect, authorize("admin"), updateAsset);

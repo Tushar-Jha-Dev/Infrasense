@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import Asset, { ASSET_CONDITIONS, ASSET_STATUSES } from "../models/Asset.js";
+import MaintenanceRecord from "../models/MaintenanceRecord.js";
+import Complaint from "../models/Complaint.js";
+import User from "../models/User.js";
 import { CATEGORIES } from "../constants/categories.js";
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -278,3 +281,50 @@ export const updateAssetStatus = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getAssetHistory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid asset ID" });
+    }
+
+    const asset = await Asset.findById(id);
+    if (!asset) {
+      return res.status(404).json({ message: "Asset not found" });
+    }
+
+    const records = await MaintenanceRecord.find({ asset: asset._id })
+      .sort({ completedAt: -1 })
+      .populate("technician", "name")
+      .populate("complaint", "complaintId title");
+
+    const rawCost = records.reduce(
+      (sum, record) => sum + (Number(record.cost) || 0),
+      0
+    );
+    const totalCost = Math.round((rawCost + Number.EPSILON) * 100) / 100;
+
+    res.json({
+      asset: {
+        _id: asset._id,
+        assetId: asset.assetId,
+        name: asset.name,
+        category: asset.category,
+        building: asset.building,
+        location: asset.location,
+        condition: asset.condition,
+        status: asset.status,
+      },
+      summary: {
+        recordCount: records.length,
+        totalCost,
+      },
+      records,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
