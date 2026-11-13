@@ -5,6 +5,7 @@ import {
   loginUser,
   getMe,
   updateMe,
+  changePassword,
 } from "../controllers/authController.js";
 import { protect } from "../middleware/auth.js";
 
@@ -32,9 +33,21 @@ const registerLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+// Rate limiter for password change: max 10 failed attempts per 15 min per IP.
+const passwordLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  skipSuccessfulRequests: true,
+  statusCode: 429,
+  message: { message: "Too many attempts. Please try again later." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 router.post("/register", registerLimiter, registerUser);
 router.post("/login", loginLimiter, loginUser);
 router.get("/me", protect, getMe);
 router.patch("/me", protect, updateMe);
+router.patch("/password", passwordLimiter, protect, changePassword);
 
 export default router;

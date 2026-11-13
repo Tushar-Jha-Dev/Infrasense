@@ -14,6 +14,7 @@ import {
   X,
   Upload,
   Trash2,
+  KeyRound,
 } from "lucide-react";
 import { updateMe } from "../../api/auth.js";
 import { getMyComplaints, getAssignedComplaints } from "../../api/complaints.js";
@@ -355,6 +356,13 @@ function Profile() {
             <Camera size={15} aria-hidden="true" />
             <span>Change photo</span>
           </button>
+          <Link
+            to="/change-password"
+            className="btn btn-secondary btn-sm"
+          >
+            <KeyRound size={15} aria-hidden="true" />
+            <span>Change password</span>
+          </Link>
         </div>
       </section>
 

@@ -31,6 +31,40 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  // Set / remove body class for hiding sidebar links when mustChangePassword is true
+  useEffect(() => {
+    if (user?.mustChangePassword) {
+      document.body.classList.add("must-change-password");
+    } else {
+      document.body.classList.remove("must-change-password");
+    }
+    return () => {
+      document.body.classList.remove("must-change-password");
+    };
+  }, [user?.mustChangePassword]);
+
+  // Handle 403 PASSWORD_CHANGE_REQUIRED from API requests without logging out
+  useEffect(() => {
+    const handleRejection = (event) => {
+      const err = event.reason;
+      if (
+        err?.status === 403 &&
+        (err?.message === "You must change your temporary password first" ||
+          err?.code === "PASSWORD_CHANGE_REQUIRED")
+      ) {
+        setUser((prev) => (prev ? { ...prev, mustChangePassword: true } : prev));
+        if (window.location.pathname !== "/change-password") {
+          window.location.href = "/change-password";
+        }
+      }
+    };
+
+    window.addEventListener("unhandledrejection", handleRejection);
+    return () => {
+      window.removeEventListener("unhandledrejection", handleRejection);
+    };
+  }, []);
+
   useEffect(() => {
     setUnauthorizedHandler(() => {
       clearToken();

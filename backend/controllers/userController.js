@@ -42,7 +42,7 @@ export const listUsers = async (req, res) => {
     }
 
     const users = await User.find(filter)
-      .select("_id name email role phone isActive createdAt")
+      .select("_id name email role phone isActive mustChangePassword createdAt")
       .sort({ createdAt: -1 });
 
     const primaryId = await getPrimaryAdminId();
@@ -54,6 +54,7 @@ export const listUsers = async (req, res) => {
       role: u.role,
       phone: u.phone,
       isActive: u.isActive,
+      mustChangePassword: Boolean(u.mustChangePassword),
       createdAt: u.createdAt,
       isPrimaryAdmin: u.role === "admin" && primaryId === u._id.toString(),
     }));
@@ -124,6 +125,7 @@ export const createUser = async (req, res) => {
       email: normalizedEmail,
       password,
       role,
+      mustChangePassword: true, // Accounts created through POST /users are created with mustChangePassword true
     };
 
     if (phone !== undefined) {
@@ -145,6 +147,7 @@ export const createUser = async (req, res) => {
       role: user.role,
       phone: user.phone,
       isActive: user.isActive,
+      mustChangePassword: user.mustChangePassword,
       createdAt: user.createdAt,
       isPrimaryAdmin: user.role === "admin" && primaryId === user._id.toString(),
     });
@@ -220,22 +223,44 @@ export const updateUser = async (req, res) => {
       updates.isActive = body.isActive;
     }
 
+    // Role change handling: exactly two whitelisted changes
+    // 1. "admin" on an active target whose current role is "user" (promotion)
+    // 2. "user" on a target whose current role is "admin" (demotion)
+    // Both are primary-admin only.
     if (body.role !== undefined) {
       if (typeof body.role !== "string" || !ALLOWED_ROLES.includes(body.role)) {
         return res.status(400).json({
-          message: `Invalid role. Allowed: ${ALLOWED_ROLES.join(", ")}`,
+          message: "Role change not allowed",
         });
       }
+
       if (body.role !== targetUser.role) {
-        // Changing to or from "admin" requires primary admin
-        if (targetUser.role === "admin" || body.role === "admin") {
-          if (!callerIsPrimary) {
-            return res.status(403).json({
-              message: "Only the primary admin can manage other admins",
+        if (!callerIsPrimary) {
+          return res.status(403).json({
+            message: "Only the primary admin can manage other admins",
+          });
+        }
+
+        if (isTargetPrimary) {
+          return res.status(403).json({
+            message: "The primary admin cannot be removed",
+          });
+        }
+
+        if (targetUser.role === "user" && body.role === "admin") {
+          if (!targetUser.isActive) {
+            return res.status(400).json({
+              message: "Only an active normal user account can be promoted to admin",
             });
           }
+          updates.role = "admin";
+        } else if (targetUser.role === "admin" && body.role === "user") {
+          updates.role = "user";
+        } else {
+          return res.status(400).json({
+            message: "Role change not allowed",
+          });
         }
-        updates.role = body.role;
       }
     }
 
@@ -268,7 +293,7 @@ export const updateUser = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(req.params.id, updates, {
       new: true,
       runValidators: true,
-    }).select("_id name email role phone isActive createdAt");
+    }).select("_id name email role phone isActive mustChangePassword createdAt");
 
     res.json({
       _id: updatedUser._id,
@@ -277,6 +302,7 @@ export const updateUser = async (req, res) => {
       role: updatedUser.role,
       phone: updatedUser.phone,
       isActive: updatedUser.isActive,
+      mustChangePassword: Boolean(updatedUser.mustChangePassword),
       createdAt: updatedUser.createdAt,
       isPrimaryAdmin:
         updatedUser.role === "admin" && primaryId === updatedUser._id.toString(),

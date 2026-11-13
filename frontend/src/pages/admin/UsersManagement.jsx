@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
-import { Plus, Search, UserCheck, UserX, Pencil, Trash2, X, ShieldAlert } from "lucide-react";
+import { Plus, Search, UserCheck, UserX, UserMinus, Pencil, Trash2, X, ShieldAlert } from "lucide-react";
 import { createUser, deleteUser, listUsers, updateUser } from "../../api/users.js";
 import { useAuth } from "../../context/useAuth.js";
 import { formatDate } from "../../utils/formatDate.js";
@@ -84,6 +84,14 @@ function UsersManagement() {
   // Delete confirm dialog
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
+
+  // Promote confirm dialog
+  const [promoteTarget, setPromoteTarget] = useState(null);
+  const [promoteLoading, setPromoteLoading] = useState(false);
+
+  // Demote confirm dialog
+  const [demoteTarget, setDemoteTarget] = useState(null);
+  const [demoteLoading, setDemoteLoading] = useState(false);
 
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
@@ -238,7 +246,17 @@ function UsersManagement() {
       setIsAddOpen(false);
       reloadUsers();
     } catch (err) {
-      setAddApiError(err.message || "Failed to create user");
+      if (
+        err.status === 409 ||
+        err.message?.toLowerCase().includes("email already exists") ||
+        err.message?.toLowerCase().includes("already registered")
+      ) {
+        setAddApiError(
+          "Email already exists. To make an existing user an admin, use Promote on their row."
+        );
+      } else {
+        setAddApiError(err.message || "Failed to create user");
+      }
     } finally {
       setAddLoading(false);
     }
@@ -325,6 +343,40 @@ function UsersManagement() {
       setDeleteTarget(null);
     } finally {
       setDeleteLoading(false);
+    }
+  };
+
+  // Confirm Promote to admin
+  const handleConfirmPromote = async () => {
+    if (!promoteTarget) return;
+    setPromoteLoading(true);
+    setActionError("");
+    try {
+      await updateUser(promoteTarget._id, { role: "admin" });
+      setPromoteTarget(null);
+      reloadUsers();
+    } catch (err) {
+      setActionError(err.message || "Failed to promote user");
+      setPromoteTarget(null);
+    } finally {
+      setPromoteLoading(false);
+    }
+  };
+
+  // Confirm Demote to user
+  const handleConfirmDemote = async () => {
+    if (!demoteTarget) return;
+    setDemoteLoading(true);
+    setActionError("");
+    try {
+      await updateUser(demoteTarget._id, { role: "user" });
+      setDemoteTarget(null);
+      reloadUsers();
+    } catch (err) {
+      setActionError(err.message || "Failed to demote user");
+      setDemoteTarget(null);
+    } finally {
+      setDemoteLoading(false);
     }
   };
 
@@ -528,6 +580,30 @@ function UsersManagement() {
                                 <span>Edit</span>
                               </button>
 
+                              {item.role === "user" && item.isActive && isViewerPrimary && (
+                                <button
+                                  type="button"
+                                  className="btn btn-secondary btn-sm users-promote-btn"
+                                  title="Promote user to administrator"
+                                  onClick={() => setPromoteTarget(item)}
+                                >
+                                  <ShieldAlert size={14} aria-hidden="true" />
+                                  <span>Promote to admin</span>
+                                </button>
+                              )}
+
+                              {item.role === "admin" && !isTargetPrimary && isViewerPrimary && (
+                                <button
+                                  type="button"
+                                  className="btn btn-secondary btn-sm users-demote-btn"
+                                  title="Demote to user"
+                                  onClick={() => setDemoteTarget(item)}
+                                >
+                                  <UserMinus size={14} aria-hidden="true" />
+                                  <span>Demote to user</span>
+                                </button>
+                              )}
+
                               {!isTargetPrimary && (
                                 <>
                                   {item.isActive ? (
@@ -647,6 +723,30 @@ function UsersManagement() {
                           <span>Edit</span>
                         </button>
 
+                        {item.role === "user" && item.isActive && isViewerPrimary && (
+                          <button
+                            type="button"
+                            className="btn btn-secondary btn-sm users-promote-btn"
+                            title="Promote to admin"
+                            onClick={() => setPromoteTarget(item)}
+                          >
+                            <ShieldAlert size={14} aria-hidden="true" />
+                            <span>Promote</span>
+                          </button>
+                        )}
+
+                        {item.role === "admin" && !isTargetPrimary && isViewerPrimary && (
+                          <button
+                            type="button"
+                            className="btn btn-secondary btn-sm users-demote-btn"
+                            title="Demote to user"
+                            onClick={() => setDemoteTarget(item)}
+                          >
+                            <UserMinus size={14} aria-hidden="true" />
+                            <span>Demote</span>
+                          </button>
+                        )}
+
                         {!isTargetPrimary && (
                           <>
                             {item.isActive ? (
@@ -762,17 +862,22 @@ function UsersManagement() {
                 required
               />
 
-              <Input
-                label="Password"
-                type="password"
-                placeholder="At least 6 characters"
-                value={addForm.password}
-                error={addErrors.password}
-                onChange={(e) =>
-                  setAddForm((prev) => ({ ...prev, password: e.target.value }))
-                }
-                required
-              />
+              <div className="users-field-with-hint">
+                <Input
+                  label="Temporary password"
+                  type="password"
+                  placeholder="At least 6 characters"
+                  value={addForm.password}
+                  error={addErrors.password}
+                  onChange={(e) =>
+                    setAddForm((prev) => ({ ...prev, password: e.target.value }))
+                  }
+                  required
+                />
+                <p className="users-field-hint">
+                  The person will be asked to choose their own password at first login.
+                </p>
+              </div>
 
               <Input
                 label="Phone Number (optional)"
@@ -944,6 +1049,30 @@ function UsersManagement() {
         loading={deleteLoading}
         onConfirm={handleConfirmDelete}
         onCancel={() => !deleteLoading && setDeleteTarget(null)}
+      />
+
+      {/* Promote to Admin Confirmation Dialog */}
+      <ConfirmDialog
+        open={Boolean(promoteTarget)}
+        title={`Promote ${promoteTarget?.name} to Admin?`}
+        message={`${promoteTarget?.name} will get full admin access. They keep their own password and must log in again to see admin pages.`}
+        confirmLabel="Promote to admin"
+        confirmVariant="primary"
+        loading={promoteLoading}
+        onConfirm={handleConfirmPromote}
+        onCancel={() => !promoteLoading && setPromoteTarget(null)}
+      />
+
+      {/* Demote to User Confirmation Dialog */}
+      <ConfirmDialog
+        open={Boolean(demoteTarget)}
+        title={`Demote ${demoteTarget?.name} to user?`}
+        message={`${demoteTarget?.name} will lose admin access and become a normal user. They must log in again.`}
+        confirmLabel="Demote to user"
+        confirmVariant="danger"
+        loading={demoteLoading}
+        onConfirm={handleConfirmDemote}
+        onCancel={() => !demoteLoading && setDemoteTarget(null)}
       />
     </div>
   );

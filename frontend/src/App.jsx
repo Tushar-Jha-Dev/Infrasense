@@ -18,6 +18,7 @@ import UsersManagement from "./pages/admin/UsersManagement.jsx";
 import MyTasks from "./pages/technician/MyTasks.jsx";
 import TaskDetails from "./pages/technician/TaskDetails.jsx";
 import Profile from "./pages/shared/Profile.jsx";
+import ChangePassword from "./pages/shared/ChangePassword.jsx";
 import NotFound from "./pages/shared/NotFound.jsx";
 
 function App() {
@@ -96,6 +97,7 @@ function App() {
       >
         <Route element={<AppLayout />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/change-password" element={<ChangePassword />} />
         </Route>
       </Route>
 

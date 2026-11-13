@@ -125,6 +125,11 @@ a:hover {
   font-size: 13px;
 }
 
+/* Forced password change state: hide sidebar navigation */
+body.must-change-password .sidebar-nav {
+  display: none !important;
+}
+
 @media (max-width: 768px) {
   .container {
     padding-left: var(--space-4);

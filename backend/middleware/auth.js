@@ -36,6 +36,22 @@ export const protect = async (req, res, next) => {
       return res.status(403).json({ message: "Account is deactivated" });
     }
 
+    // A3 Enforcement: While mustChangePassword is true, every protected route is refused
+    // with 403 { message, code: "PASSWORD_CHANGE_REQUIRED" } except GET /auth/me and PATCH /auth/password
+    if (user.mustChangePassword) {
+      const fullPath = (req.baseUrl + req.path).replace(/\/+$/, "");
+      const isAllowed =
+        (req.method === "GET" && (fullPath === "/api/auth/me" || fullPath === "/auth/me")) ||
+        (req.method === "PATCH" && (fullPath === "/api/auth/password" || fullPath === "/auth/password"));
+
+      if (!isAllowed) {
+        return res.status(403).json({
+          message: "You must change your temporary password first",
+          code: "PASSWORD_CHANGE_REQUIRED",
+        });
+      }
+    }
+
     req.user = user;
     next();
   } catch (error) {

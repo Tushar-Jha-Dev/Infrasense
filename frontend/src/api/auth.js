@@ -19,3 +19,9 @@ export const updateMe = (data) =>
     method: "PATCH",
     body: JSON.stringify(data),
   });
+
+export const changePassword = (data) =>
+  apiRequest("/auth/password", {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
