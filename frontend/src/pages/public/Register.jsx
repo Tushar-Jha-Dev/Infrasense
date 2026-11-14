@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Alert from "../../components/ui/Alert.jsx";
 import Input from "../../components/ui/Input.jsx";
 import { useAuth } from "../../context/useAuth.js";
 import { roleHome } from "../../utils/roleHome.js";
+import Landing from "./Landing.jsx";
 import "./Auth.css";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -36,8 +37,8 @@ function validateRegisterForm({ name, email, password, confirmPassword }) {
   return errors;
 }
 
-function Register() {
-  const { user, loading, register } = useAuth();
+export function RegisterForm() {
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -50,22 +51,6 @@ function Register() {
   const [fieldErrors, setFieldErrors] = useState({});
   const [serverError, setServerError] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
-  if (loading) {
-    return (
-      <main className="auth-page">
-        <div className="auth-wrapper">
-          <div className="auth-card">
-            <p>Checking session...</p>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  if (user) {
-    return <Navigate to={roleHome(user.role)} replace />;
-  }
 
   const updateField = (field) => (e) => {
     const value = e.target.value;
@@ -108,107 +93,91 @@ function Register() {
   };
 
   return (
-    <main className="auth-page">
-      <div className="auth-wrapper">
-        <div className="auth-brand-row">
-          <Link to="/" className="auth-brand">
-            InfraSense
-          </Link>
-          <Link to="/" className="auth-home-link">
-            Back to home
-          </Link>
-        </div>
+    <div className="auth-modal-content">
+      <form className="auth-form" onSubmit={handleSubmit} noValidate>
+        <Alert variant="error">{serverError}</Alert>
 
-        <section className="auth-card" aria-labelledby="register-heading">
-          <h1 id="register-heading" className="auth-title">
-            Create account
-          </h1>
-          <p className="auth-subtitle">
-            Register as a campus user to report and track maintenance issues.
-          </p>
+        <Input
+          label="Full name"
+          type="text"
+          name="name"
+          autoComplete="name"
+          placeholder="Aarav Sharma"
+          value={form.name}
+          onChange={updateField("name")}
+          error={fieldErrors.name}
+          disabled={submitting}
+          required
+        />
 
-          <form className="auth-form" onSubmit={handleSubmit} noValidate>
-            <Alert variant="error">{serverError}</Alert>
+        <Input
+          label="Email"
+          type="email"
+          name="email"
+          autoComplete="email"
+          placeholder="you@institution.edu"
+          value={form.email}
+          onChange={updateField("email")}
+          error={fieldErrors.email}
+          disabled={submitting}
+          required
+        />
 
-            <Input
-              label="Full name"
-              type="text"
-              name="name"
-              autoComplete="name"
-              placeholder="Aarav Sharma"
-              value={form.name}
-              onChange={updateField("name")}
-              error={fieldErrors.name}
-              disabled={submitting}
-              required
-            />
+        <Input
+          label="Phone (optional)"
+          type="tel"
+          name="phone"
+          autoComplete="tel"
+          placeholder="9876543210"
+          value={form.phone}
+          onChange={updateField("phone")}
+          disabled={submitting}
+        />
 
-            <Input
-              label="Email"
-              type="email"
-              name="email"
-              autoComplete="email"
-              placeholder="you@institution.edu"
-              value={form.email}
-              onChange={updateField("email")}
-              error={fieldErrors.email}
-              disabled={submitting}
-              required
-            />
+        <Input
+          label="Password"
+          type="password"
+          name="password"
+          autoComplete="new-password"
+          placeholder="At least 6 characters"
+          value={form.password}
+          onChange={updateField("password")}
+          error={fieldErrors.password}
+          disabled={submitting}
+          required
+        />
 
-            <Input
-              label="Phone (optional)"
-              type="tel"
-              name="phone"
-              autoComplete="tel"
-              placeholder="9876543210"
-              value={form.phone}
-              onChange={updateField("phone")}
-              disabled={submitting}
-            />
+        <Input
+          label="Confirm password"
+          type="password"
+          name="confirmPassword"
+          autoComplete="new-password"
+          placeholder="Re-enter your password"
+          value={form.confirmPassword}
+          onChange={updateField("confirmPassword")}
+          error={fieldErrors.confirmPassword}
+          disabled={submitting}
+          required
+        />
 
-            <Input
-              label="Password"
-              type="password"
-              name="password"
-              autoComplete="new-password"
-              placeholder="At least 6 characters"
-              value={form.password}
-              onChange={updateField("password")}
-              error={fieldErrors.password}
-              disabled={submitting}
-              required
-            />
+        <button
+          type="submit"
+          className="btn btn-primary auth-submit"
+          disabled={submitting}
+        >
+          {submitting ? "Creating account..." : "Create account"}
+        </button>
+      </form>
 
-            <Input
-              label="Confirm password"
-              type="password"
-              name="confirmPassword"
-              autoComplete="new-password"
-              placeholder="Re-enter your password"
-              value={form.confirmPassword}
-              onChange={updateField("confirmPassword")}
-              error={fieldErrors.confirmPassword}
-              disabled={submitting}
-              required
-            />
-
-            <button
-              type="submit"
-              className="btn btn-primary auth-submit"
-              disabled={submitting}
-            >
-              {submitting ? "Creating account..." : "Create account"}
-            </button>
-          </form>
-
-          <p className="auth-footer">
-            Already have an account? <Link to="/login">Sign in</Link>
-          </p>
-        </section>
-      </div>
-    </main>
+      <p className="auth-footer">
+        Already have an account? <Link to="/login">Log in</Link>
+      </p>
+    </div>
   );
+}
+
+function Register() {
+  return <Landing authModal="register" />;
 }
 
 export default Register;

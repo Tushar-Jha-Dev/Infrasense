@@ -51,6 +51,18 @@
   margin-bottom: var(--space-3);
 }
 
+.admin-review-badge-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.ai-source-muted {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
 .admin-review-card-head .admin-review-card-title {
   margin-bottom: 0;
 }

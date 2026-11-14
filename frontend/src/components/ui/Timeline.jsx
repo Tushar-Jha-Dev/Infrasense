@@ -19,7 +19,13 @@ function Timeline({ items = [] }) {
               <StatusBadge status={item.status} />
               {item.date && <span className="ui-timeline-date">{item.date}</span>}
             </div>
-            {item.by && <p className="ui-timeline-by">Updated by {item.by}</p>}
+            {item.by && (
+              <p className="ui-timeline-by">
+                {index === 0 && item.status === "Submitted"
+                  ? `Submitted by ${item.by}`
+                  : `Updated by ${item.by}`}
+              </p>
+            )}
             {item.note && <p className="ui-timeline-note">{item.note}</p>}
           </div>
         </li>

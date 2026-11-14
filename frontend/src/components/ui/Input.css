@@ -46,3 +46,8 @@
   font-size: 13px;
   color: var(--danger);
 }
+
+.ui-field-hint {
+  font-size: 13px;
+  color: var(--text-muted);
+}

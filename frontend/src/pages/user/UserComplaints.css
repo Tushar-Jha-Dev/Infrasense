@@ -258,6 +258,26 @@
   grid-column: 1 / -1;
 }
 
+.complaint-tag-row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.complaint-user-warning {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  margin-top: var(--space-4);
+  border: 1px solid var(--sev-medium);
+  border-radius: var(--radius-sm);
+  background-color: color-mix(in srgb, var(--sev-medium) 10%, var(--surface));
+  color: var(--sev-medium);
+  font-size: 14px;
+}
+
 @media (max-width: 768px) {
   .user-stats-grid {
     grid-template-columns: 1fr;

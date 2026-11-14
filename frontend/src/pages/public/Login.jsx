@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Alert from "../../components/ui/Alert.jsx";
 import Input from "../../components/ui/Input.jsx";
 import { useAuth } from "../../context/useAuth.js";
 import { roleHome } from "../../utils/roleHome.js";
+import Landing from "./Landing.jsx";
 import "./Auth.css";
 
-function Login() {
-  const { user, loading, login } = useAuth();
+export function LoginForm() {
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -15,22 +16,6 @@ function Login() {
   const [fieldErrors, setFieldErrors] = useState({});
   const [serverError, setServerError] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
-  if (loading) {
-    return (
-      <main className="auth-page">
-        <div className="auth-wrapper">
-          <div className="auth-card">
-            <p>Checking session...</p>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  if (user) {
-    return <Navigate to={roleHome(user.role)} replace />;
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,80 +48,64 @@ function Login() {
   };
 
   return (
-    <main className="auth-page">
-      <div className="auth-wrapper">
-        <div className="auth-brand-row">
-          <Link to="/" className="auth-brand">
-            InfraSense
-          </Link>
-          <Link to="/" className="auth-home-link">
-            Back to home
-          </Link>
-        </div>
+    <div className="auth-modal-content">
+      <form className="auth-form" onSubmit={handleSubmit} noValidate>
+        <Alert variant="error">{serverError}</Alert>
 
-        <section className="auth-card" aria-labelledby="login-heading">
-          <h1 id="login-heading" className="auth-title">
-            Sign in
-          </h1>
-          <p className="auth-subtitle">
-            Enter your account credentials to continue.
-          </p>
+        <Input
+          label="Email"
+          type="email"
+          name="email"
+          autoComplete="email"
+          placeholder="you@institution.edu"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (fieldErrors.email) {
+              setFieldErrors((prev) => ({ ...prev, email: "" }));
+            }
+          }}
+          error={fieldErrors.email}
+          disabled={submitting}
+          required
+        />
 
-          <form className="auth-form" onSubmit={handleSubmit} noValidate>
-            <Alert variant="error">{serverError}</Alert>
+        <Input
+          label="Password"
+          type="password"
+          name="password"
+          autoComplete="current-password"
+          placeholder="Enter your password"
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            if (fieldErrors.password) {
+              setFieldErrors((prev) => ({ ...prev, password: "" }));
+            }
+          }}
+          error={fieldErrors.password}
+          disabled={submitting}
+          required
+        />
 
-            <Input
-              label="Email"
-              type="email"
-              name="email"
-              autoComplete="email"
-              placeholder="you@institution.edu"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                if (fieldErrors.email) {
-                  setFieldErrors((prev) => ({ ...prev, email: "" }));
-                }
-              }}
-              error={fieldErrors.email}
-              disabled={submitting}
-              required
-            />
+        <button
+          type="submit"
+          className="btn btn-primary auth-submit"
+          disabled={submitting}
+        >
+          {submitting ? "Signing in..." : "Sign in"}
+        </button>
+      </form>
 
-            <Input
-              label="Password"
-              type="password"
-              name="password"
-              autoComplete="current-password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                if (fieldErrors.password) {
-                  setFieldErrors((prev) => ({ ...prev, password: "" }));
-                }
-              }}
-              error={fieldErrors.password}
-              disabled={submitting}
-              required
-            />
-
-            <button
-              type="submit"
-              className="btn btn-primary auth-submit"
-              disabled={submitting}
-            >
-              {submitting ? "Signing in..." : "Sign in"}
-            </button>
-          </form>
-
-          <p className="auth-footer">
-            New to InfraSense? <Link to="/register">Create an account</Link>
-          </p>
-        </section>
-      </div>
-    </main>
+      <p className="auth-footer">
+        New here? <Link to="/register">Create an account</Link>
+      </p>
+    </div>
   );
+}
+
+function Login() {
+  return <Landing authModal="login" />;
 }
 
 export default Login;

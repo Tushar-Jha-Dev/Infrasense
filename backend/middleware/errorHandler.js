@@ -12,6 +12,10 @@ export const notFoundHandler = (req, res) => {
  * stack traces are never exposed to clients.
  */
 export const errorHandler = (err, req, res, next) => { // eslint-disable-line no-unused-vars
+  if (res.headersSent) {
+    return next(err);
+  }
+
   // Malformed JSON body
   if (
     (err instanceof SyntaxError && err.status === 400 && "body" in err) ||
@@ -52,6 +56,21 @@ export const errorHandler = (err, req, res, next) => { // eslint-disable-line no
   // JWT errors
   if (err.name === "JsonWebTokenError" || err.name === "TokenExpiredError") {
     return res.status(401).json({ message: "Invalid or expired token" });
+  }
+
+  // Client errors with numeric status or statusCode between 400 and 499
+  const clientStatus =
+    (typeof err?.status === "number" &&
+      err.status >= 400 &&
+      err.status <= 499 &&
+      err.status) ||
+    (typeof err?.statusCode === "number" &&
+      err.statusCode >= 400 &&
+      err.statusCode <= 499 &&
+      err.statusCode);
+
+  if (clientStatus) {
+    return res.status(clientStatus).json({ message: "Bad request" });
   }
 
   // Fallback internal server error

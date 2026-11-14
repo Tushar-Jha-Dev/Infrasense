@@ -5,6 +5,7 @@ function Textarea({
   label,
   id,
   error,
+  hint,
   rows = 3,
   className = "",
   ...props
@@ -12,6 +13,8 @@ function Textarea({
   const generatedId = useId();
   const textareaId = id || generatedId;
   const errorId = error ? `${textareaId}-error` : undefined;
+  const hintId = hint ? `${textareaId}-hint` : undefined;
+  const describedBy = [errorId, hintId].filter(Boolean).join(" ") || undefined;
 
   return (
     <div className={`ui-field ${className}`.trim()}>
@@ -25,9 +28,14 @@ function Textarea({
         rows={rows}
         className={`ui-textarea ${error ? "ui-textarea-invalid" : ""}`.trim()}
         aria-invalid={Boolean(error)}
-        aria-describedby={errorId}
+        aria-describedby={describedBy}
         {...props}
       />
+      {hint && (
+        <p id={hintId} className="ui-field-hint">
+          {hint}
+        </p>
+      )}
       {error && (
         <p id={errorId} className="ui-textarea-error" role="alert">
           {error}

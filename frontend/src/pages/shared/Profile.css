@@ -191,8 +191,8 @@
 }
 
 .profile-logout-btn:hover {
-  color: var(--danger);
-  border-color: var(--danger);
+  color: var(--danger-hover);
+  border-color: var(--danger-hover);
 }
 
 /* 3. Activity Card */

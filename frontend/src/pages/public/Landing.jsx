@@ -1,5 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ClipboardList, UserCheck, Wrench } from "lucide-react";
+import Modal from "../../components/ui/Modal.jsx";
+import { useAuth } from "../../context/useAuth.js";
+import { roleHome } from "../../utils/roleHome.js";
+import { LoginForm } from "./Login.jsx";
+import { RegisterForm } from "./Register.jsx";
 import "./Landing.css";
 
 const WORKFLOW_STEPS = [
@@ -23,7 +28,27 @@ const WORKFLOW_STEPS = [
   },
 ];
 
-function Landing() {
+function Landing({ authModal }) {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const currentModal =
+    authModal ||
+    (location.pathname === "/login"
+      ? "login"
+      : location.pathname === "/register"
+      ? "register"
+      : null);
+
+  if (!loading && user && currentModal) {
+    return <Navigate to={roleHome(user.role)} replace />;
+  }
+
+  const handleCloseModal = () => {
+    navigate("/");
+  };
+
   return (
     <div className="landing-page">
       <header className="landing-header">
@@ -76,6 +101,28 @@ function Landing() {
           </div>
         </section>
       </main>
+
+      {currentModal === "login" && (
+        <Modal
+          open
+          onClose={handleCloseModal}
+          title="Sign in"
+          subtitle="Enter your account credentials to continue."
+        >
+          <LoginForm />
+        </Modal>
+      )}
+
+      {currentModal === "register" && (
+        <Modal
+          open
+          onClose={handleCloseModal}
+          title="Create account"
+          subtitle="Register as a campus user to report and track maintenance issues."
+        >
+          <RegisterForm />
+        </Modal>
+      )}
     </div>
   );
 }

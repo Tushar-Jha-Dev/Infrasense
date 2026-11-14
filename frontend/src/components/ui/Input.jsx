@@ -1,10 +1,20 @@
 import { useId } from "react";
 import "./Input.css";
 
-function Input({ label, id, error, type = "text", className = "", ...props }) {
+function Input({
+  label,
+  id,
+  error,
+  hint,
+  type = "text",
+  className = "",
+  ...props
+}) {
   const generatedId = useId();
   const inputId = id || generatedId;
   const errorId = error ? `${inputId}-error` : undefined;
+  const hintId = hint ? `${inputId}-hint` : undefined;
+  const describedBy = [errorId, hintId].filter(Boolean).join(" ") || undefined;
 
   return (
     <div className={`ui-field ${className}`.trim()}>
@@ -18,9 +28,14 @@ function Input({ label, id, error, type = "text", className = "", ...props }) {
         type={type}
         className={`ui-input ${error ? "ui-input-invalid" : ""}`.trim()}
         aria-invalid={Boolean(error)}
-        aria-describedby={errorId}
+        aria-describedby={describedBy}
         {...props}
       />
+      {hint && (
+        <p id={hintId} className="ui-field-hint">
+          {hint}
+        </p>
+      )}
       {error && (
         <p id={errorId} className="ui-input-error" role="alert">
           {error}
