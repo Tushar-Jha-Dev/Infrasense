@@ -139,7 +139,14 @@ function AdminDashboard() {
               label="Total maintenance cost"
               value={formatCurrency(summary?.cost?.totalCost ?? 0)}
               isMono={true}
-              helper={`${summary?.cost?.recordCount ?? 0} maintenance records`}
+              helper={
+                <span>
+                  {summary?.cost?.recordCount ?? 0} maintenance records ·{" "}
+                  <Link to="/admin/costs" className="stat-card-link">
+                    View cost details
+                  </Link>
+                </span>
+              }
             />
           </div>
         )}

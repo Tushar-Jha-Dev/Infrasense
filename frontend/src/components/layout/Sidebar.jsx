@@ -3,6 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 import {
   BarChart3,
   ClipboardList,
+  IndianRupee,
   LayoutDashboard,
   Package,
   PlusCircle,
@@ -26,6 +27,7 @@ const NAV_LINKS_BY_ROLE = {
     { to: "/admin/complaints", label: "Complaints", icon: ClipboardList },
     { to: "/admin/assets", label: "Assets", icon: Package },
     { to: "/admin/users", label: "Users and Technicians", icon: Users },
+    { to: "/admin/costs", label: "Costs", icon: IndianRupee },
     { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
     { to: "/profile", label: "Profile", icon: User },
   ],

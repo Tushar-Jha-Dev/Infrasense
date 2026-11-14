@@ -151,9 +151,14 @@ function Analytics() {
           value={formatCurrency(cost?.totalCost ?? 0)}
           isMono={true}
           helper={
-            cost?.averageCost !== null && cost?.averageCost !== undefined
-              ? `Average cost per record: ${formatCurrency(cost.averageCost)}`
-              : "No records yet"
+            <span>
+              {cost?.averageCost !== null && cost?.averageCost !== undefined
+                ? `Average cost per record: ${formatCurrency(cost.averageCost)} · `
+                : ""}
+              <Link to="/admin/costs" className="stat-card-link">
+                View cost details
+              </Link>
+            </span>
           }
         />
       </section>

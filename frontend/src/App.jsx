@@ -17,6 +17,7 @@ const UserDashboard = lazy(() => import("./pages/user/UserDashboard.jsx"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard.jsx"));
 const AdminComplaints = lazy(() => import("./pages/admin/AdminComplaints.jsx"));
 const AdminComplaintReview = lazy(() => import("./pages/admin/AdminComplaintReview.jsx"));
+const AdminCosts = lazy(() => import("./pages/admin/AdminCosts.jsx"));
 const Analytics = lazy(() => import("./pages/admin/Analytics.jsx"));
 const UsersManagement = lazy(() => import("./pages/admin/UsersManagement.jsx"));
 const MyTasks = lazy(() => import("./pages/technician/MyTasks.jsx"));
@@ -76,6 +77,7 @@ function App() {
               element={<AssetForm key="edit" basePath="/admin/assets" />}
             />
             <Route path="/admin/users" element={<UsersManagement />} />
+            <Route path="/admin/costs" element={<AdminCosts />} />
             <Route path="/admin/analytics" element={<Analytics />} />
           </Route>
         </Route>
