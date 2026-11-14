@@ -85,3 +85,5 @@ set CORS origins, test login and the full workflow on the live site.
 - 14 Nov 2026 – Phase 7 done: record appears in the asset's history.
 - 14 Nov 2026 – Admin user management done: Users and Technicians page, primary admin rules, permanent delete (blocked for accounts with records), promote/demote admin, profile with photo, forced temporary-password change; scripted API checks and browser tested.
 - 14 Nov 2026 – Phase 5 done: Gemini LLM analysis (gemini-3.5-flash-lite) with keyword-rules fallback and severity safety floor; scripted checks 16/16 passed; 26-case comparison recorded (rules 24/26, LLM with floor 22/26).
+- 14 Nov 2026 – Polish done: login/register modal, danger-hover token, aria-describedby on form hints, AI review wording, "Submitted by" timeline wording, AI source label, error handler cleanup.
+- 14 Nov 2026 – Phase 9: end-to-end API workflow script 57/57 passed (register, AI analysis, review, assign, forced password change, technician start and resolve, close, owner and admin views, asset history, analytics, role and ownership error cases).
