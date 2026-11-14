@@ -281,8 +281,19 @@ export const listComplaints = async (req, res) => {
       const cleanSearch = search.trim();
       if (cleanSearch) {
         const regex = new RegExp(escapeRegex(cleanSearch), "i");
+        const matchingTechs = await User.find({
+          role: "technician",
+          name: regex,
+        }).select("_id");
+        const ids = matchingTechs.map((u) => u._id);
+
+        const searchConditions = [{ complaintId: regex }, { title: regex }];
+        if (ids.length > 0) {
+          searchConditions.push({ assignedTo: { $in: ids } });
+        }
+
         conditions.push({
-          $or: [{ complaintId: regex }, { title: regex }],
+          $or: searchConditions,
         });
       }
     }

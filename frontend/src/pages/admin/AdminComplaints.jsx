@@ -97,7 +97,7 @@ function AdminComplaints() {
         <div className="admin-filter-search">
           <Input
             label="Search"
-            placeholder="Search ID or title..."
+            placeholder="Search by ID, title or technician name"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
           />
@@ -190,6 +190,7 @@ function AdminComplaints() {
                   <th>Category</th>
                   <th>Severity</th>
                   <th>Status</th>
+                  <th>Assigned to</th>
                   <th>Submitted by</th>
                   <th>Date</th>
                 </tr>
@@ -253,6 +254,15 @@ function AdminComplaints() {
                       <td>
                         <StatusBadge status={c.status} />
                       </td>
+                      <td>
+                        {c.assignedTo?.name ? (
+                          <span>{c.assignedTo.name}</span>
+                        ) : (
+                          <span className="admin-complaints-muted">
+                            Not assigned
+                          </span>
+                        )}
+                      </td>
                       <td>{c.submittedBy?.name || "—"}</td>
                       <td>{formatDate(c.createdAt)}</td>
                     </tr>
@@ -294,6 +304,18 @@ function AdminComplaints() {
                     )}
                     {showNeedsReview && (
                       <Badge variant="warning">Needs review</Badge>
+                    )}
+                  </div>
+                  <div className="admin-complaint-card-assigned">
+                    <span className="admin-complaint-card-assigned-label">
+                      Assigned to:{" "}
+                    </span>
+                    {c.assignedTo?.name ? (
+                      <span>{c.assignedTo.name}</span>
+                    ) : (
+                      <span className="admin-complaints-muted">
+                        Not assigned
+                      </span>
                     )}
                   </div>
                   <div className="admin-complaint-card-meta">
