@@ -46,7 +46,7 @@ function AssetDetails({ canManage = false, basePath = "/assets" }) {
   useEffect(() => {
     let active = true;
 
-    getAsset(id)
+    const assetPromise = getAsset(id)
       .then((data) => {
         if (active) {
           setAsset(data);
@@ -66,25 +66,29 @@ function AssetDetails({ canManage = false, basePath = "/assets" }) {
         }
       });
 
-    if (canManage) {
-      getAssetHistory(id)
-        .then((data) => {
-          if (active) {
-            setHistoryData(data);
-            setHistoryError("");
-          }
-        })
-        .catch((err) => {
-          if (active) {
-            setHistoryError(err.message || "Failed to load maintenance history");
-          }
-        })
-        .finally(() => {
-          if (active) {
-            setHistoryLoading(false);
-          }
-        });
-    }
+    const historyPromise = canManage
+      ? getAssetHistory(id)
+          .then((data) => {
+            if (active) {
+              setHistoryData(data);
+              setHistoryError("");
+            }
+          })
+          .catch((err) => {
+            if (active) {
+              setHistoryError(
+                err.message || "Failed to load maintenance history"
+              );
+            }
+          })
+          .finally(() => {
+            if (active) {
+              setHistoryLoading(false);
+            }
+          })
+      : Promise.resolve();
+
+    Promise.all([assetPromise, historyPromise]);
 
     return () => {
       active = false;

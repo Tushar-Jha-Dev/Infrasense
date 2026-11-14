@@ -53,44 +53,45 @@ function AdminDashboard() {
   useEffect(() => {
     let active = true;
 
-    // Single shared analytics fetch
-    getAnalyticsSummary()
-      .then((data) => {
-        if (active) {
-          setSummary(data);
-          setAnalyticsError("");
-        }
-      })
-      .catch((err) => {
-        if (active) {
-          setAnalyticsError(err.message || "Failed to load summary analytics");
-        }
-      })
-      .finally(() => {
-        if (active) {
-          setAnalyticsLoading(false);
-        }
-      });
+    // Run summary analytics and newest submitted complaints in parallel
+    Promise.all([
+      getAnalyticsSummary()
+        .then((data) => {
+          if (active) {
+            setSummary(data);
+            setAnalyticsError("");
+          }
+        })
+        .catch((err) => {
+          if (active) {
+            setAnalyticsError(err.message || "Failed to load summary analytics");
+          }
+        })
+        .finally(() => {
+          if (active) {
+            setAnalyticsLoading(false);
+          }
+        }),
 
-    // Fetch newest submitted complaints
-    listComplaints({ status: "Submitted" })
-      .then((data) => {
-        if (active) {
-          const list = Array.isArray(data) ? data : [];
-          setSubmittedComplaints(list.slice(0, 5));
-          setTableError("");
-        }
-      })
-      .catch((err) => {
-        if (active) {
-          setTableError(err.message || "Failed to load submitted complaints");
-        }
-      })
-      .finally(() => {
-        if (active) {
-          setTableLoading(false);
-        }
-      });
+      listComplaints({ status: "Submitted" })
+        .then((data) => {
+          if (active) {
+            const list = Array.isArray(data) ? data : [];
+            setSubmittedComplaints(list.slice(0, 5));
+            setTableError("");
+          }
+        })
+        .catch((err) => {
+          if (active) {
+            setTableError(err.message || "Failed to load submitted complaints");
+          }
+        })
+        .finally(() => {
+          if (active) {
+            setTableLoading(false);
+          }
+        }),
+    ]);
 
     return () => {
       active = false;
