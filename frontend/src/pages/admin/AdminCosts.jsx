@@ -78,16 +78,34 @@ const getPresetDates = (presetKey) => {
   return { from: "", to: "" };
 };
 
-const detectPreset = (from, to) => {
-  if (!from && !to) return "all";
-  for (const preset of ["30d", "3m", "6m", "thisYear"]) {
-    const dates = getPresetDates(preset);
-    if (dates.from === from && dates.to === to) {
-      return preset;
-    }
+const detectPreset = (presetParam, from, to) => {
+  if (
+    presetParam &&
+    ["all", "30d", "3m", "6m", "thisYear", "custom"].includes(presetParam)
+  ) {
+    return presetParam;
   }
-  return "custom";
+  if (from || to) {
+    return "custom";
+  }
+  return "all";
 };
+
+const computeGroupBy = (from, to) => {
+  if (!from || !to) {
+    return "month";
+  }
+  const fromMs = new Date(from).getTime();
+  const toMs = new Date(to).getTime();
+  if (Number.isNaN(fromMs) || Number.isNaN(toMs) || toMs < fromMs) {
+    return "month";
+  }
+  const diffDays = Math.round((toMs - fromMs) / (1000 * 60 * 60 * 24)) + 1;
+  return diffDays <= 100 ? "week" : "month";
+};
+
+const getGroupBySubtitle = (groupBy) =>
+  groupBy === "week" ? "Grouped by week" : "Grouped by month";
 
 const formatPeriodLabel = (period, groupBy) => {
   if (!period) return "";
@@ -113,6 +131,7 @@ function AdminCosts() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // URL query params
+  const presetParam = searchParams.get("preset");
   const from = searchParams.get("from") || "";
   const to = searchParams.get("to") || "";
   const category = searchParams.get("category") || "";
@@ -124,9 +143,17 @@ function AdminCosts() {
   const minCost = searchParams.get("minCost") || "";
   const maxCost = searchParams.get("maxCost") || "";
   const search = searchParams.get("search") || "";
-  const groupBy = searchParams.get("groupBy") || "month";
   const sort = searchParams.get("sort") || "date";
   const page = parseInt(searchParams.get("page") || "1", 10) || 1;
+
+  // Active preset detected from URL (URL with from/to and no preset opens as custom)
+  const activePreset = useMemo(
+    () => detectPreset(presetParam, from, to),
+    [presetParam, from, to]
+  );
+
+  // Group by is computed automatically based on the date range
+  const groupBy = useMemo(() => computeGroupBy(from, to), [from, to]);
 
   // Local state for debounced search box
   const [searchInput, setSearchInput] = useState(search);
@@ -187,9 +214,20 @@ function AdminCosts() {
   // Inline validation checks
   const validationErrors = useMemo(() => {
     const errors = {};
-    if (from && to && from > to) {
+    if (activePreset === "custom") {
+      if (!from && !to) {
+        errors.dateRange = "Both 'From' and 'To' dates are required";
+      } else if (!from) {
+        errors.dateRange = "'From' date is required";
+      } else if (!to) {
+        errors.dateRange = "'To' date is required";
+      } else if (from > to) {
+        errors.dateRange = "'From' date cannot be after 'To' date";
+      }
+    } else if (from && to && from > to) {
       errors.dateRange = "'From' date cannot be after 'To' date";
     }
+
     const minNum = minCost ? Number(minCost) : null;
     const maxNum = maxCost ? Number(maxCost) : null;
     if (minNum !== null && (Number.isNaN(minNum) || minNum < 0)) {
@@ -208,7 +246,7 @@ function AdminCosts() {
       errors.costRange = "Minimum cost cannot exceed maximum cost";
     }
     return errors;
-  }, [from, to, minCost, maxCost]);
+  }, [activePreset, from, to, minCost, maxCost]);
 
   const hasValidationErrors = Object.keys(validationErrors).length > 0;
 
@@ -244,21 +282,36 @@ function AdminCosts() {
     }, 400);
   };
 
-  // Presets handling
-  const activePreset = useMemo(() => detectPreset(from, to), [from, to]);
-
   const handlePresetSelect = (presetId) => {
+    setIsFetching(true);
     if (presetId === "custom") {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.set("preset", "custom");
+        next.delete("page");
+        return next;
+      });
       return;
     }
-    setIsFetching(true);
+
+    if (presetId === "all") {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete("preset");
+        next.delete("from");
+        next.delete("to");
+        next.delete("page");
+        return next;
+      });
+      return;
+    }
+
     const dates = getPresetDates(presetId);
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
-      if (dates.from) next.set("from", dates.from);
-      else next.delete("from");
-      if (dates.to) next.set("to", dates.to);
-      else next.delete("to");
+      next.set("preset", presetId);
+      next.set("from", dates.from);
+      next.set("to", dates.to);
       next.delete("page");
       return next;
     });
@@ -365,17 +418,23 @@ function AdminCosts() {
   const activeChips = useMemo(() => {
     const chips = [];
     if (from || to) {
-      chips.push({
-        id: "date",
-        label:
-          from && to
+      const presetObj = PRESET_OPTIONS.find((p) => p.id === activePreset);
+      const label =
+        activePreset === "custom"
+          ? from && to
             ? `${from} to ${to}`
             : from
             ? `From ${from}`
-            : `To ${to}`,
+            : `To ${to}`
+          : presetObj?.label || `${from} to ${to}`;
+
+      chips.push({
+        id: "date",
+        label,
         onRemove: () => {
           setSearchParams((prev) => {
             const next = new URLSearchParams(prev);
+            next.delete("preset");
             next.delete("from");
             next.delete("to");
             next.delete("page");
@@ -460,6 +519,7 @@ function AdminCosts() {
     }
     return chips;
   }, [
+    activePreset,
     from,
     to,
     category,
@@ -566,66 +626,53 @@ function AdminCosts() {
               })}
             </div>
 
-            <div className="admin-costs-fields-row">
-              <div className="admin-costs-field">
-                <label htmlFor="cost-filter-from" className="ui-label">
-                  From date
-                </label>
-                <input
-                  id="cost-filter-from"
-                  type="date"
-                  className={`ui-input ${
-                    validationErrors.dateRange ? "ui-input-invalid" : ""
-                  }`}
-                  value={from}
-                  onChange={(e) => updateQueryParam("from", e.target.value)}
-                  aria-invalid={Boolean(validationErrors.dateRange)}
-                  aria-describedby={
-                    validationErrors.dateRange
-                      ? "cost-date-range-error"
-                      : undefined
-                  }
-                />
-              </div>
+            {activePreset === "custom" && (
+              <div className="admin-costs-custom-dates-row">
+                <div className="admin-costs-field">
+                  <label htmlFor="cost-filter-from" className="ui-label">
+                    From date
+                  </label>
+                  <input
+                    id="cost-filter-from"
+                    type="date"
+                    className={`ui-input ${
+                      validationErrors.dateRange ? "ui-input-invalid" : ""
+                    }`}
+                    value={from}
+                    onChange={(e) => updateQueryParam("from", e.target.value)}
+                    aria-invalid={Boolean(validationErrors.dateRange)}
+                    aria-describedby={
+                      validationErrors.dateRange
+                        ? "cost-date-range-error"
+                        : undefined
+                    }
+                  />
+                </div>
 
-              <div className="admin-costs-field">
-                <label htmlFor="cost-filter-to" className="ui-label">
-                  To date
-                </label>
-                <input
-                  id="cost-filter-to"
-                  type="date"
-                  className={`ui-input ${
-                    validationErrors.dateRange ? "ui-input-invalid" : ""
-                  }`}
-                  value={to}
-                  onChange={(e) => updateQueryParam("to", e.target.value)}
-                  aria-invalid={Boolean(validationErrors.dateRange)}
-                  aria-describedby={
-                    validationErrors.dateRange
-                      ? "cost-date-range-error"
-                      : undefined
-                  }
-                />
+                <div className="admin-costs-field">
+                  <label htmlFor="cost-filter-to" className="ui-label">
+                    To date
+                  </label>
+                  <input
+                    id="cost-filter-to"
+                    type="date"
+                    className={`ui-input ${
+                      validationErrors.dateRange ? "ui-input-invalid" : ""
+                    }`}
+                    value={to}
+                    onChange={(e) => updateQueryParam("to", e.target.value)}
+                    aria-invalid={Boolean(validationErrors.dateRange)}
+                    aria-describedby={
+                      validationErrors.dateRange
+                        ? "cost-date-range-error"
+                        : undefined
+                    }
+                  />
+                </div>
               </div>
+            )}
 
-              <div className="admin-costs-field">
-                <label htmlFor="cost-filter-groupby" className="ui-label">
-                  Group by
-                </label>
-                <select
-                  id="cost-filter-groupby"
-                  className="ui-select"
-                  value={groupBy}
-                  onChange={(e) => updateQueryParam("groupBy", e.target.value)}
-                >
-                  <option value="month">Month</option>
-                  <option value="week">Week (Monday)</option>
-                </select>
-              </div>
-            </div>
-
-            {validationErrors.dateRange && (
+            {activePreset === "custom" && validationErrors.dateRange && (
               <p
                 id="cost-date-range-error"
                 className="admin-costs-inline-error"
@@ -1010,7 +1057,7 @@ function AdminCosts() {
               <div>
                 <h3 className="admin-costs-chart-title">Cost over time</h3>
                 <p className="admin-costs-chart-sub">
-                  Total maintenance expenditure grouped by {groupBy}.
+                  Total maintenance expenditure ({getGroupBySubtitle(groupBy)}).
                 </p>
               </div>
             </div>
