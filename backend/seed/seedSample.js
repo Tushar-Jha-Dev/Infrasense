@@ -4,7 +4,7 @@ import Asset from "../models/Asset.js";
 import Complaint from "../models/Complaint.js";
 import MaintenanceRecord from "../models/MaintenanceRecord.js";
 import User from "../models/User.js";
-import { analyzeComplaint } from "../services/aiAnalysis.js";
+import { analyzeWithRules } from "../services/aiAnalysis.js";
 
 dotenv.config();
 
@@ -1106,10 +1106,10 @@ async function runSeed() {
       },
     ];
 
-    // Compute AI analysis using analyzeComplaint rules service for each complaint
+    // Compute AI analysis using analyzeWithRules service for each complaint
     const complaintsToInsert = complaintsRaw.map((raw) => {
       const targetAsset = raw.assetId ? assetMap[raw.assetId] : null;
-      const analysis = analyzeComplaint({
+      const analysis = analyzeWithRules({
         title: raw.title,
         description: raw.description,
         assetCategory: targetAsset?.category,

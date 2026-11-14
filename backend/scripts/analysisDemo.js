@@ -1,4 +1,7 @@
-import { analyzeComplaint } from "../services/aiAnalysis.js";
+import dotenv from "dotenv";
+import { analyzeComplaint, analyzeWithRules } from "../services/aiAnalysis.js";
+
+dotenv.config();
 
 const TEST_CASES = [
   {
@@ -134,49 +137,150 @@ const TEST_CASES = [
   },
 ];
 
-let categoryMatches = 0;
-let severityMatches = 0;
-let overallPasses = 0;
-let needsReviewCount = 0;
+const isLlmMode = process.argv.includes("--llm");
 
-const rows = TEST_CASES.map((testCase, index) => {
-  const result = analyzeComplaint({
-    title: testCase.text,
-    description: "",
-    assetCategory: testCase.assetCategory,
+if (!isLlmMode) {
+  let categoryMatches = 0;
+  let severityMatches = 0;
+  let overallPasses = 0;
+  let needsReviewCount = 0;
+
+  const rows = TEST_CASES.map((testCase, index) => {
+    const result = analyzeWithRules({
+      title: testCase.text,
+      description: "",
+      assetCategory: testCase.assetCategory,
+    });
+
+    const catOk = result.category === testCase.expectedCategory;
+    const sevOk = result.severity === testCase.expectedSeverity;
+    const pass = catOk && sevOk;
+
+    if (catOk) categoryMatches += 1;
+    if (sevOk) severityMatches += 1;
+    if (pass) overallPasses += 1;
+    if (result.needsReview) needsReviewCount += 1;
+
+    return {
+      "#": index + 1,
+      Text:
+        testCase.text.length > 40
+          ? `${testCase.text.slice(0, 37)}...`
+          : testCase.text,
+      "Exp Cat": testCase.expectedCategory,
+      "Act Cat": result.category,
+      "Exp Sev": testCase.expectedSeverity,
+      "Act Sev": result.severity,
+      Review: result.needsReview,
+      Pass: pass ? "PASS" : "FAIL",
+    };
   });
 
-  const catOk = result.category === testCase.expectedCategory;
-  const sevOk = result.severity === testCase.expectedSeverity;
-  const pass = catOk && sevOk;
+  console.table(rows);
 
-  if (catOk) categoryMatches += 1;
-  if (sevOk) severityMatches += 1;
-  if (pass) overallPasses += 1;
-  if (result.needsReview) needsReviewCount += 1;
+  const total = TEST_CASES.length;
+  const catAccuracy = ((categoryMatches / total) * 100).toFixed(1);
+  const sevAccuracy = ((severityMatches / total) * 100).toFixed(1);
 
-  return {
-    "#": index + 1,
-    Text:
-      testCase.text.length > 40
-        ? `${testCase.text.slice(0, 37)}...`
-        : testCase.text,
-    "Exp Cat": testCase.expectedCategory,
-    "Act Cat": result.category,
-    "Exp Sev": testCase.expectedSeverity,
-    "Act Sev": result.severity,
-    Review: result.needsReview,
-    Pass: pass ? "PASS" : "FAIL",
-  };
-});
+  console.log(`Category accuracy: ${categoryMatches}/${total} (${catAccuracy}%)`);
+  console.log(`Severity accuracy: ${severityMatches}/${total} (${sevAccuracy}%)`);
+  console.log(`Overall pass: ${overallPasses}/${total}`);
+  console.log(`needsReview count: ${needsReviewCount}/${total}`);
+} else {
+  runLlmDemo();
+}
 
-console.table(rows);
+async function runLlmDemo() {
+  console.log("Running analysis demo with LLM comparison mode (--llm)...");
+  console.log(`Model: ${process.env.LLM_MODEL || "(not set)"}`);
+  console.log(`Timeout: ${process.env.LLM_TIMEOUT_MS || "8000"}ms`);
+  console.log("Delay between requests: 1000ms\n");
 
-const total = TEST_CASES.length;
-const catAccuracy = ((categoryMatches / total) * 100).toFixed(1);
-const sevAccuracy = ((severityMatches / total) * 100).toFixed(1);
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-console.log(`Category accuracy: ${categoryMatches}/${total} (${catAccuracy}%)`);
-console.log(`Severity accuracy: ${severityMatches}/${total} (${sevAccuracy}%)`);
-console.log(`Overall pass: ${overallPasses}/${total}`);
-console.log(`needsReview count: ${needsReviewCount}/${total}`);
+  let rulesCatMatches = 0;
+  let rulesSevMatches = 0;
+  let rulesOverallPasses = 0;
+
+  let llmCatMatches = 0;
+  let llmSevMatches = 0;
+  let llmOverallPasses = 0;
+
+  let llmSourceCount = 0;
+  let llmNeedsReviewCount = 0;
+
+  const rows = [];
+
+  for (let index = 0; index < TEST_CASES.length; index++) {
+    const testCase = TEST_CASES[index];
+
+    const rulesResult = analyzeWithRules({
+      title: testCase.text,
+      description: "",
+      assetCategory: testCase.assetCategory,
+    });
+
+    const llmResult = await analyzeComplaint({
+      title: testCase.text,
+      description: "",
+      assetCategory: testCase.assetCategory,
+    });
+
+    const rulesCatOk = rulesResult.category === testCase.expectedCategory;
+    const rulesSevOk = rulesResult.severity === testCase.expectedSeverity;
+    const rulesPass = rulesCatOk && rulesSevOk;
+
+    if (rulesCatOk) rulesCatMatches += 1;
+    if (rulesSevOk) rulesSevMatches += 1;
+    if (rulesPass) rulesOverallPasses += 1;
+
+    const llmCatOk = llmResult.category === testCase.expectedCategory;
+    const llmSevOk = llmResult.severity === testCase.expectedSeverity;
+    const llmPass = llmCatOk && llmSevOk;
+
+    if (llmCatOk) llmCatMatches += 1;
+    if (llmSevOk) llmSevMatches += 1;
+    if (llmPass) llmOverallPasses += 1;
+    if (llmResult.source === "llm") llmSourceCount += 1;
+    if (llmResult.needsReview) llmNeedsReviewCount += 1;
+
+    rows.push({
+      "#": index + 1,
+      Text:
+        testCase.text.length > 35
+          ? `${testCase.text.slice(0, 32)}...`
+          : testCase.text,
+      "Exp Cat": testCase.expectedCategory,
+      "Rules Cat": rulesResult.category,
+      "LLM Cat": llmResult.category,
+      "Exp Sev": testCase.expectedSeverity,
+      "Rules Sev": rulesResult.severity,
+      "LLM Sev": llmResult.severity,
+      "LLM Source": llmResult.source,
+      "Cat Match": llmCatOk ? "YES" : "NO",
+      "Sev Match": llmSevOk ? "YES" : "NO",
+    });
+
+    if (index < TEST_CASES.length - 1) {
+      await sleep(1000);
+    }
+  }
+
+  console.table(rows);
+
+  const total = TEST_CASES.length;
+  const rulesCatAcc = ((rulesCatMatches / total) * 100).toFixed(1);
+  const rulesSevAcc = ((rulesSevMatches / total) * 100).toFixed(1);
+  const llmCatAcc = ((llmCatMatches / total) * 100).toFixed(1);
+  const llmSevAcc = ((llmSevMatches / total) * 100).toFixed(1);
+
+  console.log("\n--- Comparison Summary ---");
+  console.log(`Rules Category Accuracy: ${rulesCatMatches}/${total} (${rulesCatAcc}%)`);
+  console.log(`LLM Category Accuracy:   ${llmCatMatches}/${total} (${llmCatAcc}%)`);
+  console.log(`Rules Severity Accuracy: ${rulesSevMatches}/${total} (${rulesSevAcc}%)`);
+  console.log(`LLM Severity Accuracy:   ${llmSevMatches}/${total} (${llmSevAcc}%)`);
+  console.log(`Rules Overall Passes:    ${rulesOverallPasses}/${total}`);
+  console.log(`LLM Overall Passes:      ${llmOverallPasses}/${total}`);
+  console.log(`LLM Source Usage:        ${llmSourceCount}/${total}`);
+  console.log(`LLM needsReview Count:   ${llmNeedsReviewCount}/${total}`);
+}
