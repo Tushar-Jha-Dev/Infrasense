@@ -6,6 +6,7 @@ import { useAuth } from "../../context/useAuth.js";
 import { roleHome } from "../../utils/roleHome.js";
 import Alert from "../../components/ui/Alert.jsx";
 import PageHeader from "../../components/ui/PageHeader.jsx";
+import Logo from "../../components/ui/Logo.jsx";
 import "./ChangePassword.css";
 
 function ChangePassword() {
@@ -71,6 +72,16 @@ function ChangePassword() {
 
   return (
     <div className="change-password-page">
+      <div className="change-password-brand">
+        <Link
+          to={user ? roleHome(user.role) : "/"}
+          className="change-password-logo-link"
+          aria-label="InfraSense home"
+        >
+          <Logo variant="full" height={50} />
+        </Link>
+      </div>
+
       <PageHeader
         title={isForced ? "Choose a New Password" : "Change Password"}
         subtitle={

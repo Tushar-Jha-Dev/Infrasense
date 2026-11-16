@@ -78,6 +78,31 @@
   font-weight: 500;
 }
 
+.auth-modal-title-with-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.auth-modal-header-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.auth-modal-title-text {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.auth-modal-logo-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
 @media (max-width: 480px) {
   .auth-card {
     padding: var(--space-5);

@@ -1,0 +1,34 @@
+.ui-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  max-width: 100%;
+  line-height: 1;
+}
+
+.logo-dark {
+  display: none;
+}
+
+.logo-light {
+  display: block;
+}
+
+[data-theme="dark"] .logo-light {
+  display: none;
+}
+
+[data-theme="dark"] .logo-dark {
+  display: block;
+}
+
+.logo-light,
+.logo-dark {
+  display: block;
+  max-width: 100%;
+  height: 100%;
+  width: auto;
+  border-radius: var(--radius-sm);
+  object-fit: contain;
+}

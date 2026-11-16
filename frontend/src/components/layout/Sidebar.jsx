@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { roleHome } from "../../utils/roleHome.js";
+import Logo from "../ui/Logo.jsx";
 import "./Sidebar.css";
 
 const NAV_LINKS_BY_ROLE = {
@@ -86,8 +87,9 @@ function Sidebar({ role, isOpen, onClose, returnFocusRef }) {
             to={roleHome(role)}
             className="sidebar-brand"
             onClick={onClose}
+            aria-label="InfraSense home"
           >
-            InfraSense
+            <Logo variant="full" height={42} />
           </Link>
 
           <button

@@ -1,6 +1,7 @@
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ClipboardList, UserCheck, Wrench } from "lucide-react";
 import Modal from "../../components/ui/Modal.jsx";
+import Logo from "../../components/ui/Logo.jsx";
 import { useAuth } from "../../context/useAuth.js";
 import { roleHome } from "../../utils/roleHome.js";
 import { LoginForm } from "./Login.jsx";
@@ -53,8 +54,12 @@ function Landing({ authModal }) {
     <div className="landing-page">
       <header className="landing-header">
         <div className="container landing-header-inner">
-          <Link to="/" className="landing-brand">
-            InfraSense
+          <Link
+            to={user ? roleHome(user.role) : "/"}
+            className="landing-brand"
+            aria-label="InfraSense home"
+          >
+            <Logo variant="full" height={42} />
           </Link>
           <nav className="landing-nav" aria-label="Account navigation">
             <Link to="/login" className="landing-nav-link">
@@ -69,6 +74,15 @@ function Landing({ authModal }) {
 
       <main className="container landing-main">
         <section className="landing-hero" aria-labelledby="landing-hero-title">
+          <div className="landing-hero-logo">
+            <Link
+              to={user ? roleHome(user.role) : "/"}
+              className="landing-hero-logo-link"
+              aria-label="InfraSense home"
+            >
+              <Logo variant="full" height={52} />
+            </Link>
+          </div>
           <h1 id="landing-hero-title" className="landing-hero-title">
             Clear campus maintenance tracking from report to repair
           </h1>
@@ -106,7 +120,18 @@ function Landing({ authModal }) {
         <Modal
           open
           onClose={handleCloseModal}
-          title="Sign in"
+          title={
+            <div className="auth-modal-header-brand">
+              <Link
+                to={user ? roleHome(user.role) : "/"}
+                className="auth-modal-logo-link"
+                aria-label="InfraSense home"
+              >
+                <Logo variant="full" height={50} />
+              </Link>
+              <span className="auth-modal-title-text">Sign in</span>
+            </div>
+          }
           subtitle="Enter your account credentials to continue."
         >
           <LoginForm />
@@ -117,7 +142,18 @@ function Landing({ authModal }) {
         <Modal
           open
           onClose={handleCloseModal}
-          title="Create account"
+          title={
+            <div className="auth-modal-header-brand">
+              <Link
+                to={user ? roleHome(user.role) : "/"}
+                className="auth-modal-logo-link"
+                aria-label="InfraSense home"
+              >
+                <Logo variant="full" height={50} />
+              </Link>
+              <span className="auth-modal-title-text">Create account</span>
+            </div>
+          }
           subtitle="Register as a campus user to report and track maintenance issues."
         >
           <RegisterForm />

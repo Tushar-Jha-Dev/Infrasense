@@ -1,7 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LogOut, Menu } from "lucide-react";
 import { useAuth } from "../../context/useAuth.js";
+import { roleHome } from "../../utils/roleHome.js";
 import { getInitials, getAvatarColor } from "../../utils/imageCrop.js";
+import Logo from "../ui/Logo.jsx";
 import "./Topbar.css";
 
 function Topbar({ isSidebarOpen, onOpenSidebar, menuButtonRef }) {
@@ -27,6 +29,19 @@ function Topbar({ isSidebarOpen, onOpenSidebar, menuButtonRef }) {
         >
           <Menu size={20} aria-hidden="true" />
         </button>
+
+        <Link
+          to={roleHome(user?.role)}
+          className="topbar-brand"
+          aria-label="InfraSense home"
+        >
+          <span className="topbar-brand-full">
+            <Logo variant="full" height={40} />
+          </span>
+          <span className="topbar-brand-mark">
+            <Logo variant="mark" height={32} />
+          </span>
+        </Link>
       </div>
 
       <div className="topbar-right">

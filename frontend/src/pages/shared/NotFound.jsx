@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/useAuth.js";
 import { roleHome } from "../../utils/roleHome.js";
+import Logo from "../../components/ui/Logo.jsx";
 
 function NotFound() {
   const { user } = useAuth();
@@ -36,6 +37,22 @@ function NotFound() {
           boxShadow: "var(--shadow)",
         }}
       >
+        <div
+          style={{
+            marginBottom: "var(--space-4)",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Link
+            to={user ? roleHome(user.role) : "/"}
+            style={{ display: "inline-flex", textDecoration: "none" }}
+            aria-label="InfraSense home"
+          >
+            <Logo variant="full" height={44} />
+          </Link>
+        </div>
+
         <span
           style={{
             display: "inline-block",

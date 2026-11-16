@@ -16,6 +16,8 @@
 }
 
 .landing-brand {
+  display: inline-flex;
+  align-items: center;
   font-family: "Fraunces", Georgia, serif;
   font-size: 22px;
   font-weight: 700;
@@ -54,6 +56,16 @@
 .landing-hero {
   max-width: 680px;
   margin-bottom: var(--space-7);
+}
+
+.landing-hero-logo {
+  display: flex;
+  margin-bottom: var(--space-4);
+}
+
+.landing-hero-logo-link {
+  display: inline-flex;
+  text-decoration: none;
 }
 
 .landing-hero-title {
