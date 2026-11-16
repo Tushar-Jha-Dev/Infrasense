@@ -35,12 +35,7 @@ function Topbar({ isSidebarOpen, onOpenSidebar, menuButtonRef }) {
           className="topbar-brand"
           aria-label="InfraSense home"
         >
-          <span className="topbar-brand-full">
-            <Logo variant="full" height={40} />
-          </span>
-          <span className="topbar-brand-mark">
-            <Logo variant="mark" height={32} />
-          </span>
+          <Logo variant="full" height={38} />
         </Link>
       </div>
 

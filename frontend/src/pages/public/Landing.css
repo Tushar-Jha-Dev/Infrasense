@@ -58,16 +58,6 @@
   margin-bottom: var(--space-7);
 }
 
-.landing-hero-logo {
-  display: flex;
-  margin-bottom: var(--space-4);
-}
-
-.landing-hero-logo-link {
-  display: inline-flex;
-  text-decoration: none;
-}
-
 .landing-hero-title {
   font-size: 32px;
   font-weight: 700;

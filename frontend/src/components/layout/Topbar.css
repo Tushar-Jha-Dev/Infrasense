@@ -90,19 +90,11 @@
   align-items: center;
   margin-left: var(--space-3);
   text-decoration: none;
+  max-width: 100%;
 }
 
 .topbar-brand:hover {
   text-decoration: none;
-}
-
-.topbar-brand-mark {
-  display: none;
-}
-
-.topbar-brand-full {
-  display: inline-flex;
-  align-items: center;
 }
 
 @media (max-width: 768px) {
@@ -123,16 +115,5 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-}
-
-@media (max-width: 360px) {
-  .topbar-brand-full {
-    display: none;
-  }
-
-  .topbar-brand-mark {
-    display: inline-flex;
-    align-items: center;
   }
 }

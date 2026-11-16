@@ -1,3 +1,4 @@
+import { useIsDarkTheme } from "../../hooks/useIsDarkTheme.js";
 import "./Logo.css";
 
 const LOGO_CONFIG = {
@@ -19,19 +20,19 @@ const LOGO_CONFIG = {
   },
 };
 
-function Logo({ variant = "full", height = 42, className = "" }) {
+function Logo({ variant = "full", height = 40, className = "" }) {
+  const isDark = useIsDarkTheme();
   const config = LOGO_CONFIG[variant] || LOGO_CONFIG.full;
   const numHeight =
-    typeof height === "number" ? height : parseInt(height, 10) || 42;
+    typeof height === "number" ? height : parseInt(height, 10) || 40;
 
-  const lightWidth = Math.round(
-    numHeight * (config.lightNaturalWidth / config.lightNaturalHeight)
-  );
-  const darkWidth = config.dark
-    ? Math.round(
-        numHeight * (config.darkNaturalWidth / config.darkNaturalHeight)
-      )
-    : lightWidth;
+  const shouldUseDark = isDark && Boolean(config.dark);
+  const src = shouldUseDark ? config.dark : config.light;
+
+  const widthRatio = shouldUseDark
+    ? config.darkNaturalWidth / config.darkNaturalHeight
+    : config.lightNaturalWidth / config.lightNaturalHeight;
+  const numWidth = Math.round(numHeight * widthRatio);
 
   const handleImgError = (e) => {
     const img = e.currentTarget;
@@ -52,24 +53,12 @@ function Logo({ variant = "full", height = 42, className = "" }) {
       style={{ height: numHeight }}
     >
       <img
-        src={config.light}
-        className="logo-light"
+        src={src}
         alt="InfraSense"
-        width={lightWidth}
+        width={numWidth}
         height={numHeight}
         onError={handleImgError}
       />
-      {config.dark && (
-        <img
-          src={config.dark}
-          className="logo-dark"
-          alt=""
-          aria-hidden="true"
-          width={darkWidth}
-          height={numHeight}
-          onError={handleImgError}
-        />
-      )}
     </span>
   );
 }

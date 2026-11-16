@@ -49,7 +49,7 @@ function NotFound() {
             style={{ display: "inline-flex", textDecoration: "none" }}
             aria-label="InfraSense home"
           >
-            <Logo variant="full" height={44} />
+            <Logo variant="full" height={50} />
           </Link>
         </div>
 

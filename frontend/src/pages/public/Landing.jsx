@@ -59,7 +59,7 @@ function Landing({ authModal }) {
             className="landing-brand"
             aria-label="InfraSense home"
           >
-            <Logo variant="full" height={42} />
+            <Logo variant="full" height={46} />
           </Link>
           <nav className="landing-nav" aria-label="Account navigation">
             <Link to="/login" className="landing-nav-link">
@@ -74,15 +74,6 @@ function Landing({ authModal }) {
 
       <main className="container landing-main">
         <section className="landing-hero" aria-labelledby="landing-hero-title">
-          <div className="landing-hero-logo">
-            <Link
-              to={user ? roleHome(user.role) : "/"}
-              className="landing-hero-logo-link"
-              aria-label="InfraSense home"
-            >
-              <Logo variant="full" height={52} />
-            </Link>
-          </div>
           <h1 id="landing-hero-title" className="landing-hero-title">
             Clear campus maintenance tracking from report to repair
           </h1>

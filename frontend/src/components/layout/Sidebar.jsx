@@ -89,7 +89,7 @@ function Sidebar({ role, isOpen, onClose, returnFocusRef }) {
             onClick={onClose}
             aria-label="InfraSense home"
           >
-            <Logo variant="full" height={42} />
+            <Logo variant="full" height={40} />
           </Link>
 
           <button
