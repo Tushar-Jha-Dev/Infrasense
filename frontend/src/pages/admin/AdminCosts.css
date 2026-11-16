@@ -61,7 +61,7 @@
   width: 18px;
   height: 18px;
   background-color: var(--primary);
-  color: #ffffff;
+  color: var(--on-primary);
   border-radius: 50%;
   font-size: 11px;
   font-weight: 600;
@@ -127,13 +127,13 @@
 .admin-costs-preset-btn-active {
   background-color: var(--primary);
   border-color: var(--primary);
-  color: #ffffff;
+  color: var(--on-primary);
 }
 
 .admin-costs-preset-btn-active:hover {
   background-color: var(--primary-hover);
   border-color: var(--primary-hover);
-  color: #ffffff;
+  color: var(--on-primary);
 }
 
 .admin-costs-fields-row {

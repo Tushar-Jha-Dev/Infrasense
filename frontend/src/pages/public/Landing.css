@@ -36,6 +36,26 @@
   gap: var(--space-4);
 }
 
+.landing-theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.landing-theme-btn:hover {
+  background-color: var(--surface-2);
+  color: var(--primary);
+}
+
 .landing-nav-link {
   color: var(--text);
   font-weight: 500;

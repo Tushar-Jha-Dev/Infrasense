@@ -34,9 +34,10 @@ import EmptyState from "../../components/ui/EmptyState.jsx";
 import PageHeader from "../../components/ui/PageHeader.jsx";
 import Spinner from "../../components/ui/Spinner.jsx";
 import StatCard from "../../components/ui/StatCard.jsx";
+import { useTheme } from "../../context/ThemeContext.jsx";
 import "./AdminCosts.css";
 
-const PRIMARY_COLOR = "#0F5E5C";
+const PRIMARY_COLOR = "var(--primary)";
 
 const PRESET_OPTIONS = [
   { id: "all", label: "All time" },
@@ -128,6 +129,7 @@ const formatPeriodLabel = (period, groupBy) => {
 };
 
 function AdminCosts() {
+  const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // URL query params
@@ -1066,7 +1068,7 @@ function AdminCosts() {
               role="region"
               aria-label="Bar chart showing maintenance costs over time"
             >
-              <ResponsiveContainer width="100%" height={260}>
+              <ResponsiveContainer key={theme} width="100%" height={260}>
                 <BarChart
                   data={byPeriod}
                   margin={{ top: 15, right: 20, left: 10, bottom: 5 }}
@@ -1074,16 +1076,16 @@ function AdminCosts() {
                   <CartesianGrid
                     strokeDasharray="3 3"
                     vertical={false}
-                    stroke="#E2DDD5"
+                    stroke="var(--border)"
                   />
                   <XAxis
                     dataKey="period"
                     tickFormatter={(val) => formatPeriodLabel(val, groupBy)}
-                    tick={{ fill: "#5E6B6C", fontSize: 12 }}
+                    tick={{ fill: "var(--text-muted)", fontSize: 12 }}
                   />
                   <YAxis
                     tickFormatter={(val) => `₹${val}`}
-                    tick={{ fill: "#5E6B6C", fontSize: 12 }}
+                    tick={{ fill: "var(--text-muted)", fontSize: 12 }}
                   />
                   <Tooltip
                     labelFormatter={(val) => formatPeriodLabel(val, groupBy)}
@@ -1092,9 +1094,10 @@ function AdminCosts() {
                       `Total cost (${item.payload.count} repairs)`,
                     ]}
                     contentStyle={{
-                      backgroundColor: "#FFFFFF",
-                      border: "1px solid #DDD6CA",
-                      borderRadius: "6px",
+                      backgroundColor: "var(--surface)",
+                      border: "1px solid var(--border)",
+                      borderRadius: "var(--radius-sm)",
+                      color: "var(--text)",
                     }}
                   />
                   <Bar
@@ -1123,7 +1126,7 @@ function AdminCosts() {
                 role="region"
                 aria-label="Horizontal bar chart of costs by category"
               >
-                <ResponsiveContainer width="100%" height={260}>
+                <ResponsiveContainer key={theme} width="100%" height={260}>
                   <BarChart
                     layout="vertical"
                     data={byCategory}
@@ -1132,18 +1135,18 @@ function AdminCosts() {
                     <CartesianGrid
                       strokeDasharray="3 3"
                       horizontal={false}
-                      stroke="#E2DDD5"
+                      stroke="var(--border)"
                     />
                     <XAxis
                       type="number"
                       tickFormatter={(val) => `₹${val}`}
-                      tick={{ fill: "#5E6B6C", fontSize: 11 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 11 }}
                     />
                     <YAxis
                       type="category"
                       dataKey="category"
                       width={110}
-                      tick={{ fill: "#5E6B6C", fontSize: 11 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 11 }}
                     />
                     <Tooltip
                       formatter={(val, name, item) => [
@@ -1151,9 +1154,10 @@ function AdminCosts() {
                         `Cost (${item.payload.count} repairs)`,
                       ]}
                       contentStyle={{
-                        backgroundColor: "#FFFFFF",
-                        border: "1px solid #DDD6CA",
-                        borderRadius: "6px",
+                        backgroundColor: "var(--surface)",
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius-sm)",
+                        color: "var(--text)",
                       }}
                     />
                     <Bar
@@ -1180,7 +1184,7 @@ function AdminCosts() {
                 role="region"
                 aria-label="Horizontal bar chart of costs by building"
               >
-                <ResponsiveContainer width="100%" height={260}>
+                <ResponsiveContainer key={theme} width="100%" height={260}>
                   <BarChart
                     layout="vertical"
                     data={byBuilding}
@@ -1189,18 +1193,18 @@ function AdminCosts() {
                     <CartesianGrid
                       strokeDasharray="3 3"
                       horizontal={false}
-                      stroke="#E2DDD5"
+                      stroke="var(--border)"
                     />
                     <XAxis
                       type="number"
                       tickFormatter={(val) => `₹${val}`}
-                      tick={{ fill: "#5E6B6C", fontSize: 11 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 11 }}
                     />
                     <YAxis
                       type="category"
                       dataKey="building"
                       width={120}
-                      tick={{ fill: "#5E6B6C", fontSize: 11 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 11 }}
                     />
                     <Tooltip
                       formatter={(val, name, item) => [
@@ -1208,14 +1212,15 @@ function AdminCosts() {
                         `Cost (${item.payload.count} repairs)`,
                       ]}
                       contentStyle={{
-                        backgroundColor: "#FFFFFF",
-                        border: "1px solid #DDD6CA",
-                        borderRadius: "6px",
+                        backgroundColor: "var(--surface)",
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius-sm)",
+                        color: "var(--text)",
                       }}
                     />
                     <Bar
                       dataKey="cost"
-                      fill="#2B6A8F"
+                      fill="var(--chart-3)"
                       radius={[0, 4, 4, 0]}
                     />
                   </BarChart>

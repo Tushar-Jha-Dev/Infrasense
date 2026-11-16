@@ -1,8 +1,9 @@
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { ClipboardList, UserCheck, Wrench } from "lucide-react";
+import { ClipboardList, Moon, Sun, UserCheck, Wrench } from "lucide-react";
 import Modal from "../../components/ui/Modal.jsx";
 import Logo from "../../components/ui/Logo.jsx";
 import { useAuth } from "../../context/useAuth.js";
+import { useTheme } from "../../context/ThemeContext.jsx";
 import { roleHome } from "../../utils/roleHome.js";
 import { LoginForm } from "./Login.jsx";
 import { RegisterForm } from "./Register.jsx";
@@ -31,6 +32,7 @@ const WORKFLOW_STEPS = [
 
 function Landing({ authModal }) {
   const { user, loading } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -62,6 +64,20 @@ function Landing({ authModal }) {
             <Logo variant="full" height={46} />
           </Link>
           <nav className="landing-nav" aria-label="Account navigation">
+            <button
+              type="button"
+              className="landing-theme-btn"
+              onClick={toggleTheme}
+              aria-label={
+                theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+              }
+            >
+              {theme === "dark" ? (
+                <Sun size={18} aria-hidden="true" />
+              ) : (
+                <Moon size={18} aria-hidden="true" />
+              )}
+            </button>
             <Link to="/login" className="landing-nav-link">
               Login
             </Link>

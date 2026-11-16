@@ -22,6 +22,7 @@ import EmptyState from "../../components/ui/EmptyState.jsx";
 import PageHeader from "../../components/ui/PageHeader.jsx";
 import Spinner from "../../components/ui/Spinner.jsx";
 import StatCard from "../../components/ui/StatCard.jsx";
+import { useTheme } from "../../context/ThemeContext.jsx";
 import "./Analytics.css";
 
 // Colors from styles/tokens.css
@@ -45,6 +46,7 @@ const SEVERITY_COLORS = {
 const PRIMARY_COLOR = "var(--primary)";
 
 function Analytics() {
+  const { theme } = useTheme();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -186,7 +188,7 @@ function Analytics() {
                 role="region"
                 aria-label="Bar chart showing complaints reported per month"
               >
-                <ResponsiveContainer width="100%" height={260}>
+                <ResponsiveContainer key={theme} width="100%" height={260}>
                   <BarChart
                     data={monthly || []}
                     margin={{ top: 20, right: 10, left: -15, bottom: 5 }}
@@ -194,31 +196,32 @@ function Analytics() {
                     <CartesianGrid
                       strokeDasharray="3 3"
                       vertical={false}
-                      stroke="#E2DDD5"
+                      stroke="var(--border)"
                     />
                     <XAxis
                       dataKey="month"
                       tickFormatter={(m) => formatMonth(m, "short")}
-                      tick={{ fill: "#5E6B6C", fontSize: 12 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 12 }}
                     />
                     <YAxis
                       allowDecimals={false}
-                      tick={{ fill: "#5E6B6C", fontSize: 12 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 12 }}
                     />
                     <Tooltip
                       labelFormatter={(m) => formatMonth(m, "full")}
                       formatter={(val) => [val, "Reported"]}
                       contentStyle={{
-                        backgroundColor: "#FFFFFF",
-                        border: "1px solid #DDD6CA",
-                        borderRadius: "6px",
+                        backgroundColor: "var(--surface)",
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius-sm)",
+                        color: "var(--text)",
                       }}
                     />
                     <Bar dataKey="reported" fill={PRIMARY_COLOR} radius={[4, 4, 0, 0]}>
                       <LabelList
                         dataKey="reported"
                         position="top"
-                        fill="#1F2A2B"
+                        fill="var(--text)"
                         fontSize={12}
                         fontWeight={600}
                       />
@@ -241,7 +244,7 @@ function Analytics() {
                 role="region"
                 aria-label="Horizontal bar chart showing issues by category"
               >
-                <ResponsiveContainer width="100%" height={260}>
+                <ResponsiveContainer key={theme} width="100%" height={260}>
                   <BarChart
                     layout="vertical"
                     data={byCategory || []}
@@ -250,32 +253,33 @@ function Analytics() {
                     <CartesianGrid
                       strokeDasharray="3 3"
                       horizontal={false}
-                      stroke="#E2DDD5"
+                      stroke="var(--border)"
                     />
                     <XAxis
                       type="number"
                       allowDecimals={false}
-                      tick={{ fill: "#5E6B6C", fontSize: 12 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 12 }}
                     />
                     <YAxis
                       type="category"
                       dataKey="category"
                       width={100}
-                      tick={{ fill: "#5E6B6C", fontSize: 11 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 11 }}
                     />
                     <Tooltip
                       formatter={(val) => [val, "Complaints"]}
                       contentStyle={{
-                        backgroundColor: "#FFFFFF",
-                        border: "1px solid #DDD6CA",
-                        borderRadius: "6px",
+                        backgroundColor: "var(--surface)",
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius-sm)",
+                        color: "var(--text)",
                       }}
                     />
                     <Bar dataKey="count" fill={PRIMARY_COLOR} radius={[0, 4, 4, 0]}>
                       <LabelList
                         dataKey="count"
                         position="right"
-                        fill="#1F2A2B"
+                        fill="var(--text)"
                         fontSize={12}
                         fontWeight={600}
                       />
@@ -298,7 +302,7 @@ function Analytics() {
                 role="region"
                 aria-label="Horizontal bar chart showing issues by location"
               >
-                <ResponsiveContainer width="100%" height={260}>
+                <ResponsiveContainer key={theme} width="100%" height={260}>
                   <BarChart
                     layout="vertical"
                     data={byLocation || []}
@@ -307,32 +311,33 @@ function Analytics() {
                     <CartesianGrid
                       strokeDasharray="3 3"
                       horizontal={false}
-                      stroke="#E2DDD5"
+                      stroke="var(--border)"
                     />
                     <XAxis
                       type="number"
                       allowDecimals={false}
-                      tick={{ fill: "#5E6B6C", fontSize: 12 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 12 }}
                     />
                     <YAxis
                       type="category"
                       dataKey="location"
                       width={110}
-                      tick={{ fill: "#5E6B6C", fontSize: 11 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 11 }}
                     />
                     <Tooltip
                       formatter={(val) => [val, "Complaints"]}
                       contentStyle={{
-                        backgroundColor: "#FFFFFF",
-                        border: "1px solid #DDD6CA",
-                        borderRadius: "6px",
+                        backgroundColor: "var(--surface)",
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius-sm)",
+                        color: "var(--text)",
                       }}
                     />
                     <Bar dataKey="count" fill={PRIMARY_COLOR} radius={[0, 4, 4, 0]}>
                       <LabelList
                         dataKey="count"
                         position="right"
-                        fill="#1F2A2B"
+                        fill="var(--text)"
                         fontSize={12}
                         fontWeight={600}
                       />
@@ -355,7 +360,7 @@ function Analytics() {
                 role="region"
                 aria-label="Line chart showing monthly maintenance expenditure"
               >
-                <ResponsiveContainer width="100%" height={260}>
+                <ResponsiveContainer key={theme} width="100%" height={260}>
                   <LineChart
                     data={monthly || []}
                     margin={{ top: 20, right: 15, left: 0, bottom: 5 }}
@@ -363,24 +368,25 @@ function Analytics() {
                     <CartesianGrid
                       strokeDasharray="3 3"
                       vertical={false}
-                      stroke="#E2DDD5"
+                      stroke="var(--border)"
                     />
                     <XAxis
                       dataKey="month"
                       tickFormatter={(m) => formatMonth(m, "short")}
-                      tick={{ fill: "#5E6B6C", fontSize: 12 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 12 }}
                     />
                     <YAxis
-                      tick={{ fill: "#5E6B6C", fontSize: 11 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 11 }}
                       tickFormatter={(val) => `₹${val}`}
                     />
                     <Tooltip
                       labelFormatter={(m) => formatMonth(m, "full")}
                       formatter={(val) => [formatCurrency(val), "Cost"]}
                       contentStyle={{
-                        backgroundColor: "#FFFFFF",
-                        border: "1px solid #DDD6CA",
-                        borderRadius: "6px",
+                        backgroundColor: "var(--surface)",
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius-sm)",
+                        color: "var(--text)",
                       }}
                     />
                     <Line
@@ -396,7 +402,7 @@ function Analytics() {
                         dataKey="cost"
                         position="top"
                         formatter={(v) => (v > 0 ? `₹${v}` : "0")}
-                        fill="#1F2A2B"
+                        fill="var(--text)"
                         fontSize={11}
                         fontWeight={600}
                       />
@@ -419,7 +425,7 @@ function Analytics() {
                 role="region"
                 aria-label="Bar chart showing complaints by status"
               >
-                <ResponsiveContainer width="100%" height={260}>
+                <ResponsiveContainer key={theme} width="100%" height={260}>
                   <BarChart
                     data={byStatus || []}
                     margin={{ top: 20, right: 10, left: -15, bottom: 20 }}
@@ -427,11 +433,11 @@ function Analytics() {
                     <CartesianGrid
                       strokeDasharray="3 3"
                       vertical={false}
-                      stroke="#E2DDD5"
+                      stroke="var(--border)"
                     />
                     <XAxis
                       dataKey="status"
-                      tick={{ fill: "#5E6B6C", fontSize: 12 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 12 }}
                       interval={0}
                       angle={-20}
                       textAnchor="end"
@@ -439,14 +445,15 @@ function Analytics() {
                     />
                     <YAxis
                       allowDecimals={false}
-                      tick={{ fill: "#5E6B6C", fontSize: 12 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 12 }}
                     />
                     <Tooltip
                       formatter={(val) => [val, "Complaints"]}
                       contentStyle={{
-                        backgroundColor: "#FFFFFF",
-                        border: "1px solid #DDD6CA",
-                        borderRadius: "6px",
+                        backgroundColor: "var(--surface)",
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius-sm)",
+                        color: "var(--text)",
                       }}
                     />
                     <Bar dataKey="count" radius={[4, 4, 0, 0]}>
@@ -459,7 +466,7 @@ function Analytics() {
                       <LabelList
                         dataKey="count"
                         position="top"
-                        fill="#1F2A2B"
+                        fill="var(--text)"
                         fontSize={12}
                         fontWeight={600}
                       />
@@ -482,7 +489,7 @@ function Analytics() {
                 role="region"
                 aria-label="Bar chart showing complaints by severity"
               >
-                <ResponsiveContainer width="100%" height={260}>
+                <ResponsiveContainer key={theme} width="100%" height={260}>
                   <BarChart
                     data={bySeverity || []}
                     margin={{ top: 20, right: 10, left: -15, bottom: 20 }}
@@ -490,22 +497,23 @@ function Analytics() {
                     <CartesianGrid
                       strokeDasharray="3 3"
                       vertical={false}
-                      stroke="#E2DDD5"
+                      stroke="var(--border)"
                     />
                     <XAxis
                       dataKey="severity"
-                      tick={{ fill: "#5E6B6C", fontSize: 12 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 12 }}
                     />
                     <YAxis
                       allowDecimals={false}
-                      tick={{ fill: "#5E6B6C", fontSize: 12 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 12 }}
                     />
                     <Tooltip
                       formatter={(val) => [val, "Complaints"]}
                       contentStyle={{
-                        backgroundColor: "#FFFFFF",
-                        border: "1px solid #DDD6CA",
-                        borderRadius: "6px",
+                        backgroundColor: "var(--surface)",
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius-sm)",
+                        color: "var(--text)",
                       }}
                     />
                     <Bar dataKey="count" radius={[4, 4, 0, 0]}>
@@ -518,7 +526,7 @@ function Analytics() {
                       <LabelList
                         dataKey="count"
                         position="top"
-                        fill="#1F2A2B"
+                        fill="var(--text)"
                         fontSize={12}
                         fontWeight={600}
                       />

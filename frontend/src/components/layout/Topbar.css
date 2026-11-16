@@ -62,7 +62,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  color: #ffffff;
+  color: var(--on-primary);
   font-size: 13px;
   font-weight: 600;
   flex-shrink: 0;
@@ -95,6 +95,26 @@
 
 .topbar-brand:hover {
   text-decoration: none;
+}
+
+.topbar-theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.topbar-theme-btn:hover {
+  background-color: var(--surface-2);
+  color: var(--primary);
 }
 
 @media (max-width: 768px) {

@@ -249,9 +249,9 @@
   padding: 1px 6px;
   font-size: 11px;
   font-weight: 600;
-  background-color: #FEE4E2;
+  background-color: color-mix(in srgb, var(--danger) 12%, var(--surface));
   color: var(--danger);
-  border: 1px solid #FECDCA;
+  border: 1px solid color-mix(in srgb, var(--danger) 30%, var(--surface));
   border-radius: var(--radius-sm);
 }
 

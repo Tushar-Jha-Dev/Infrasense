@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import { LogOut, Menu } from "lucide-react";
+import { LogOut, Menu, Moon, Sun } from "lucide-react";
 import { useAuth } from "../../context/useAuth.js";
+import { useTheme } from "../../context/ThemeContext.jsx";
 import { roleHome } from "../../utils/roleHome.js";
 import { getInitials, getAvatarColor } from "../../utils/imageCrop.js";
 import Logo from "../ui/Logo.jsx";
@@ -8,6 +9,7 @@ import "./Topbar.css";
 
 function Topbar({ isSidebarOpen, onOpenSidebar, menuButtonRef }) {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -59,6 +61,21 @@ function Topbar({ isSidebarOpen, onOpenSidebar, menuButtonRef }) {
           <span className="topbar-user-name">{user?.name}</span>
           <span className="topbar-role-badge">{user?.role}</span>
         </div>
+
+        <button
+          type="button"
+          className="topbar-theme-btn"
+          onClick={toggleTheme}
+          aria-label={
+            theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+          }
+        >
+          {theme === "dark" ? (
+            <Sun size={18} aria-hidden="true" />
+          ) : (
+            <Moon size={18} aria-hidden="true" />
+          )}
+        </button>
 
         <button
           type="button"

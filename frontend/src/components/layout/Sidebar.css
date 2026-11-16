@@ -114,8 +114,7 @@
     display: block;
     position: fixed;
     inset: 0;
-    background-color: var(--text);
-    opacity: 0.4;
+    background-color: var(--overlay);
     z-index: 20;
   }
 }

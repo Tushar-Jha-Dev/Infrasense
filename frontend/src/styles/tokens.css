@@ -1,4 +1,6 @@
 :root {
+  color-scheme: light;
+
   --bg: #F6F3EE;            /* warm off-white page background */
   --surface: #FFFFFF;       /* cards, tables, forms */
   --surface-2: #EFEAE2;     /* subtle panels, table headers */
@@ -39,6 +41,8 @@
   --danger-hover: #911B12;
   --focus: #0F5E5C;
 
+  --overlay: rgba(31, 42, 43, 0.45);
+
   --radius: 8px;
   --radius-sm: 6px;
   --shadow: 0 1px 2px rgba(31, 42, 43, 0.08);
@@ -49,4 +53,52 @@
   --space-5: 24px;
   --space-6: 32px;
   --space-7: 48px;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #101617;
+  --surface: #172022;
+  --surface-2: #1F2A2C;
+  --border: #5A7579;
+  --text: #E8EFEE;
+  --text-muted: #9DB0AE;
+
+  --primary: #20B2AA;
+  --primary-hover: #2DD4BF;
+  --primary-soft: #1A3332;
+  --on-primary: #101617;
+
+  /* Severity (only for severity badges) */
+  --sev-low: #4ADE80;
+  --sev-medium: #FBBF24;
+  --sev-high: #FB923C;
+  --sev-critical: #F87171;
+
+  /* Status (only for status badges) */
+  --st-submitted: #94A3B8;
+  --st-review: #FCD34D;
+  --st-assigned: #60A5FA;
+  --st-progress: #2DD4BF;
+  --st-resolved: #4ADE80;
+  --st-closed: #94A3B8;
+
+  /* Categorical Chart Palette */
+  --chart-1: #20B2AA;
+  --chart-2: #FBBF24;
+  --chart-3: #60A5FA;
+  --chart-4: #FB923C;
+  --chart-5: #4ADE80;
+  --chart-6: #C084FC;
+  --chart-7: #F87171;
+  --chart-8: #94A3B8;
+
+  --danger: #F87171;
+  --danger-hover: #FCA5A5;
+  --focus: #20B2AA;
+
+  --overlay: rgba(0, 0, 0, 0.65);
+
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.35);
 }

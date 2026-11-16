@@ -48,7 +48,7 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  color: #ffffff;
+  color: var(--on-primary);
   font-family: "Fraunces", Georgia, serif;
   font-size: 26px;
   font-weight: 600;

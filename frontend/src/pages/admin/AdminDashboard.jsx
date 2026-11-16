@@ -26,6 +26,7 @@ import EmptyState from "../../components/ui/EmptyState.jsx";
 import PageHeader from "../../components/ui/PageHeader.jsx";
 import Spinner from "../../components/ui/Spinner.jsx";
 import StatCard from "../../components/ui/StatCard.jsx";
+import { useTheme } from "../../context/ThemeContext.jsx";
 import "./AdminDashboard.css";
 
 const CHART_PALETTE = [
@@ -40,6 +41,7 @@ const CHART_PALETTE = [
 ];
 
 function AdminDashboard() {
+  const { theme } = useTheme();
   // Shared analytics state
   const [summary, setSummary] = useState(null);
   const [analyticsLoading, setAnalyticsLoading] = useState(true);
@@ -187,7 +189,7 @@ function AdminDashboard() {
                 role="region"
                 aria-label="Line chart showing reported vs resolved complaints over the past 6 months"
               >
-                <ResponsiveContainer width="100%" height={260}>
+                <ResponsiveContainer key={theme} width="100%" height={260}>
                   <LineChart
                     data={summary?.monthly || []}
                     margin={{ top: 15, right: 15, left: -15, bottom: 5 }}
@@ -195,24 +197,25 @@ function AdminDashboard() {
                     <CartesianGrid
                       strokeDasharray="3 3"
                       vertical={false}
-                      stroke="#E2DDD5"
+                      stroke="var(--border)"
                     />
                     <XAxis
                       dataKey="month"
                       tickFormatter={(m) => formatMonth(m, "short")}
-                      tick={{ fill: "#5E6B6C", fontSize: 12 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 12 }}
                     />
                     <YAxis
                       allowDecimals={false}
-                      tick={{ fill: "#5E6B6C", fontSize: 12 }}
+                      tick={{ fill: "var(--text-muted)", fontSize: 12 }}
                     />
                     <Tooltip
                       labelFormatter={(label) => formatMonth(label, "full")}
                       formatter={(val, name) => [val, name]}
                       contentStyle={{
-                        backgroundColor: "#FFFFFF",
-                        border: "1px solid #DDD6CA",
-                        borderRadius: "6px",
+                        backgroundColor: "var(--surface)",
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius-sm)",
+                        color: "var(--text)",
                       }}
                     />
                     <Legend verticalAlign="top" height={36} />
@@ -256,7 +259,7 @@ function AdminDashboard() {
                 aria-label="Donut chart showing complaint distribution by category"
               >
                 <div className="admin-dashboard-donut-chart-box">
-                  <ResponsiveContainer width="100%" height={220}>
+                  <ResponsiveContainer key={theme} width="100%" height={220}>
                     <PieChart>
                       <Pie
                         data={donutData}
@@ -279,9 +282,10 @@ function AdminDashboard() {
                           name,
                         ]}
                         contentStyle={{
-                          backgroundColor: "#FFFFFF",
-                          border: "1px solid #DDD6CA",
-                          borderRadius: "6px",
+                          backgroundColor: "var(--surface)",
+                          border: "1px solid var(--border)",
+                          borderRadius: "var(--radius-sm)",
+                          color: "var(--text)",
                         }}
                       />
                       <text

@@ -17,11 +17,11 @@
 .ui-alert-error {
   color: var(--danger);
   border-color: var(--danger);
-  background-color: rgba(180, 35, 24, 0.08);
+  background-color: color-mix(in srgb, var(--danger) 10%, var(--surface));
 }
 
 .ui-alert-success {
   color: var(--sev-low);
   border-color: var(--sev-low);
-  background-color: rgba(47, 125, 91, 0.08);
+  background-color: color-mix(in srgb, var(--sev-low) 10%, var(--surface));
 }
