@@ -27,3 +27,15 @@ export const deleteUser = (id) =>
   apiRequest(`/users/${id}`, {
     method: "DELETE",
   });
+
+export const listPasswordResets = () => apiRequest("/users/password-resets");
+
+export const resetUserPassword = (id) =>
+  apiRequest(`/users/${id}/reset-password`, {
+    method: "POST",
+  });
+
+export const dismissPasswordReset = (requestId) =>
+  apiRequest(`/users/password-resets/${requestId}/dismiss`, {
+    method: "PATCH",
+  });

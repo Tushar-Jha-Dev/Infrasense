@@ -6,6 +6,7 @@ import Spinner from "./components/ui/Spinner.jsx";
 import Landing from "./pages/public/Landing.jsx";
 import Login from "./pages/public/Login.jsx";
 import Register from "./pages/public/Register.jsx";
+import ForgotPassword from "./pages/public/ForgotPassword.jsx";
 
 // Lazy-loaded page components for route-based code splitting
 const AssetDetails = lazy(() => import("./pages/shared/assets/AssetDetails.jsx"));
@@ -33,6 +34,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* User routes */}
         <Route element={<ProtectedRoute allowedRoles={["user"]} />}>

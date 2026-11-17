@@ -25,3 +25,9 @@ export const changePassword = (data) =>
     method: "PATCH",
     body: JSON.stringify(data),
   });
+
+export const forgotPassword = (email) =>
+  apiRequest("/auth/forgot-password", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });

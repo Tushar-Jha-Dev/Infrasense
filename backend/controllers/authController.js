@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import PasswordResetRequest from "../models/PasswordResetRequest.js";
 import generateToken from "../utils/generateToken.js";
 import { getPrimaryAdminId } from "../utils/primaryAdmin.js";
 
@@ -256,6 +257,57 @@ export const changePassword = async (req, res) => {
     await user.save();
 
     res.status(200).json({ message: "Password changed" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const GENERIC_RESPONSE = {
+      message:
+        "If an account exists, an administrator will contact you with a temporary password.",
+    };
+
+    const body = req.body;
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return res.status(400).json({ message: "Request body must be a JSON object" });
+    }
+
+    const { email } = body;
+    if (typeof email !== "string" || !email.trim()) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+    if (normalizedEmail.length > 254) {
+      return res.status(400).json({ message: "Email is too long" });
+    }
+
+    const user = await User.findOne({ email: normalizedEmail });
+
+    if (user && user.isActive) {
+      const primaryId = await getPrimaryAdminId();
+      const isPrimary = user.role === "admin" && primaryId === user._id.toString();
+
+      if (!isPrimary) {
+        const existingPending = await PasswordResetRequest.findOne({
+          user: user._id,
+          status: "pending",
+        });
+
+        if (!existingPending) {
+          await PasswordResetRequest.create({
+            user: user._id,
+            status: "pending",
+            requestedAt: new Date(),
+          });
+        }
+      }
+    }
+
+    return res.status(200).json(GENERIC_RESPONSE);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

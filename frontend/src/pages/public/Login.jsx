@@ -88,6 +88,12 @@ export function LoginForm() {
           required
         />
 
+        <div className="auth-forgot-row">
+          <Link to="/forgot-password" className="auth-forgot-link">
+            Forgot password?
+          </Link>
+        </div>
+
         <button
           type="submit"
           className="btn btn-primary auth-submit"

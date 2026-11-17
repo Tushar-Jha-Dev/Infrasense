@@ -6,6 +6,7 @@ import {
   getMe,
   updateMe,
   changePassword,
+  forgotPassword,
 } from "../controllers/authController.js";
 import { protect } from "../middleware/auth.js";
 
@@ -44,8 +45,19 @@ const passwordLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+// Rate limiter for forgot-password: max 5 requests per hour per IP.
+const forgotPasswordLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 5,
+  statusCode: 429,
+  message: { message: "Too many requests. Please try again later." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 router.post("/register", registerLimiter, registerUser);
 router.post("/login", loginLimiter, loginUser);
+router.post("/forgot-password", forgotPasswordLimiter, forgotPassword);
 router.get("/me", protect, getMe);
 router.patch("/me", protect, updateMe);
 router.patch("/password", passwordLimiter, protect, changePassword);

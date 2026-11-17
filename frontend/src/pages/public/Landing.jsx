@@ -7,6 +7,7 @@ import { useTheme } from "../../context/ThemeContext.jsx";
 import { roleHome } from "../../utils/roleHome.js";
 import { LoginForm } from "./Login.jsx";
 import { RegisterForm } from "./Register.jsx";
+import { ForgotPasswordForm } from "./ForgotPassword.jsx";
 import "./Landing.css";
 
 const WORKFLOW_STEPS = [
@@ -42,6 +43,8 @@ function Landing({ authModal }) {
       ? "login"
       : location.pathname === "/register"
       ? "register"
+      : location.pathname === "/forgot-password"
+      ? "forgot-password"
       : null);
 
   if (!loading && user && currentModal) {
@@ -164,6 +167,28 @@ function Landing({ authModal }) {
           subtitle="Register as a campus user to report and track maintenance issues."
         >
           <RegisterForm />
+        </Modal>
+      )}
+
+      {currentModal === "forgot-password" && (
+        <Modal
+          open
+          onClose={handleCloseModal}
+          title={
+            <div className="auth-modal-header-brand">
+              <Link
+                to={user ? roleHome(user.role) : "/"}
+                className="auth-modal-logo-link"
+                aria-label="InfraSense home"
+              >
+                <Logo variant="full" height={50} />
+              </Link>
+              <span className="auth-modal-title-text">Forgot password</span>
+            </div>
+          }
+          subtitle="Submit your email to request an administrator password reset."
+        >
+          <ForgotPasswordForm />
         </Modal>
       )}
     </div>

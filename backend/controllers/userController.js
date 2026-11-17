@@ -1,7 +1,9 @@
+import crypto from "node:crypto";
 import mongoose from "mongoose";
 import User from "../models/User.js";
 import Complaint from "../models/Complaint.js";
 import MaintenanceRecord from "../models/MaintenanceRecord.js";
+import PasswordResetRequest from "../models/PasswordResetRequest.js";
 import { getPrimaryAdminId } from "../utils/primaryAdmin.js";
 
 const ALLOWED_ROLES = ["user", "admin", "technician"];
@@ -376,6 +378,179 @@ export const deleteUser = async (req, res) => {
     await User.findByIdAndDelete(req.params.id);
 
     res.status(200).json({ message: "User deleted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const generateSecureTemporaryPassword = (length = 14) => {
+  const UPPER = "ABCDEFGHJKLMNPQRSTUVWXYZ"; // excludes I, O
+  const LOWER = "abcdefghijkmnopqrstuvwxyz"; // excludes l, o
+  const DIGITS = "23456789"; // excludes 0, 1
+  const ALL = UPPER + LOWER + DIGITS;
+
+  const chars = [
+    UPPER[crypto.randomInt(0, UPPER.length)],
+    LOWER[crypto.randomInt(0, LOWER.length)],
+    DIGITS[crypto.randomInt(0, DIGITS.length)],
+  ];
+
+  for (let i = chars.length; i < length; i++) {
+    chars.push(ALL[crypto.randomInt(0, ALL.length)]);
+  }
+
+  // Fisher-Yates shuffle
+  for (let i = chars.length - 1; i > 0; i--) {
+    const j = crypto.randomInt(0, i + 1);
+    [chars[i], chars[j]] = [chars[j], chars[i]];
+  }
+
+  return chars.join("");
+};
+
+export const listPasswordResets = async (req, res) => {
+  try {
+    const primaryId = await getPrimaryAdminId();
+    const callerIsPrimary =
+      req.user?.role === "admin" && primaryId === req.user._id.toString();
+
+    if (!callerIsPrimary) {
+      return res.status(403).json({
+        message: "Only the primary admin can manage other admins",
+      });
+    }
+
+    const requests = await PasswordResetRequest.find({ status: "pending" })
+      .populate("user", "_id name email role")
+      .sort({ requestedAt: -1 });
+
+    const result = requests
+      .filter((r) => r.user)
+      .map((r) => ({
+        _id: r._id,
+        user: r.user._id,
+        userId: r.user._id,
+        name: r.user.name,
+        email: r.user.email,
+        role: r.user.role,
+        requestedAt: r.requestedAt,
+      }));
+
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const resetUserPassword = async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid user id" });
+    }
+
+    const primaryId = await getPrimaryAdminId();
+    const callerIsPrimary =
+      req.user?.role === "admin" && primaryId === req.user._id.toString();
+
+    if (!callerIsPrimary) {
+      return res.status(403).json({
+        message: "Only the primary admin can manage other admins",
+      });
+    }
+
+    if (req.user._id.toString() === req.params.id) {
+      return res.status(403).json({
+        message: "You cannot reset your own password",
+      });
+    }
+
+    const targetUser = await User.findById(req.params.id);
+    if (!targetUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isTargetPrimary =
+      targetUser.role === "admin" && primaryId === targetUser._id.toString();
+    if (isTargetPrimary) {
+      return res.status(403).json({
+        message: "The primary admin cannot be reset",
+      });
+    }
+
+    if (!targetUser.isActive) {
+      return res.status(409).json({ message: "User account is not active" });
+    }
+
+    const resetReq = await PasswordResetRequest.findOne({
+      user: targetUser._id,
+      status: "pending",
+    });
+
+    if (!resetReq) {
+      return res.status(409).json({
+        message: "No pending password reset request found for this user",
+      });
+    }
+
+    const temporaryPassword = generateSecureTemporaryPassword(14);
+
+    targetUser.password = temporaryPassword;
+    targetUser.mustChangePassword = true;
+    await targetUser.save();
+
+    resetReq.status = "completed";
+    resetReq.handledBy = req.user._id;
+    resetReq.handledAt = new Date();
+    await resetReq.save();
+
+    res.setHeader("Cache-Control", "no-store");
+    return res.status(200).json({
+      message: "Temporary password generated successfully",
+      temporaryPassword,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const dismissPasswordReset = async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.requestId)) {
+      return res.status(400).json({ message: "Invalid request id" });
+    }
+
+    const primaryId = await getPrimaryAdminId();
+    const callerIsPrimary =
+      req.user?.role === "admin" && primaryId === req.user._id.toString();
+
+    if (!callerIsPrimary) {
+      return res.status(403).json({
+        message: "Only the primary admin can manage other admins",
+      });
+    }
+
+    const resetReq = await PasswordResetRequest.findById(req.params.requestId);
+    if (!resetReq) {
+      return res.status(404).json({ message: "Password reset request not found" });
+    }
+
+    if (resetReq.status !== "pending") {
+      return res.status(409).json({
+        message: "Only pending requests can be dismissed",
+      });
+    }
+
+    resetReq.status = "dismissed";
+    resetReq.handledBy = req.user._id;
+    resetReq.handledAt = new Date();
+    await resetReq.save();
+
+    return res.status(200).json({
+      message: "Password reset request dismissed",
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

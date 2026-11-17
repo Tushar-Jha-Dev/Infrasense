@@ -1,6 +1,27 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
-import { Plus, Search, UserCheck, UserX, UserMinus, Pencil, Trash2, X, ShieldAlert } from "lucide-react";
-import { createUser, deleteUser, listUsers, updateUser } from "../../api/users.js";
+import {
+  Check,
+  Copy,
+  KeyRound,
+  Pencil,
+  Plus,
+  Search,
+  ShieldAlert,
+  Trash2,
+  UserCheck,
+  UserMinus,
+  UserX,
+  X,
+} from "lucide-react";
+import {
+  createUser,
+  deleteUser,
+  dismissPasswordReset,
+  listPasswordResets,
+  listUsers,
+  resetUserPassword,
+  updateUser,
+} from "../../api/users.js";
 import { useAuth } from "../../context/useAuth.js";
 import { formatDate } from "../../utils/formatDate.js";
 import Alert from "../../components/ui/Alert.jsx";
@@ -93,6 +114,17 @@ function UsersManagement() {
   const [demoteTarget, setDemoteTarget] = useState(null);
   const [demoteLoading, setDemoteLoading] = useState(false);
 
+  // Password reset requests (primary admin only)
+  const [passwordResets, setPasswordResets] = useState([]);
+  const [resetsLoading, setResetsLoading] = useState(isViewerPrimary);
+  const [resetsError, setResetsError] = useState("");
+  const [issueConfirmTarget, setIssueConfirmTarget] = useState(null);
+  const [issueLoading, setIssueLoading] = useState(false);
+  const [dismissConfirmTarget, setDismissConfirmTarget] = useState(null);
+  const [dismissLoading, setDismissLoading] = useState(false);
+  const [temporaryPasswordResult, setTemporaryPasswordResult] = useState(null);
+  const [copied, setCopied] = useState(false);
+
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const addModalTitleId = useId();
@@ -130,8 +162,36 @@ function UsersManagement() {
     };
   }, [roleFilter, refreshTrigger]);
 
+  useEffect(() => {
+    if (!isViewerPrimary) return undefined;
+    let active = true;
+
+    listPasswordResets()
+      .then((data) => {
+        if (active) {
+          setPasswordResets(Array.isArray(data) ? data : []);
+          setResetsError("");
+        }
+      })
+      .catch((err) => {
+        if (active) {
+          setResetsError(err.message || "Failed to load password reset requests");
+        }
+      })
+      .finally(() => {
+        if (active) {
+          setResetsLoading(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [isViewerPrimary, refreshTrigger]);
+
   const reloadUsers = useCallback(() => {
     setLoading(true);
+    setResetsLoading(true);
     setRefreshTrigger((prev) => prev + 1);
   }, []);
 
@@ -380,6 +440,60 @@ function UsersManagement() {
     }
   };
 
+  // Confirm Issue Temporary Password
+  const handleConfirmIssuePassword = async () => {
+    if (!issueConfirmTarget) return;
+    setIssueLoading(true);
+    setActionError("");
+    try {
+      const res = await resetUserPassword(
+        issueConfirmTarget.userId || issueConfirmTarget.user
+      );
+      setTemporaryPasswordResult({
+        name: issueConfirmTarget.name,
+        email: issueConfirmTarget.email,
+        password: res.temporaryPassword,
+      });
+      setIssueConfirmTarget(null);
+      reloadUsers();
+    } catch (err) {
+      setActionError(err.message || "Failed to issue temporary password");
+      setIssueConfirmTarget(null);
+    } finally {
+      setIssueLoading(false);
+    }
+  };
+
+  // Confirm Dismiss Reset
+  const handleConfirmDismissReset = async () => {
+    if (!dismissConfirmTarget) return;
+    setDismissLoading(true);
+    setActionError("");
+    try {
+      await dismissPasswordReset(dismissConfirmTarget._id);
+      setDismissConfirmTarget(null);
+      reloadUsers();
+    } catch (err) {
+      setActionError(err.message || "Failed to dismiss password reset request");
+      setDismissConfirmTarget(null);
+    } finally {
+      setDismissLoading(false);
+    }
+  };
+
+  const handleCopyPassword = () => {
+    if (!temporaryPasswordResult?.password) return;
+    navigator.clipboard.writeText(temporaryPasswordResult.password).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  const handleCloseTempPasswordModal = () => {
+    setTemporaryPasswordResult(null);
+    setCopied(false);
+  };
+
   return (
     <div className="users-page">
       <PageHeader
@@ -412,6 +526,125 @@ function UsersManagement() {
             </div>
           </Alert>
         </div>
+      )}
+
+      {isViewerPrimary && (
+        <section className="users-resets-panel" aria-labelledby="resets-heading">
+          <div className="users-resets-header">
+            <div className="users-resets-title-wrap">
+              <KeyRound size={18} aria-hidden="true" />
+              <h2 id="resets-heading" className="users-resets-title">
+                Password reset requests
+              </h2>
+              <span className="ui-badge role-badge-admin">
+                {passwordResets.length}
+              </span>
+            </div>
+          </div>
+
+          {resetsLoading ? (
+            <div className="users-resets-loading">
+              <Spinner size="sm" />
+            </div>
+          ) : resetsError ? (
+            <div className="users-resets-error">
+              <Alert variant="danger">{resetsError}</Alert>
+            </div>
+          ) : passwordResets.length === 0 ? (
+            <div className="users-resets-empty">
+              <p>No pending password reset requests.</p>
+            </div>
+          ) : (
+            <div className="users-resets-table-wrap">
+              <table className="users-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Requested</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {passwordResets.map((item) => (
+                    <tr key={item._id}>
+                      <td>
+                        <div className="users-name-cell">
+                          <span className="users-user-name">{item.name}</span>
+                        </div>
+                      </td>
+                      <td className="users-email-cell">{item.email}</td>
+                      <td>
+                        <RoleBadge role={item.role} />
+                      </td>
+                      <td className="users-date-cell">
+                        {formatDate(item.requestedAt)}
+                      </td>
+                      <td>
+                        <div className="users-actions-cell">
+                          <button
+                            type="button"
+                            className="btn btn-primary btn-sm"
+                            onClick={() => setIssueConfirmTarget(item)}
+                          >
+                            <KeyRound size={14} aria-hidden="true" />
+                            <span>Issue temporary password</span>
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-secondary btn-sm"
+                            onClick={() => setDismissConfirmTarget(item)}
+                          >
+                            <span>Dismiss</span>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {/* Mobile stacked cards for resets */}
+              <div className="users-resets-mobile-list">
+                {passwordResets.map((item) => (
+                  <div key={item._id} className="users-resets-mobile-card">
+                    <div className="users-card-header">
+                      <div className="users-card-identity">
+                        <span className="users-card-name">{item.name}</span>
+                        <span className="users-card-email">{item.email}</span>
+                      </div>
+                      <RoleBadge role={item.role} />
+                    </div>
+                    <div className="users-card-details">
+                      <div className="users-card-row">
+                        <span className="users-card-label">Requested:</span>
+                        <span className="users-card-value">{formatDate(item.requestedAt)}</span>
+                      </div>
+                    </div>
+                    <div className="users-card-actions">
+                      <button
+                        type="button"
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => setDismissConfirmTarget(item)}
+                      >
+                        Dismiss
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-sm"
+                        onClick={() => setIssueConfirmTarget(item)}
+                      >
+                        <KeyRound size={14} aria-hidden="true" />
+                        <span>Issue temporary password</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
       )}
 
       <section className="users-filters-bar" aria-label="Filters">
@@ -1074,6 +1307,110 @@ function UsersManagement() {
         onConfirm={handleConfirmDemote}
         onCancel={() => !demoteLoading && setDemoteTarget(null)}
       />
+
+      {/* Issue Temporary Password Confirmation Dialog */}
+      <ConfirmDialog
+        open={Boolean(issueConfirmTarget)}
+        title={`Issue temporary password for ${issueConfirmTarget?.name}?`}
+        message={`Generate a random temporary password for ${issueConfirmTarget?.name}? Their existing password will immediately stop working and they will be required to change it at their next login.`}
+        confirmLabel="Issue password"
+        confirmVariant="primary"
+        loading={issueLoading}
+        onConfirm={handleConfirmIssuePassword}
+        onCancel={() => !issueLoading && setIssueConfirmTarget(null)}
+      />
+
+      {/* Dismiss Password Reset Request Confirmation Dialog */}
+      <ConfirmDialog
+        open={Boolean(dismissConfirmTarget)}
+        title="Dismiss this request?"
+        message="Dismiss this request? The user's password will not change."
+        confirmLabel="Dismiss"
+        confirmVariant="danger"
+        loading={dismissLoading}
+        onConfirm={handleConfirmDismissReset}
+        onCancel={() => !dismissLoading && setDismissConfirmTarget(null)}
+      />
+
+      {/* One-Time Temporary Password Display Modal */}
+      {temporaryPasswordResult && (
+        <div
+          className="users-modal-overlay"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              handleCloseTempPasswordModal();
+            }
+          }}
+        >
+          <div
+            className="users-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="temp-password-modal-title"
+          >
+            <div className="users-modal-header">
+              <h2 id="temp-password-modal-title" className="users-modal-title">
+                Temporary password
+              </h2>
+              <button
+                type="button"
+                className="users-modal-close"
+                onClick={handleCloseTempPasswordModal}
+                aria-label="Close"
+              >
+                <X size={18} aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className="users-temp-password-content">
+              <p className="users-temp-password-user">
+                Issued for <strong>{temporaryPasswordResult.name}</strong> ({temporaryPasswordResult.email})
+              </p>
+
+              <div className="users-password-display-box">
+                <span className="users-password-value">
+                  {temporaryPasswordResult.password}
+                </span>
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm users-copy-btn"
+                  onClick={handleCopyPassword}
+                  title="Copy password to clipboard"
+                >
+                  {copied ? (
+                    <>
+                      <Check size={14} aria-hidden="true" />
+                      <span>Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={14} aria-hidden="true" />
+                      <span>Copy</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <div className="users-temp-warning-box">
+                <ShieldAlert size={16} aria-hidden="true" />
+                <p>
+                  Share this securely. It will not be shown again. The user must change it at first login.
+                </p>
+              </div>
+
+              <div className="users-modal-actions">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleCloseTempPasswordModal}
+                >
+                  Done
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

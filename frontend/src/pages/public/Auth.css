@@ -65,6 +65,31 @@
   margin-top: var(--space-1);
 }
 
+.auth-forgot-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: calc(-1 * var(--space-2));
+  margin-bottom: var(--space-1);
+}
+
+.auth-forgot-link {
+  font-size: 13px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-forgot-link:hover {
+  text-decoration: underline;
+}
+
+.auth-notice-text {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: var(--space-2) 0;
+}
+
 .auth-footer {
   margin-top: var(--space-5);
   padding-top: var(--space-4);
