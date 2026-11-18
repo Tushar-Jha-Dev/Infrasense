@@ -71,10 +71,11 @@
   gap: var(--space-3);
   padding: 10px var(--space-3);
   border-radius: var(--radius-sm);
+  border-left: 3px solid transparent;
   color: var(--text-muted);
   font-weight: 500;
   text-decoration: none;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .sidebar-link:hover {
@@ -87,6 +88,7 @@
 .sidebar-link-active:hover {
   background-color: var(--primary-soft);
   color: var(--primary);
+  border-left-color: var(--accent);
   font-weight: 600;
 }
 
