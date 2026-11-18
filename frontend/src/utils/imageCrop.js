@@ -4,12 +4,12 @@ const TARGET_SIZE = 256;
 const MAX_DATA_URL_LENGTH = 70000;
 
 const CHART_COLORS = [
-  "var(--chart-1, #0F5E5C)",
-  "var(--chart-2, #2B6A8F)",
-  "var(--chart-3, #B7791F)",
-  "var(--chart-4, #2F7D5B)",
-  "var(--chart-5, #8A6A1F)",
-  "var(--chart-6, #4A6572)",
+  "var(--chart-1, #123A7C)",
+  "var(--chart-2, #E8700A)",
+  "var(--chart-3, #0F5E5C)",
+  "var(--chart-4, #5B2A9E)",
+  "var(--chart-5, #3F8A12)",
+  "var(--chart-6, #B38600)",
 ];
 
 /**

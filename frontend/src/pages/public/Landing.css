@@ -107,6 +107,7 @@
 .landing-step-card {
   background-color: var(--surface);
   border: 1px solid var(--border);
+  border-top: 2px solid var(--accent);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: var(--space-5);

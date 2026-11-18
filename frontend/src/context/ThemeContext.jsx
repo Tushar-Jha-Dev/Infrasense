@@ -39,7 +39,7 @@ export function ThemeProvider({ children }) {
     if (metaThemeColor) {
       metaThemeColor.setAttribute(
         "content",
-        theme === "dark" ? "#101617" : "#0F5E5C"
+        theme === "dark" ? "#101617" : "#123A7C"
       );
     }
 

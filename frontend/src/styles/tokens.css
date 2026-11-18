@@ -1,51 +1,56 @@
 :root {
   color-scheme: light;
 
-  --bg: #F6F3EE;            /* warm off-white page background */
-  --surface: #FFFFFF;       /* cards, tables, forms */
-  --surface-2: #EFEAE2;     /* subtle panels, table headers */
+  --bg: #F6F3EE;
+  --surface: #FFFFFF;
+  --surface-2: #EFEAE2;
   --border: #DDD6CA;
-  --text: #1F2A2B;
-  --text-muted: #5E6B6C;
+  --border-strong: #7A8498;
+  --text: #1A2338;
+  --text-muted: #566178;
 
-  --primary: #0F5E5C;       /* deep teal */
-  --primary-hover: #0B4B49;
-  --primary-soft: #DCEBEA;  /* selected nav item, soft highlights */
+  --primary: #123A7C;
+  --primary-hover: #0B2A5E;
+  --primary-soft: #E3EAF8;
   --on-primary: #FFFFFF;
 
+  --accent: #EF6E03;
+  --accent-strong: #B04C00;
+  --accent-soft: #FDEBD9;
+
   /* Severity (only for severity badges) */
-  --sev-low: #2F7D5B;
-  --sev-medium: #B7791F;
-  --sev-high: #C2570C;
+  --sev-low: #27704F;
+  --sev-medium: #8C5A0B;
+  --sev-high: #A84A06;
   --sev-critical: #B42318;
 
   /* Status (only for status badges) */
   --st-submitted: #4A6572;
-  --st-review: #8A6A1F;
+  --st-review: #7A5A12;
   --st-assigned: #2B6A8F;
   --st-progress: #0F5E5C;
-  --st-resolved: #2F7D5B;
-  --st-closed: #6B6B6B;
+  --st-resolved: #27704F;
+  --st-closed: #636363;
 
   /* Categorical Chart Palette */
-  --chart-1: #0F5E5C; /* teal */
-  --chart-2: #B7791F; /* ochre */
-  --chart-3: #2B6A8F; /* blue */
-  --chart-4: #8A5A44; /* clay */
-  --chart-5: #6B7F3A; /* olive */
-  --chart-6: #7A5C8E; /* plum */
-  --chart-7: #B4533C; /* terracotta */
-  --chart-8: #6B6B6B; /* grey */
+  --chart-1: #123A7C;
+  --chart-2: #E8700A;
+  --chart-3: #0F5E5C;
+  --chart-4: #5B2A9E;
+  --chart-5: #3F8A12;
+  --chart-6: #B38600;
+  --chart-7: #B4533C;
+  --chart-8: #6B6B6B;
 
   --danger: #B42318;
   --danger-hover: #911B12;
-  --focus: #0F5E5C;
+  --focus: #123A7C;
 
-  --overlay: rgba(31, 42, 43, 0.45);
+  --overlay: rgba(26, 35, 56, 0.45);
 
   --radius: 8px;
   --radius-sm: 6px;
-  --shadow: 0 1px 2px rgba(31, 42, 43, 0.08);
+  --shadow: 0 1px 2px rgba(26, 35, 56, 0.08);
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -62,41 +67,46 @@
   --surface: #172022;
   --surface-2: #1F2A2C;
   --border: #5A7579;
+  --border-strong: #5A7579;
   --text: #E8EFEE;
   --text-muted: #9DB0AE;
 
-  --primary: #20B2AA;
-  --primary-hover: #2DD4BF;
-  --primary-soft: #1A3332;
+  --primary: #7BA3FF;
+  --primary-hover: #A3BEFF;
+  --primary-soft: #29384A;
   --on-primary: #101617;
 
+  --accent: #FF8A1F;
+  --accent-strong: #FFA24D;
+  --accent-soft: #3C3122;
+
   /* Severity (only for severity badges) */
-  --sev-low: #4ADE80;
-  --sev-medium: #FBBF24;
-  --sev-high: #FB923C;
-  --sev-critical: #F87171;
+  --sev-low: #5CCB8A;
+  --sev-medium: #F2B544;
+  --sev-high: #F58A4B;
+  --sev-critical: #F47C7C;
 
   /* Status (only for status badges) */
-  --st-submitted: #94A3B8;
-  --st-review: #FCD34D;
-  --st-assigned: #60A5FA;
-  --st-progress: #2DD4BF;
-  --st-resolved: #4ADE80;
-  --st-closed: #94A3B8;
+  --st-submitted: #A4B0C8;
+  --st-review: #E6C35C;
+  --st-assigned: #6FA8E8;
+  --st-progress: #3FC9BE;
+  --st-resolved: #5CCB8A;
+  --st-closed: #9AA5BA;
 
   /* Categorical Chart Palette */
-  --chart-1: #20B2AA;
-  --chart-2: #FBBF24;
-  --chart-3: #60A5FA;
-  --chart-4: #FB923C;
-  --chart-5: #4ADE80;
-  --chart-6: #C084FC;
-  --chart-7: #F87171;
-  --chart-8: #94A3B8;
+  --chart-1: #7BA3FF;
+  --chart-2: #FF8A1F;
+  --chart-3: #3FC9BE;
+  --chart-4: #B58CFF;
+  --chart-5: #8FD14A;
+  --chart-6: #F5C518;
+  --chart-7: #F28B7D;
+  --chart-8: #9AA5BA;
 
-  --danger: #F87171;
+  --danger: #F47C7C;
   --danger-hover: #FCA5A5;
-  --focus: #20B2AA;
+  --focus: #7BA3FF;
 
   --overlay: rgba(0, 0, 0, 0.65);
 
