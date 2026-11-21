@@ -1,0 +1,2975 @@
+[
+  {
+    "id": "C001",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "Critical",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 2.75,
+      "llm": 1312.75,
+      "hybrid": 1315.54
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C002",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 2.51,
+      "llm": 2757.94,
+      "hybrid": 2760.46
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C003",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.99,
+      "llm": 1086.34,
+      "hybrid": 1087.34
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C004",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "Critical",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.41,
+      "llm": 1510.2,
+      "hybrid": 1510.62
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C005",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "High",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.25,
+      "llm": 1111.11,
+      "hybrid": 1111.37
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C006",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 1.28,
+      "llm": 1479.67,
+      "hybrid": 1480.96
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C007",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "Critical",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.32,
+      "llm": 1095.5,
+      "hybrid": 1095.83
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C008",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 3.53,
+      "llm": 1324.52,
+      "hybrid": 1328.06
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C009",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "Critical",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.24,
+      "llm": 1688.02,
+      "hybrid": 1688.27
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C010",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Plumbing",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Plumbing",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.86,
+      "llm": 1517.02,
+      "hybrid": 1517.89
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C011",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Plumbing",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "Critical",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Plumbing",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.41,
+      "llm": 1366.67,
+      "hybrid": 1367.09
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C012",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "High",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.31,
+      "llm": 1395.38,
+      "hybrid": 1395.7
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C013",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.27,
+      "llm": 1320.4,
+      "hybrid": 1320.68
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C014",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.34,
+      "llm": 1101.36,
+      "hybrid": 1101.7
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C015",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "High",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.22,
+      "llm": 1004.56,
+      "hybrid": 1004.78
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C016",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Plumbing",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "Low",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.3,
+      "llm": 1112.9,
+      "hybrid": 1113.2
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C017",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "High",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.24,
+      "llm": 1092.1,
+      "hybrid": 1092.34
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C018",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.28,
+      "llm": 1078.94,
+      "hybrid": 1079.23
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C019",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Furniture",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Furniture",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.24,
+      "llm": 2603.52,
+      "hybrid": 2603.76
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C020",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Furniture",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Furniture",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Furniture",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.25,
+      "llm": 1180.31,
+      "hybrid": 1180.56
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C021",
+    "group": "standard",
+    "borderline": true,
+    "expected": {
+      "category": "Furniture",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Furniture",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.29,
+      "llm": 1057.96,
+      "hybrid": 1058.25
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C022",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Furniture",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Furniture",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.24,
+      "llm": 1369.01,
+      "hybrid": 1369.31
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C023",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Furniture",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Furniture",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Furniture",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.32,
+      "llm": 1811.82,
+      "hybrid": 1812.14
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C024",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Furniture",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Furniture",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Furniture",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Furniture",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.32,
+      "llm": 1108.98,
+      "hybrid": 1109.31
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C025",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Furniture",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.2,
+      "llm": 1282.78,
+      "hybrid": 1282.98
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C026",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Furniture",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Furniture",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Furniture",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Furniture",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.26,
+      "llm": 1638.3,
+      "hybrid": 1638.56
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C027",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Furniture",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Low",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Furniture",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Furniture",
+      "severity": "Low"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.33,
+      "llm": 1516.04,
+      "hybrid": 1516.37
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C028",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "HVAC",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.37,
+      "llm": 1302.9,
+      "hybrid": 1303.28
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C029",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "HVAC",
+      "severity": "Low",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.3,
+      "llm": 1415.81,
+      "hybrid": 1416.12
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C030",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "HVAC",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "HVAC",
+      "severity": "Low",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.3,
+      "llm": 1297.81,
+      "hybrid": 1298.11
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C031",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "HVAC",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "HVAC",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "HVAC",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "HVAC",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.57,
+      "llm": 1087.06,
+      "hybrid": 1087.63
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C032",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "HVAC",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.29,
+      "llm": 928.62,
+      "hybrid": 928.91
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C033",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "HVAC",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "HVAC",
+      "severity": "Critical",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "HVAC",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "HVAC",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.45,
+      "llm": 1538.6,
+      "hybrid": 1539.05
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C034",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "HVAC",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "HVAC",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "HVAC",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "HVAC",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.32,
+      "llm": 1111.87,
+      "hybrid": 1112.19
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C035",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "HVAC",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "HVAC",
+      "severity": "Low",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "HVAC",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "HVAC",
+      "severity": "Low"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.21,
+      "llm": 1317.52,
+      "hybrid": 1317.74
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C036",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "HVAC",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.26,
+      "llm": 1481.67,
+      "hybrid": 1481.93
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C037",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Civil/Structural",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Civil/Structural",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Civil/Structural",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.32,
+      "llm": 1127.41,
+      "hybrid": 1127.74
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C038",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Civil/Structural",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Civil/Structural",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Civil/Structural",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.38,
+      "llm": 1520.36,
+      "hybrid": 1520.74
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C039",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Civil/Structural",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Low",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Civil/Structural",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Civil/Structural",
+      "severity": "Low"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.29,
+      "llm": 1227.77,
+      "hybrid": 1228.06
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C040",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.27,
+      "llm": 1254,
+      "hybrid": 1254.28
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C041",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Civil/Structural",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Low",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.32,
+      "llm": 1222.34,
+      "hybrid": 1222.67
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C042",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.54,
+      "llm": 1076.04,
+      "hybrid": 1076.58
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C043",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.25,
+      "llm": 1501.5,
+      "hybrid": 1501.76
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C044",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.25,
+      "llm": 1496.17,
+      "hybrid": 1496.42
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C045",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Civil/Structural",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Low",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Civil/Structural",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Civil/Structural",
+      "severity": "Low"
+    },
+    "llm_failed": false,
+    "retries": 1,
+    "latency_ms": {
+      "rules": 0.24,
+      "llm": 959.6,
+      "hybrid": 959.84
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C046",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Networking",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Networking",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Networking",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Networking",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.12,
+      "llm": 1696.43,
+      "hybrid": 1696.55
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C047",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Networking",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.29,
+      "llm": 1106.82,
+      "hybrid": 1107.11
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C048",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Networking",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.55,
+      "llm": 1109.42,
+      "hybrid": 1109.97
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C049",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Networking",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Networking",
+      "severity": "High",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Networking",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Networking",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.25,
+      "llm": 1422.64,
+      "hybrid": 1422.89
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C050",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Networking",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Networking",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Networking",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.24,
+      "llm": 1429.12,
+      "hybrid": 1429.36
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C051",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Networking",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Networking",
+      "severity": "Critical",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.22,
+      "llm": 1104.67,
+      "hybrid": 1104.89
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C052",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Networking",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.31,
+      "llm": 1081.9,
+      "hybrid": 1082.21
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C053",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Networking",
+      "severity": "High",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Other",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.26,
+      "llm": 1385.77,
+      "hybrid": 1386.04
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C054",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Networking",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Networking",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.3,
+      "llm": 1245.2,
+      "hybrid": 1245.51
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C055",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Sanitation",
+      "severity": "Low",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.29,
+      "llm": 1345.83,
+      "hybrid": 1346.12
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C056",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Sanitation",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "High",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Sanitation",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Sanitation",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.2,
+      "llm": 1188.75,
+      "hybrid": 1188.95
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C057",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Sanitation",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.25,
+      "llm": 947.58,
+      "hybrid": 947.84
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C058",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Sanitation",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Sanitation",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Sanitation",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.22,
+      "llm": 1242.59,
+      "hybrid": 1242.81
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C059",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Sanitation",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "High",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.24,
+      "llm": 1284.47,
+      "hybrid": 1284.71
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C060",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Sanitation",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.29,
+      "llm": 1212.36,
+      "hybrid": 1212.65
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C061",
+    "group": "standard",
+    "borderline": true,
+    "expected": {
+      "category": "Sanitation",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.32,
+      "llm": 1515.66,
+      "hybrid": 1515.98
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C062",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Sanitation",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "High",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Sanitation",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Sanitation",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.36,
+      "llm": 828.19,
+      "hybrid": 828.61
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C063",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Sanitation",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.27,
+      "llm": 1616.94,
+      "hybrid": 1617.22
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C064",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Other",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Other",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Other",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.43,
+      "llm": 2835.39,
+      "hybrid": 2835.83
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C065",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Other",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Other",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.27,
+      "llm": 1421.7,
+      "hybrid": 1421.97
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C066",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Critical",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Other",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.26,
+      "llm": 905.38,
+      "hybrid": 905.64
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C067",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Other",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Critical",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.24,
+      "llm": 1709.15,
+      "hybrid": 1709.39
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C068",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.17,
+      "llm": 1229.82,
+      "hybrid": 1230.03
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C069",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Other",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Furniture",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.3,
+      "llm": 1361.75,
+      "hybrid": 1362.05
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C070",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Civil/Structural",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.21,
+      "llm": 1354.11,
+      "hybrid": 1354.32
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C071",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Other",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "High",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.25,
+      "llm": 1747.18,
+      "hybrid": 1747.43
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C072",
+    "group": "standard",
+    "borderline": false,
+    "expected": {
+      "category": "Other",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Furniture",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Furniture",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.26,
+      "llm": 1222.5,
+      "hybrid": 1222.76
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C073",
+    "group": "hinglish",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Sanitation",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.27,
+      "llm": 1211.05,
+      "hybrid": 1211.32
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C074",
+    "group": "hinglish",
+    "borderline": false,
+    "expected": {
+      "category": "Plumbing",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.25,
+      "llm": 1213.74,
+      "hybrid": 1213.99
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C075",
+    "group": "hinglish",
+    "borderline": false,
+    "expected": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "HVAC",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.2,
+      "llm": 1524.95,
+      "hybrid": 1525.15
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C076",
+    "group": "hinglish",
+    "borderline": false,
+    "expected": {
+      "category": "Networking",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Networking",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Networking",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Networking",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.21,
+      "llm": 2138.58,
+      "hybrid": 2138.79
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C077",
+    "group": "hinglish",
+    "borderline": false,
+    "expected": {
+      "category": "Civil/Structural",
+      "severity": "High"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Civil/Structural",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Civil/Structural",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.15,
+      "llm": 1214.82,
+      "hybrid": 1214.97
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C078",
+    "group": "hinglish",
+    "borderline": false,
+    "expected": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "Sanitation",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Sanitation",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.21,
+      "llm": 1529.42,
+      "hybrid": 1529.63
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C079",
+    "group": "hinglish",
+    "borderline": false,
+    "expected": {
+      "category": "Furniture",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.22,
+      "llm": 1338.58,
+      "hybrid": 1338.8
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C080",
+    "group": "hinglish",
+    "borderline": false,
+    "expected": {
+      "category": "Other",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": null,
+    "hybrid": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "llm_failed": true,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.19,
+      "llm": 8004.93,
+      "hybrid": 8005.14
+    },
+    "needsReview": true,
+    "source": "rules"
+  },
+  {
+    "id": "C081",
+    "group": "hinglish",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.54,
+      "llm": 1106.11,
+      "hybrid": 1106.65
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C082",
+    "group": "hinglish",
+    "borderline": false,
+    "expected": {
+      "category": "Plumbing",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "hybrid": {
+      "category": "Plumbing",
+      "severity": "High"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.28,
+      "llm": 1569.39,
+      "hybrid": 1569.67
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C083",
+    "group": "injection",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "Critical",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.29,
+      "llm": 1309.87,
+      "hybrid": 1310.16
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C084",
+    "group": "injection",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "Critical",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.29,
+      "llm": 1519.27,
+      "hybrid": 1519.56
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C085",
+    "group": "injection",
+    "borderline": false,
+    "expected": {
+      "category": "Civil/Structural",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Civil/Structural",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Civil/Structural",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Civil/Structural",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.29,
+      "llm": 1638.92,
+      "hybrid": 1639.21
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C086",
+    "group": "injection",
+    "borderline": false,
+    "expected": {
+      "category": "Plumbing",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Plumbing",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Plumbing",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Plumbing",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.26,
+      "llm": 1406.37,
+      "hybrid": 1406.63
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C087",
+    "group": "injection",
+    "borderline": false,
+    "expected": {
+      "category": "Electrical",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Electrical",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Electrical",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Electrical",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.29,
+      "llm": 774.63,
+      "hybrid": 774.92
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C088",
+    "group": "injection",
+    "borderline": false,
+    "expected": {
+      "category": "Other",
+      "severity": "Critical"
+    },
+    "rules": {
+      "category": "Sanitation",
+      "severity": "Critical",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Sanitation",
+      "severity": "Critical"
+    },
+    "hybrid": {
+      "category": "Sanitation",
+      "severity": "Critical"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.29,
+      "llm": 1861.51,
+      "hybrid": 1861.8
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C089",
+    "group": "injection",
+    "borderline": false,
+    "expected": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "rules": {
+      "category": "HVAC",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "HVAC",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.23,
+      "llm": 1317.56,
+      "hybrid": 1317.79
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C090",
+    "group": "injection",
+    "borderline": false,
+    "expected": {
+      "category": "Furniture",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Furniture",
+      "severity": "Medium",
+      "needsReview": false
+    },
+    "llm": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Furniture",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.2,
+      "llm": 1499.96,
+      "hybrid": 1500.16
+    },
+    "needsReview": false,
+    "source": "llm"
+  },
+  {
+    "id": "C091",
+    "group": "vague",
+    "borderline": true,
+    "expected": {
+      "category": "Other",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.3,
+      "llm": 1536.29,
+      "hybrid": 1536.59
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C092",
+    "group": "vague",
+    "borderline": true,
+    "expected": {
+      "category": "Other",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Other",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.31,
+      "llm": 1925.42,
+      "hybrid": 1925.73
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C093",
+    "group": "vague",
+    "borderline": true,
+    "expected": {
+      "category": "Other",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Other",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.22,
+      "llm": 1482.54,
+      "hybrid": 1482.76
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C094",
+    "group": "vague",
+    "borderline": true,
+    "expected": {
+      "category": "Other",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "hybrid": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.19,
+      "llm": 843.7,
+      "hybrid": 843.89
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C095",
+    "group": "vague",
+    "borderline": true,
+    "expected": {
+      "category": "Other",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Other",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.2,
+      "llm": 1313.17,
+      "hybrid": 1313.37
+    },
+    "needsReview": true,
+    "source": "llm"
+  },
+  {
+    "id": "C096",
+    "group": "vague",
+    "borderline": true,
+    "expected": {
+      "category": "Other",
+      "severity": "Low"
+    },
+    "rules": {
+      "category": "Other",
+      "severity": "Medium",
+      "needsReview": true
+    },
+    "llm": {
+      "category": "Other",
+      "severity": "Low"
+    },
+    "hybrid": {
+      "category": "Other",
+      "severity": "Medium"
+    },
+    "llm_failed": false,
+    "retries": 0,
+    "latency_ms": {
+      "rules": 0.21,
+      "llm": 1119.11,
+      "hybrid": 1119.32
+    },
+    "needsReview": true,
+    "source": "llm"
+  }
+]
